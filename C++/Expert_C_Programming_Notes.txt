@@ -155,6 +155,10 @@
 				int y[8]= { 2,4,6,8,10,12,14,16 };
 				int *y_pter=y;
 				
+				char *str1 = "abcdefdf";
+				char *str2 = "abcdefdf";
+				char *str3 = "abcdefdfg";
+				
 				std::cout << "Value of x variable: ";
 				std::cout << x << std::endl;
 				
@@ -193,6 +197,22 @@
 				
 				std::cout << "Value of &y_pter variable: ";
 				std::cout << &y_pter << std::endl;
+				
+				if ((void *)str1 == (void *)str2)
+				{
+					std::cout << "(void *)str1 == (void *)str2" << std::endl;
+				}
+				else
+				{
+					std::cout << "(void *)str1 != (void *)str2" << std::endl;
+				}
+				std::cout << "Value of (void *)str1 variable: ";
+				std::cout << (void *)str1 << std::endl;
+				std::cout << "Value of (void *)str2 variable: ";
+				std::cout << (void *)str2 << std::endl;
+				std::cout << "Value of (void *)str3 variable: ";
+				std::cout << (void *)str3 << std::endl;
+
 				return 0;
 			}
 			Value of x variable: 							tanzheng
@@ -208,6 +228,11 @@
 			Value of &y[0] variable: 					00FEFDD8
 			Value of y_pter variable: 				00FEFDD8
 			Value of &y_pter variable: 				00FEFDCC
+			(void *)str1 == (void *)str2
+			Value of (void *)str1 variable: 	0038DC78
+			Value of (void *)str2 variable: 	0038DC78
+			Value of (void *)str3 variable: 	0038DC84
+			
 			1.为什么char*指针类型的x取地址时,需强制转换(void *)类型？其他类型的指针变量取地址时不需要强制转换？
 				1)char*类型把字符串就是放在文字常量区，定义后不能修改且默认读取字符串数据，强制转换为(void *)类型，才能读取保存在文字常量区首地址。
 				2)其他类型的指针（例如short int、long int）可直接取指针变量的地址。
