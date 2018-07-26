@@ -353,7 +353,8 @@
 						hint: its remote counterpart. Integrate the remote changes (e.g.
 						hint: 'git pull ...') before pushing again.
 						hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-				6.推送失败，因为你的小伙伴的最新提交和你试图推送的提交有冲突，解决办法也很简单，Git已经提示我们，先用git pull把最新的提交从origin/dev抓下来，然后，在本地合并，解决冲突，再推送：
+				6.推送失败，因为你的小伙伴的最新提交和你试图推送的提交有冲突，解决办法也很简单，
+					Git已经提示我们，先用git pull把最新的提交从origin/dev抓下来，然后，在本地合并，解决冲突，再推送：
 					$ git pull
 						There is no tracking information for the current branch.
 						Please specify which branch you want to merge with.
