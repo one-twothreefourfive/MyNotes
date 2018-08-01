@@ -1,0 +1,1570 @@
+volatile:
+	修饰符 volatile 告诉编译器，变量的值可能以程序未明确指定的方式被改变。(防止编译器优化，往往会用于多线程的修饰)
+
+
+thread_local 存储类
+	使用 thread_local 说明符声明的变量仅可在它在其上创建的线程上访问。 变量在创建线程时创建，并在销毁线程时销毁。 每个线程都有其自己的变量副本。
+	thread_local int x;  // 命名空间下的全局变量
+
+
+C++ 引用调用：
+	int a = 100;
+	int b = 200;
+	swap(a, b);
+	void swap(int &x, int &y)
+	{
+	   int temp;
+	   temp = x; /* 保存地址 x 的值 */
+	   x = y;    /* 把 y 赋值给 x */
+	   y = temp; /* 把 x 赋值给 y  */
+	  
+	   return;
+	}
+	int &x或者int &y做参数时，传递变量是该实参的引用类型，函数执行过程中可以改变实参的值，
+	而int y传递的是实参的拷贝，函数执行后不改变实参的值。
+
+
+Lambda 函数与表达式
+	Lambda函数的语法定义如下：
+	[capture](parameters) mutable ->return-type{statement}
+	其中：
+	 [capture]：捕捉列表。捕捉列表总是出现在 lambda 表达式的开始处。事实上，[] 是 lambda 引出符。
+		    编译器根据该引出符判断接下来的代码是否是 lambda 函数。捕捉列表能够捕捉上下文中的变量供 lambda 函数使用。
+	 (parameters)：参数列表。与普通函数的参数列表一致。如果不需要参数传递，则可以连同括号 () 一起省略。
+	 mutable：mutable 修饰符。默认情况下，lambda 函数总是一个 const 函数，mutable 可以取消其常量性。
+	                  在使用该修饰符时，参数列表不可省略（即使参数为空）。
+	 ->return_type：返回类型。用追踪返回类型形式声明函数的返回类型。出于方便，不需要返回值的时候也可以连同符号 -> 一起省略。
+		        此外，在返回类型明确的情况下，也可以省略该部分，让编译器对返回类型进行推导。
+	 {statement}：函数体。内容与普通函数一样，不过除了可以使用参数之外，还可以使用所有捕获的变量。
+		      在 lambda 函数的定义式中，参数列表和返回类型都是可选部分，而捕捉列表和函数体都可能为空，
+	              C++ 中最简单的 lambda 函数只需要声明为：
+	
+	特殊的形式：
+	
+	　　　　[=] (...) ... {...}    将外部所有变量传递给lambda，但是不能在内部修改 -- passing by value
+	
+	　　　　[&] (...) ... {...}     将外部所有变量传递给lambda， 可以在内部修改，并且影响外部变量 -- passing by ref..
+	
+	　　　　[=，&y] (...) ... {...}   将所有变量传递给lambda，y可以在内部修改，其余变量不行
+	
+	　　　　[y, &] (...) ... {...}   将所有变量传递给lambda，y不可以在内部修改，其余变量可以
+
+
+数学运算头文件：
+	#include <cmath>
+	包含：
+	1	double cos(double);
+	该函数返回弧度角（double 型）的余弦。
+	2	double sin(double);
+	该函数返回弧度角（double 型）的正弦。
+	3	double tan(double);
+	该函数返回弧度角（double 型）的正切。
+	4	double log(double);
+	该函数返回参数的自然对数。
+	5	double pow(double, double);
+	假设第一个参数为 x，第二个参数为 y，则该函数返回 x 的 y 次方。
+	6	double hypot(double, double);
+	该函数返回两个参数的平方总和的平方根，也就是说，参数为一个直角三角形的两个直角边，函数会返回斜边的长度。
+	7	double sqrt(double);
+	该函数返回参数的平方根。
+	8	int abs(int);
+	该函数返回整数的绝对值。
+	9	double fabs(double);
+	该函数返回任意一个十进制数的绝对值。
+	10	double floor(double);
+	该函数返回一个小于或等于传入参数的最大整数。
+
+
+C++ 随机数：
+	关于随机数生成器，有两个相关的函数。一个是 rand()，该函数只返回一个伪随机数。生成随机数之前必须先调用 srand() 函数。
+	#include <iostream>
+	#include <ctime>/*用到了time函数，所以要有这个头文件*/
+	#include <cstdlib>
+	
+	using namespace std;
+	int main ()
+	{
+	   int i,j;
+	 
+	   // 设置种子
+	   srand( (unsigned)time( NULL ) );
+	 
+	   /* 生成 10 个随机数 */
+	   for( i = 0; i < 10; i++ )
+	   {
+	      // 生成实际的随机数
+	      //j= rand();
+	      j= rand() % 100; /*产生100以内的随机整数*/
+	      cout <<"随机数： " << j << endl;
+	   }
+	 
+	   return 0;
+	}
+
+
+C 风格字符串
+	字符串实际上是使用 null 字符 '\0' 终止的一维字符数组，所以字符数组的大小比单词 "Hello" 的字符数多一个。
+	例如：char greeting[6] = {'H', 'e', 'l', 'l', 'o', '\0'};
+
+C++ Null 指针
+	在变量声明的时候，如果没有确切的地址可以赋值，为指针变量赋一个 NULL 值是一个良好的编程习惯。赋为 NULL 值的指针被称为空指针。
+	例如：  int  *ptr = NULL;
+		if(!ptr)    /* 如果 ptr 为空，则完成 */
+	注意：在使用指针变量的时候，要先对指针进行赋值，也就是先让指针指向某一内存。
+	      否则会出现错误，因为在定义一个指针的时候，指针有可能指向一个非法的内存空间。因此在用指针的时候会出现错误。
+	例如：
+		int *p;//仅仅定义一个指针变量，但并未对指针变量赋值，p有可能指向非法的内存空间
+		*p=0; //对非法的内存空间进行访问，出错
+	NULL的定义（C与C++的定义不一样）：
+		#if !defined(__cplusplus)
+		#define NULL ((void*)0)
+		#else
+		#define NULL 0
+		#endif
+	例如：
+	#include <stdio.h>
+	int main()
+	{
+		int *pi=(int *)malloc(sizeof(int));//分配int大小的内存空间块给指针pi
+		*pi=3；
+		printf("pi address=%p,value=%d\n",pi,*pi);
+		puts("free\n");
+		free(pi);
+		printf("pi address=%p,value=%d\n",pi,*pi);
+		system("pause");
+	}
+	cmd窗口显示如下：
+	pi address=00452950，value=3
+	free
+	pi address=00452950，value=4525824
+	
+	问题点：指针pi未被释放掉，仍能显示地址的错误的数据？
+	解答：
+		指针初始化不分配会形成野指针
+		指针释放后不指向null也会形成野指针
+		
+		“野指针”不是NULL指针，是指向“垃圾”内存（不可用内存）的指针。人们一般不会错用NULL指针，因为用if语句很容易判断。但是“野指针”是很危险的，if无法判断一个指针是正常指针还是“野指针”。有个良好的编程习惯是避免“野指针”的唯一方法。
+		
+		野指针的成因主要有三种：
+		一、指针变量没有被初始化。任何指针变量刚被创建时不会自动成为NULL指针，它的缺省值是随机的，它会乱指一气。所以，指针变量在创建的同时应当被初始化，要么将指针设置为NULL，要么让它指向合法的内存。
+		二、指针p被free或者delete之后，没有置为NULL，让人误以为p是个合法的指针。别看free和delete的名字（尤其是delete），它们只是把指针所指的内存给释放掉，但并没有把指针本身干掉。通常会用语句if (p != NULL)进行防错处理。很遗憾，此时if语句起不到防错作用，因为即便p不是NULL指针，它也不指向合法的内存块
+		三、指针操作超越了变量的作用范围。比如不要返回指向栈内存的指针或引用，因为栈内存在函数结束时会被释放。
+			
+C++ 指针详解
+	C++ Null 指针	C++ 支持空指针。NULL 指针是一个定义在标准库中的值为零的常量。
+	C++ 指针的算术运算	可以对指针进行四种算术运算：++、--、+、-
+	C++ 指针 vs 数组	指针和数组之间有着密切的关系。
+	C++ 指针数组	可以定义用来存储指针的数组。
+	C++ 指向指针的指针	C++ 允许指向指针的指针。
+	C++ 传递指针给函数	通过引用或地址传递参数，使传递的参数在调用函数中被改变。
+	C++ 从函数返回指针	C++ 允许函数返回指针到局部变量、静态变量和动态内存分配。
+
+C++ 引用
+	引用变量是一个别名，也就是说，它是某个已存在变量的另一个名字。一旦把引用初始化为某个变量，就可以使用该‘引用名称’或‘变量名称’来指向变量（两个名称任一数据改变时，另一个数据同时改变）。
+	把引用作为参数		C++ 支持把引用作为参数传给函数，这比传一般的参数更安全。
+	把引用作为返回值	可以从 C++ 函数中返回引用，就像返回其他数据类型一样。
+	C++ 引用 vs 指针
+		引用很容易与指针混淆，它们之间有三个主要的不同：
+		
+		不存在空引用。引用必须连接到一块合法的内存。
+		一旦引用被初始化为一个对象，就不能被指向到另一个对象。指针可以在任何时候指向到另一个对象。
+		引用必须在创建时被初始化。指针可以在任何时间被初始化。
+
+C++ 日期 & 时间
+	相关结构体：
+		struct tm {
+		  int tm_sec;   // 秒，正常范围从 0 到 59，但允许至 61
+		  int tm_min;   // 分，范围从 0 到 59
+		  int tm_hour;  // 小时，范围从 0 到 23
+		  int tm_mday;  // 一月中的第几天，范围从 1 到 31
+		  int tm_mon;   // 月，范围从 0 到 11
+		  int tm_year;  // 自 1900 年起的年数
+		  int tm_wday;  // 一周中的第几天，范围从 0 到 6，从星期日算起
+		  int tm_yday;  // 一年中的第几天，范围从 0 到 365，从 1 月 1 日算起
+		  int tm_isdst; // 夏令时
+		}
+	相关库函数：
+		1	time_t time(time_t *time);
+		该函数返回系统的当前日历时间，自 1970 年 1 月 1 日以来经过的秒数。如果系统没有时间，则返回 .1。
+		2	char *ctime(const time_t *time);
+		该返回一个表示当地时间的字符串指针，字符串形式 day month year hours:minutes:seconds year\n\0。
+		3	struct tm *localtime(const time_t *time);
+		该函数返回一个指向表示本地时间的 tm 结构的指针。
+		4	clock_t clock(void);
+		该函数返回程序执行起（一般为程序的开头），处理器时钟所使用的时间。如果时间不可用，则返回 .1。
+		5	char * asctime ( const struct tm * time );
+		该函数返回一个指向字符串的指针，字符串包含了 time 所指向结构中存储的信息，返回形式为：day month date hours:minutes:seconds year\n\0。
+		6	struct tm *gmtime(const time_t *time);
+		该函数返回一个指向 time 的指针，time 为 tm 结构，用协调世界时（UTC）也被称为格林尼治标准时间（GMT）表示。
+		7	time_t mktime(struct tm *time);
+		该函数返回日历时间，相当于 time 所指向结构中存储的时间。
+		8	double difftime ( time_t time2, time_t time1 );
+		该函数返回 time1 和 time2 之间相差的秒数。
+		9	size_t strftime();
+		该函数可用于格式化日期和时间为指定的格式。
+	
+	获取本地时间与UTC时间的程序实例，该实例无法在VS 2013中运行，报错为不安全函数：
+		#include <iostream>
+		#include <ctime>
+		 
+		using namespace std;
+		 
+		int main( )
+		{
+				// 基于当前系统的当前日期/时间
+				time_t now = time(0);
+				
+				// 把 now 转换为字符串形式
+				char* dt = ctime(&now);
+				
+				cout << "本地日期和时间：" << dt << endl;
+				
+				// 把 now 转换为 tm 结构
+				tm *gmtm = gmtime(&now);
+				dt = asctime(gmtm);
+				cout << "UTC 日期和时间："<< dt << endl;
+				
+				// 基于当前系统的当前日期/时间
+				time_t now = time(0);
+				
+				cout << "1970 到目前经过秒数:" << now << endl;
+				
+				tm *ltm = localtime(&now);
+				
+				// 输出 tm 结构的各个组成部分
+				cout << "年: "<< 1900 + ltm->tm_year << endl;
+				cout << "月: "<< 1 + ltm->tm_mon<< endl;
+				cout << "日: "<<  ltm->tm_mday << endl;
+				cout << "时间: "<< ltm->tm_hour << ":";
+				cout << ltm->tm_min << ":";
+				cout << ltm->tm_sec << endl;
+		}
+		运行结果：
+		本地日期和时间：Sat Jan  8 20:07:41 2011
+		UTC 日期和时间：Sun Jan  9 03:07:41 2011
+	
+	VS 2013中运行正常的程序：
+		#include "stdafx.h"
+		#include <iostream>
+		#include <ctime>
+		
+		using namespace std;
+		
+		int main()
+		{
+			// 基于当前系统的当前日期/时间
+			time_t now = time(0);
+		
+			// 把 now 转换为字符串形式
+			char str[26];
+			ctime_s(str, sizeof str, &now);
+		
+			cout << "本地日期和时间：" << str << endl;
+		
+			// 把 now 转换为 tm 结构
+			tm gmtm;
+			
+			gmtime_s(&gmtm,&now);
+			asctime_s(str, sizeof str, &gmtm);
+			cout << "UTC 日期和时间：" << str << endl;
+		
+			// 输出 tm 结构的各个组成部分
+			tm ltm;
+			localtime_s(&ltm,&now);
+			
+			cout << "年: " << 1900 + ltm.tm_year << endl;
+			cout << "月: " << 1 + ltm.tm_mon << endl;
+			cout << "日: " << ltm.tm_mday << endl;
+			cout << "时间: " << ltm.tm_hour << ":";
+			cout << ltm.tm_min << ":";
+			cout << ltm.tm_sec << endl;
+		}
+		运行结果：
+		本地日期和时间：Tue Dec 05 15:38:16 2017
+
+		UTC 日期和时间：Tue Dec 05 07:38:16 2017
+		
+		年: 2017
+		月: 12
+		日: 5
+		时间: 15:38:16
+			
+	注意：
+		Visual Studio 2015运行ctime报错C4996显示ctime为不安全函数，Visual Studio 2015在错误C4996中推荐使用ctime_s代替ctime。
+		errno_t ctime_s(char *buffer, rsize_t bufsz, const time_t *time);
+		实例1：
+			#include <stdio.h>
+			#include <time.h>
+			
+			int main ()
+			{
+			   time_t curtime = time(NULL);
+			   char str[26];
+			   ctime_s(str, sizeof str, &curtime);
+			   printf("当前时间 = %s", str);
+			   return(0);
+			}
+
+如何查询Visual Studio 2013库函数API的简介说明：
+	光标定位到你想要查询的函数，按F1。
+			
+			
+C++ 基本的输入输出：
+	I/O 库头文件：
+		下列的头文件在 C++ 编程中很重要：
+		头文件	函数和描述
+		<iostream>	该文件定义了 cin、cout、cerr 和 clog 对象，分别对应于标准输入流、标准输出流、非缓冲标准错误流和缓冲标准错误流。
+		<iomanip>	该文件通过所谓的参数化的流操纵器（比如 setw 和 setprecision），来声明对执行标准化 I/O 有用的服务。
+		<fstream>	该文件为用户控制的文件处理声明服务。我们将在文件和流的相关章节讨论它的细节。
+	标准输出流（cout）
+		char str[] = "Hello C++";  
+		cout << "Value of str is : " << str << endl;
+	标准输入流（cin）
+		char name[50];
+		cout << "请输入您的名称： ";
+		cin >> name;
+		cout << "您的名称是： " << name << endl;
+	标准错误流（cerr）
+		char str[] = "Unable to read....";
+   	cerr << "Error message : " << str << endl;
+  标准日志流（clog）
+  	char str[] = "Unable to read....";
+		clog << "Error message : " << str << endl;
+		
+		
+C++ 数据结构
+	定义结构
+	为了定义结构，您必须使用 struct 语句。struct 语句定义了一个包含多个成员的新的数据类型，struct 语句的格式如下：
+	struct type_name {
+	member_type1 member_name1;
+	member_type2 member_name2;
+	member_type3 member_name3;
+	.
+	.
+	} object_names;
+	
+	类与结构体在C++中只有两点区别，除此这外无任何区别。　
+	（1）class中默认的成员访问权限是private的，而struct中则是public的。　　
+	（2）从class继承默认是private继承，而从struct继承默认是public继承。
+
+C++ 类 & 对象
+	C++ 类定义
+		例如，我们使用关键字 class 定义 Box 数据类型，如下所示：
+		class Box
+		{
+		   public:
+		      double length;   // 盒子的长度
+		      double breadth;  // 盒子的宽度
+		      double height;   // 盒子的高度
+		};
+		public 确定了类成员的访问属性。在类对象作用域内，公共成员在类的外部是可访问的。
+		
+	定义 C++ 对象
+		Box Box1;          // 声明 Box1，类型为 Box
+		Box Box2;          // 声明 Box2，类型为 Box
+		
+	类 & 对象详解
+		列出了其他一些 C++ 类和对象相关的概念，
+		概念								描述
+		类成员函数					类的成员函数是指那些把定义和原型写在类定义内部的函数，就像类定义中的其他变量一样。
+		类访问修饰符				类成员可以被定义为 public、private 或 protected。默认情况下是定义为 private。
+		构造函数 & 析构函数	类的构造函数是一种特殊的函数，在创建一个新的对象时调用。类的析构函数也是一种特殊的函数，在删除所创建的对象时调用。
+		C++ 拷贝构造函数		拷贝构造函数，是一种特殊的构造函数，它在创建对象时，是使用同一类中之前创建的对象来初始化新创建的对象。
+		C++ 友元函数				友元函数可以访问类的 private 和 protected 成员。
+		C++ 内联函数				通过内联函数，编译器试图在调用函数的地方扩展函数体中的代码。
+		C++ 中的 this 指针	每个对象都有一个特殊的指针 this，它指向对象本身。
+		C++ 中指向类的指针	指向类的指针方式如同指向结构的指针。实际上，类可以看成是一个带有函数的结构。
+		C++ 类的静态成员		类的数据成员和函数成员都可以被声明为静态的。
+		
+	C++ 类访问修饰符
+		类成员的访问限制是通过在类主体内部对各个区域标记 public、private、protected 来指定的（默认为：private类型）
+			class Base {
+			   public:
+			  // 公有成员
+			   protected:
+			  // 受保护成员
+			   private:
+			  // 私有成员
+			};
+		public：公有成员在程序中类的外部是可访问的。您可以不使用任何成员函数来设置和获取公有变量的值，
+		private：私有成员变量或函数在类的外部是不可访问的，甚至是不可查看的。只有类和友元函数可以访问私有成员。
+	  protected：保护成员变量或函数与私有成员十分相似，但有一点不同，保护成员在派生类（即子类）中是可访问的。
+		
+		继承中的特点
+			有public, protected, private三种继承方式，它们相应地改变了基类成员的访问属性。
+				1.public 继承：基类 public 成员，protected 成员，private 成员的访问属性在派生类中分别变成：public, protected, private
+				2.protected 继承：基类 public 成员，protected 成员，private 成员的访问属性在派生类中分别变成：protected, protected, private
+				3.private 继承：基类 public 成员，protected 成员，private 成员的访问属性在派生类中分别变成：private, private, private
+			但无论哪种继承方式，上面两点都没有改变：
+		 		1.private 成员只能被本类成员（类内）和友元访问，不能被派生类访问；
+				2.protected 成员可以被派生类访问。
+				
+	C++ 类构造函数 & 析构函数
+		类的构造函数:	类的构造函数是类的一种特殊的成员函数，它会在每次创建类的新对象时执行。
+									构造函数的名称与类的名称是完全相同的，并且不会返回任何类型，也不会返回 void。
+									构造函数可用于为某些成员变量设置初始值。
+									Line::Line( double len): 
+									length(len),
+									weith(len)
+									{
+									    cout << "Object is being created, length = " << len << endl;
+									}
+									等同于：
+									Line::Line( double len): 
+									{
+									    cout << "Object is being created, length = " << len << endl;
+									    length = len;
+											weith = len;
+									}
+		
+		类的析构函数:	类的析构函数是类的一种特殊的成员函数，它会在每次删除所创建的对象时执行。
+									析构函数的名称与类的名称是完全相同的，只是在前面加了个波浪号（~）作为前缀，它不会返回任何值，也不能带有任何参数。
+									析构函数有助于在跳出程序（比如关闭文件、释放内存等）前释放资源。
+									
+									
+		总结：一个类中，可以有多个构造函数(参数个数和参数类型不一样),创建类的新对象时可选择;但是有且只能创建一个析构函数。
+		      假如在程序中没有创建构造函数和析构函数，此时编译器会默认创建这两个函数，内容为空语句。
+		      
+	C++ 拷贝构造函数
+		拷贝构造函数是一种特殊的构造函数，它在创建对象时，是使用同一类中之前创建的对象来初始化新创建的对象。拷贝构造函数通常用于：
+			通过使用另一个同类型的对象来初始化新创建的对象。（一个对象需要通过另外一个对象进行初始化）
+			复制对象把它作为参数传递给函数。（一个对象以值传递的方式传入函数体）
+			复制对象，并从函数返回这个对象。（一个对象以值传递的方式从函数返回）
+		如果在类中没有定义拷贝构造函数，编译器会自行定义一个。
+		如果类带有指针变量，并有动态内存分配，则它必须有一个拷贝构造函数。拷贝构造函数的最常见形式如下：
+			classname (const classname &obj) {
+	   		// 构造函数的主体
+			}
+	
+	C++ 友元函数
+		◆为什么要使用友元函数
+			在实现类之间数据共享时，减少系统开销，提高效率。如果类A中的函数要访问类B中的成员（例如：智能指针类的实现），
+			那么类A中该函数要是类B的友元函数。具体来说：为了使其他类的成员函数直接访问该类的私有变量。
+			即：允许外面的类或函数去访问类的私有变量和保护变量，从而使两个类共享同一函数
+			实际上具体大概有下面两种情况需要使用友元函数：（1）运算符重载的某些场合需要使用友元。（2）两个类要共享数据的时候。
+		◆使用友元函数的优缺点
+			优点：能够提高效率，表达简单、清晰。
+			缺点：友元函数破环了封装机制，尽量不使用成员函数，除非不得已的情况下才使用友元函数。
+			
+		类的友元函数是定义在类外部，但有权访问类的所有私有（private）成员和保护（protected）成员。
+		尽管友元函数的原型有在类的定义中出现过，但是友元函数并不是成员函数。		
+		如果要声明函数为一个类的友元，需要在类定义中该函数原型前使用关键字 friend，如下所示：
+			class Box
+			{
+			   double width;
+			public:
+			   double length;
+			   friend void printWidth( Box box );
+			   void setWidth( double wid );
+			};
+		声明类 ClassTwo 的所有成员函数作为类 ClassOne 的友元，需要在类 ClassOne 的定义中放置如下声明：
+			friend class ClassTwo;S
+			
+	C++ 内联函数
+		inline函数
+		我们看下面的函数，函数体中只有一行语句： 
+    double Average(double total, int number){ 
+      return total/number;
+      } 
+		定义这么简单的函数有必要吗？实际上，它还是有一些优点的：
+			第一，它使程序更可读；
+			第二，它使这段代码可以重复使用。
+		但是，它也有缺点：
+			当它被频繁地调用的时候，由于调用函数的开销，会对应用程序的性能(时间＋空间效率，这儿特指时间)有损失。
+			例如，Average在一个循环语句中重复调用几千次，会降低程序的执行效率。
+    那么，有办法避免函数调用的开销吗？对于上面的函数，我么可以把它定义为内联函数的形式：
+    inline double Average(double total, int number){
+      return total/number;
+    }
+    ◆总结：inline函数是提高运行时间效率，但却增加了空间开销。即inline函数目的是：为了提高函数的执行效率(速度)。
+						非内联函数调用有栈内存创建和释放的开销,在C中可以用宏代码提高执行效率，宏代码不是函数但使用起来像函数，
+						编译器用复制宏代码的方式取代函数调用，省去了参数压栈、生成汇编语言的CALL调用、返回参数、执行return等过程，从而提高速度。
+						
+		◆使用宏的缺点：（1）容易出错(预处理器在复制宏代码时常常产生意想不到的边际效应)
+			                  例如：#define MAX(a,b)    (a) > (b) ? (a) : (b)
+			                        语句result = MAX(i,j) + 2 却被扩展为result = (i)>(j)?(i):(j)+2;
+			                        但意却为result = ((i)>(j)?(i):(j)) + 2;
+              			（2）不可调试
+              			（3）无法操作类的私有数据成员
+              			
+		◆使用内联函数时应注意以下几个问题：
+			（1） 在一个文件中定义的内联函数不能在另一个文件中使用。它们通常放在头文件中共享。
+			（2） 内联函数应该简洁，只有几个语句，如果语句较多，不适合于定义为内联函数。 
+			（3） 内联函数体中，不能有循环语句、if语句或switch语句，否则，函数定义时即使有inline关键字，编译器也会把该函数作为非内联函数处理。
+			（4） 内联函数要在函数被调用之前声明。
+			
+	C++ this 指针
+		在 C++ 中，每一个对象都能通过 this 指针来访问自己的地址。this 指针是所有成员函数的隐含参数。因此，在成员函数内部，它可以用来指向调用对象。
+		友元函数没有 this 指针，因为友元不是类的成员。只有成员函数才有 this 指针。
+		例如：
+			#include "stdafx.h"
+			#include <iostream>
+			 
+			using namespace std;
+			
+			class Box
+			{
+			   public:
+			      // 构造函数定义
+			      Box(double l=2.0, double b=2.0, double h=2.0)
+			      {
+			         cout <<"Constructor called." << endl;
+			         length = l;
+			         breadth = b;
+			         height = h;
+			      }
+			      double Volume()
+			      {
+			         return length * breadth * height;
+			      }
+			      int compare(Box box)
+			      {
+			         return this->Volume() > box.Volume();
+			      }
+			   private:
+			      double length;     // Length of a box
+			      double breadth;    // Breadth of a box
+			      double height;     // Height of a box
+			};
+			
+			int main(void)
+			{
+			   Box Box1(3.3, 1.2, 1.5);    // Declare box1
+			   Box Box2(8.5, 6.0, 2.0);    // Declare box2
+			
+			   if(Box1.compare(Box2))
+			   {
+			      cout << "Box2 is smaller than Box1" <<endl;
+			   }
+			   else
+			   {
+			      cout << "Box2 is equal to or larger than Box1" <<endl;
+			   }
+			   return 0;
+			}
+			当上面的代码被编译和执行时，它会产生下列结果：
+			Constructor called.
+			Constructor called.
+			Box2 is equal to or larger than Box1
+
+	C++ 指向类的指针
+		一个指向 C++ 类的指针与指向结构的指针类似，访问指向类的指针的成员，需要使用成员访问运算符 ->，就像访问指向结构的指针一样。
+		与所有的指针一样，您必须在使用指针之前，对指针进行初始化。
+			#include "stdafx.h"
+			#include <iostream>
+			 
+			using namespace std;
+			
+			class Box
+			{
+			   public:#include "stdafx.h"
+			      // 构造函数定义
+			      Box(double l=2.0, double b=2.0, double h=2.0)
+			      {
+			         cout <<"Constructor called." << endl;
+			         length = l;
+			         breadth = b;
+			         height = h;
+			      }
+			      double Volume()
+			      {
+			         return length * breadth * height;
+			      }
+			   private:
+			      double length;     // Length of a box
+			      double breadth;    // Breadth of a box
+			      double height;     // Height of a box
+			};
+			
+			int main(void)
+			{
+			   Box Box1(3.3, 1.2, 1.5);    // Declare box1
+			   Box Box2(8.5, 6.0, 2.0);    // Declare box2
+			   Box *ptrBox;                // Declare pointer to a class.
+			
+			   // 保存第一个对象的地址
+			   ptrBox = &Box1;
+			
+			   // 现在尝试使用成员访问运算符来访问成员
+			   cout << "Volume of Box1: " << ptrBox->Volume() << endl;
+			
+			   // 保存第二个对象的地址
+			   ptrBox = &Box2;
+			
+			   // 现在尝试使用成员访问运算符来访问成员
+			   cout << "Volume of Box2: " << ptrBox->Volume() << endl;
+			  
+			   return 0;
+			}
+			当上面的代码被编译和执行时，它会产生下列结果：
+			Constructor called.
+			Constructor called.
+			Volume of Box1: 5.94
+			Volume of Box2: 102
+			
+	C++ 类的静态成员
+		我们可以使用 static 关键字来把类成员定义为静态的。当我们声明类的成员为静态时，这意味着无论创建多少个类的对象，静态成员都只有一个副本。
+		静态成员在类的所有对象中是共享的。如果不存在其他的初始化语句，在创建第一个对象时，所有的静态数据都会被初始化为零。
+		我们不能把静态成员的初始化放置在类的定义中，\但是可以在类的外部通过使用范围解析运算符 :: 来重新声明静态变量从而对它进行初始化，如下面的实例所示。
+			#include <iostream>
+ 
+			using namespace std;
+			
+			class Box
+			{
+			   public:
+			      static int objectCount;
+			      // 构造函数定义
+			      Box(double l=2.0, double b=2.0, double h=2.0)
+			      {
+			         cout <<"Constructor called." << endl;
+			         length = l;
+			         breadth = b;
+			         height = h;
+			         // 每次创建对象时增加 1
+			         objectCount++;
+			      }
+			      double Volume()
+			      {
+			         return length * breadth * height;
+			      }
+			   private:
+			      double length;     // 长度
+			      double breadth;    // 宽度
+			      double height;     // 高度
+			};
+			
+			// 初始化类 Box 的静态成员
+			int Box::objectCount = 0;
+			
+			int main(void)
+			{
+			   Box Box1(3.3, 1.2, 1.5);    // 声明 box1
+			   Box Box2(8.5, 6.0, 2.0);    // 声明 box2
+			
+			   // 输出对象的总数
+			   cout << "Total objects: " << Box::objectCount << endl;
+			
+			   return 0;
+			}
+			输出结果：
+			Constructor called.
+			Constructor called.
+			Total objects: 2
+			
+			注意：静态成员变量在类中仅仅是声明(static int objectCount;)，没有定义(int Box::objectCount = 0;)，所以要在类的外面定义，实际上是给静态成员变量分配内存。
+			      如果不加定义就会报错，初始化是赋一个初始值，而定义是分配内存。
+			      
+		静态成员函数：
+			静态成员函数与普通成员函数的区别：
+			静态成员函数没有 this 指针，只能访问静态成员（包括静态成员变量和静态成员函数）。
+			普通成员函数有 this 指针，可以访问类中的任意成员；而静态成员函数没有 this 指针。
+				#include "stdafx.h"
+				#include <iostream>
+				 
+				using namespace std;
+				
+				class Box
+				{
+				   public:
+				      static int objectCount;
+				      // 构造函数定义
+				      Box(double l=2.0, double b=2.0, double h=2.0)
+				      {
+				         cout <<"Constructor called." << endl;
+				         length = l;
+				         breadth = b;
+				         height = h;
+				         // 每次创建对象时增加 1
+				         objectCount++;
+				      }
+				      double Volume()
+				      {
+				         return length * breadth * height;
+				      }
+				      static int getCount()
+				      {
+				         return objectCount;
+				      }
+				   private:
+				      double length;     // 长度
+				      double breadth;    // 宽度
+				      double height;     // 高度
+				};
+				
+				// 初始化类 Box 的静态成员
+				int Box::objectCount = 0;
+				
+				int main(void)
+				{
+				  
+				   // 在创建对象之前输出对象的总数
+				   cout << "Inital Stage Count: " << Box::getCount() << endl;
+				
+				   Box Box1(3.3, 1.2, 1.5);    // 声明 box1
+				   Box Box2(8.5, 6.0, 2.0);    // 声明 box2
+				
+				   // 在创建对象之后输出对象的总数
+				   cout << "Final Stage Count: " << Box::getCount() << endl;
+				
+				   return 0;
+				}
+				当上面的代码被编译和执行时，它会产生下列结果：
+				Inital Stage Count: 0
+				Constructor called.
+				Constructor called.
+				Final Stage Count: 2
+				
+C++ 继承
+	面向对象程序设计中最重要的一个概念是继承。继承允许我们依据另一个类来定义一个类，这使得创建和维护一个应用程序变得更容易。
+	这样做，也达到了重用代码功能和提高执行时间的效果。当创建一个类时，您不需要重新编写新的数据成员和成员函数，只需指定新建的类继承了一个已有的类的成员即可。
+	这个已有的类称为基类，新建的类称为派生类。继承代表了 is a 关系。例如，哺乳动物是动物，狗是哺乳动物，因此，狗是动物，等等。
+	基类 & 派生类
+		假设有一个基类 Shape，Rectangle 是它的派生类，如下所示：
+		实例
+		#include "stdafx.h"
+		#include <iostream>
+		 
+		using namespace std;
+		 
+		// 基类
+		class Shape 
+		{
+		   public:
+		      void setWidth(int w)
+		      {
+		         width = w;
+		      }
+		      void setHeight(int h)
+		      {
+		         height = h;
+		      }
+		   protected:
+		      int width;
+		      int height;
+		};
+		 
+		// 派生类
+		class Rectangle: public Shape
+		{
+		   public:
+		      int getArea()
+		      { 
+		         return (width * height); 
+		      }
+		};
+		 
+		int main(void)
+		{
+		   Rectangle Rect;
+		 
+		   Rect.setWidth(5);
+		   Rect.setHeight(7);
+		 
+		   // 输出对象的面积
+		   cout << "Total area: " << Rect.getArea() << endl;
+		 
+		   return 0;
+		}
+		当上面的代码被编译和执行时，它会产生下列结果：
+		Total area: 35
+		
+	访问控制和继承
+		派生类可以访问基类中所有的非私有成员。因此基类成员如果不想被派生类的成员函数访问，则应在基类中声明为 private。
+	  
+		访问			public	protected	private
+		同一个类	yes			yes				yes
+		派生类		yes			yes				no
+		外部的类	yes			no				no
+		一个派生类继承了所有的基类方法，但下列情况除外：
+			基类的构造函数、析构函数和拷贝构造函数。
+			基类的重载运算符。
+			基类的友元函数。
+			
+	继承类型
+		当一个类派生自基类，该基类可以被继承为 public、protected 或 private 几种类型。继承类型是通过上面讲解的访问修饰符 access-specifier 来指定的。
+
+		我们几乎不使用 protected 或 private 继承，通常使用 public 继承。当使用不同类型的继承时，遵循以下几个规则：
+			公有继承（public）：当一个类派生自公有基类时，基类的公有成员也是派生类的公有成员，基类的保护成员也是派生类的保护成员，基类的私有成员不能直接被派生类访问，但是可以通过调用基类的公有和保护成员来访问。
+			保护继承（protected）： 当一个类派生自保护基类时，基类的公有和保护成员将成为派生类的保护成员。
+			私有继承（private）：当一个类派生自私有基类时，基类的公有和保护成员将成为派生类的私有成员。
+			
+	多继承
+		多继承即一个子类可以有多个父类，它继承了多个父类的特性。
+		C++ 类可以从多个类继承成员，语法如下：
+			class <派生类名>:<继承方式1><基类名1>,<继承方式2><基类名2>,…
+			{
+			<派生类类体>
+			};
+		实例：
+			#include "stdafx.h"
+			#include <iostream>
+ 
+			using namespace std;
+			 
+			// 基类 Shape
+			class Shape 
+			{
+			   public:
+			      void setWidth(int w)
+			      {
+			         width = w;
+			      }
+			      void setHeight(int h)
+			      {
+			         height = h;
+			      }
+			   protected:
+			      int width;
+			      int height;
+			};
+			 
+			// 基类 PaintCost
+			class PaintCost 
+			{
+			   public:
+			      int getCost(int area)
+			      {
+			         return area * 70;
+			      }
+			};
+			 
+			// 派生类
+			class Rectangle: public Shape, public PaintCost
+			{
+			   public:
+			      int getArea()
+			      { 
+			         return (width * height); 
+			      }
+			};
+			 
+			int main(void)
+			{
+			   Rectangle Rect;
+			   int area;
+			 
+			   Rect.setWidth(5);
+			   Rect.setHeight(7);
+			 
+			   area = Rect.getArea();
+			   
+			   // 输出对象的面积
+			   cout << "Total area: " << Rect.getArea() << endl;
+			 
+			   // 输出总花费
+			   cout << "Total paint cost: $" << Rect.getCost(area) << endl;
+			 
+			   return 0;
+			}
+			当上面的代码被编译和执行时，它会产生下列结果：
+			Total area: 35
+			Total paint cost: $2450
+			
+C++ 重载运算符和重载函数
+	C++ 允许在同一作用域中的某个函数和运算符指定多个定义，分别称为函数重载和运算符重载。
+	
+	C++ 中的函数重载
+		在同一个作用域内，可以声明几个功能类似的同名函数，但是这些同名函数的形式参数（指参数的个数、类型或者顺序）必须不同。您不能仅通过返回类型的不同来重载函数。
+			实例：
+			#include "stdafx.h"
+			#include <iostream>
+			using namespace std;
+			
+			class printData 
+			{
+			   public:
+			      void print(int i) {
+			        cout << "整数为: " << i << endl;
+			      }
+			 
+			      void print(double  f) {
+			        cout << "浮点数为: " << f << endl;
+			      }
+			 
+			      void print(string c) {
+			        cout << "字符串为: " << c << endl;
+			      }
+			};
+			 
+			int main(void)
+			{
+			   printData pd;
+			 
+			   // 输出整数
+			   pd.print(5);
+			   // 输出浮点数
+			   pd.print(500.263);
+			   // 输出字符串
+			   pd.print("Hello C++");
+			 
+			   return 0;
+			}
+			当上面的代码被编译和执行时，它会产生下列结果：
+			整数为: 5
+			浮点数为: 500.263
+			字符串为: Hello C++
+		
+	C++ 中的运算符重载
+		您可以重定义或重载大部分 C++ 内置的运算符。这样，您就能使用自定义类型的运算符。
+		重载的运算符是带有特殊名称的函数，函数名是由关键字 operator 和其后要重载的运算符符号构成的。与其他函数一样，重载运算符有一个返回类型和一个参数列表。
+		Box operator+(const Box&);
+		声明加法运算符用于把两个 Box 对象相加，返回最终的 Box 对象。大多数的重载运算符可被定义为普通的非成员函数或者被定义为类成员函数。如果我们定义上面的函数为类的非成员函数，那么我们需要为每次操作传递两个参数，如下所示：
+		Box operator+(const Box&, const Box&);
+		下面的实例使用成员函数演示了运算符重载的概念。在这里，对象作为参数进行传递，对象的属性使用 this 运算符进行访问，如下所示：
+			实例
+			#include "stdafx.h"
+			#include <iostream>
+			using namespace std;
+			 
+			class Box
+			{
+			#include "stdafx.h"
+			   public:
+			 
+			      double getVolume(void)
+			      {
+			         return length * breadth * height;
+			      }
+			      void setLength( double len )
+			      {
+			          length = len;
+			      }
+			 
+			      void setBreadth( double bre )
+			      {
+			          breadth = bre;
+			      }
+			 
+			      void setHeight( double hei )
+			      {
+			          height = hei;
+			      }
+			      // 重载 + 运算符，用于把两个 Box 对象相加
+			      Box operator+(const Box& b)
+			      {
+			         Box box;
+			         box.length = this->length + b.length;
+			         box.breadth = this->breadth + b.breadth;
+			         box.height = this->height + b.height;
+			         return box;
+			      }
+			   private:
+			      double length;      // 长度
+			      double breadth;     // 宽度
+			      double height;      // 高度
+			};
+			// 程序的主函数
+			int main( )
+			{
+			   Box Box1;                // 声明 Box1，类型为 Box
+			   Box Box2;                // 声明 Box2，类型为 Box
+			   Box Box3;                // 声明 Box3，类型为 Box
+			   double volume = 0.0;     // 把体积存储在该变量中
+			 
+			   // Box1 详述
+			   Box1.setLength(6.0); 
+			   Box1.setBreadth(7.0); 
+			   Box1.setHeight(5.0);
+			 
+			   // Box2 详述
+			   Box2.setLength(12.0); 
+			   Box2.setBreadth(13.0); 
+			   Box2.setHeight(10.0);
+			 
+			   // Box1 的体积
+			   volume = Box1.getVolume();
+			   cout << "Volume of Box1 : " << volume <<endl;
+			 
+			   // Box2 的体积
+			   volume = Box2.getVolume();
+			   cout << "Volume of Box2 : " << volume <<endl;
+			 
+			   // 把两个对象相加，得到 Box3
+			   Box3 = Box1 + Box2;
+			 
+			   // Box3 的体积
+			   volume = Box3.getVolume();
+			   cout << "Volume of Box3 : " << volume <<endl;
+			 
+			   return 0;
+			}
+			当上面的代码被编译和执行时，它会产生下列结果：
+			
+			Volume of Box1 : 210
+			Volume of Box2 : 1560
+			Volume of Box3 : 5400
+			
+	可重载运算符/不可重载运算符
+		可重载的运算符列表：
+			双目算术运算符	+ (加)，-(减)，*(乘)，/(除)，% (取模)
+			关系运算符	==(等于)，!= (不等于)，< (小于)，> (大于>，<=(小于等于)，>=(大于等于)
+			逻辑运算符	||(逻辑或)，&&(逻辑与)，!(逻辑非)
+			单目运算符	+ (正)，-(负)，*(指针)，&(取地址)
+			自增自减运算符	++(自增)，--(自减)
+			位运算符	| (按位或)，& (按位与)，~(按位取反)，^(按位异或),，<< (左移)，>>(右移)
+			赋值运算符	=, +=, -=, *=, /= , % = , &=, |=, ^=, <<=, >>=
+			空间申请与释放	new, delete, new[ ] , delete[]
+			其他运算符	()(函数调用)，->(成员访问)，->*(成员指针访问)，,(逗号)，[](下标)
+		不可重载的运算符列表：
+			.：成员访问运算符
+			.*, ->*：成员指针访问运算符
+			::：域运算符
+			sizeof：长度运算符
+			?:：条件运算符
+			#： 预处理符号
+			
+C++ 多态
+	多态按字面的意思就是多种形态。当类之间存在层次结构，并且类之间是通过继承关联时，就会用到多态。
+	C++ 多态意味着调用成员函数时，会根据调用函数的对象的类型来执行不同的函数。
+	下面的实例中，基类 Shape 被派生为两个类，如下所示：
+		#include "stdafx.h"
+		#include <iostream> 
+		using namespace std;
+		 
+		class Shape {
+		   protected:
+		      int width, height;
+		   public:
+		      Shape( int a=0, int b=0)
+		      {
+		         width = a;
+		         height = b;
+		      }
+		      int area()
+		      {
+		         cout << "Parent class area :" <<endl;
+		         return 0;
+		      }
+		};
+		class Rectangle: public Shape{
+		   public:
+		      Rectangle( int a=0, int b=0):Shape(a, b) { }
+		      int area ()
+		      { 
+		         cout << "Rectangle class area :" <<endl;
+		         return (width * height); 
+		      }
+		};
+		class Triangle: public Shape{
+		   public:
+		      Triangle( int a=0, int b=0):Shape(a, b) { }
+		      int area ()
+		      { 
+		         cout << "Triangle class area :" <<endl;
+		         return (width * height / 2); 
+		      }
+		};
+		// 程序的主函数
+		int main( )
+		{
+		   Shape *shape;
+		   Rectangle rec(10,7);
+		   Triangle  tri(10,5);
+		 
+		   // 存储矩形的地址
+		   shape = &rec;
+		   // 调用矩形的求面积函数 area
+		   shape->area();
+		 
+		   // 存储三角形的地址
+		   shape = &tri;
+		   // 调用三角形的求面积函数 area
+		   shape->area();
+		   
+		   return 0;
+		}
+		当上面的代码被编译和执行时，它会产生下列结果：
+		Parent class area
+		Parent class area
+	导致错误输出的原因是，调用函数 area() 被编译器设置为基类中的版本，这就是所谓的静态多态，或静态链接 - 函数调用在程序执行前就准备好了。有时候这也被称为早绑定，因为 area() 函数在程序编译期间就已经设置好了。
+  但现在，让我们对程序稍作修改，在 Shape 类中，area() 的声明前放置关键字 virtual，如下所示：
+	让我们对程序稍作修改，在 Shape 类中，area() 的声明前放置关键字 virtual，如下所示：
+		class Shape {
+		   protected:
+		      int width, height;
+		   public:
+		      Shape( int a=0, int b=0)
+		      {
+		         width = a;
+		         height = b;
+		      }
+		      virtual int area()
+		      {
+		         cout << "Parent class area :" <<endl;
+		         return 0;
+		      }
+		};
+		修改后，当编译和执行前面的实例代码时，它会产生以下结果：
+		Rectangle class area
+		Triangle class area
+	虚函数
+		虚函数 是在基类中使用关键字 virtual 声明的函数。在派生类中重新定义基类中定义的虚函数时，会告诉编译器不要静态链接到该函数。
+		我们想要的是在程序中任意点可以根据所调用的对象类型来选择调用的函数，这种操作被称为动态链接，或后期绑定。
+
+	纯虚函数
+		您可能想要在基类中定义虚函数，以便在派生类中重新定义该函数更好地适用于对象，但是您在基类中又不能对虚函数给出有意义的实现，这个时候就会用到纯虚函数。
+		我们可以把基类中的虚函数 area() 改写如下：
+			class Shape {
+			   protected:
+			      int width, height;
+			   public:
+			      Shape( int a=0, int b=0)
+			      {
+			         width = a;
+			         height = b;
+			      }
+			      // pure virtual function
+			      virtual int area() = 0;
+			};
+			= 0 告诉编译器，函数没有主体，上面的虚函数是纯虚函数。
+			
+	C++多态意味着调用成员函数时，会根据调用函数的对象的类型来执行不同的函数；
+		形成多态必须具备三个条件：
+			1、必须存在继承关系；
+			2、继承关系必须有同名虚函数（其中虚函数是在基类中使用关键字Virtual声明的函数，在派生类中重新定义基类中定义的虚函数时，会告诉编译器不要静态链接到该函数）；
+			3、存在基类类型的指针或者引用，通过该指针或引用调用虚函数；
+			
+C++ 数据抽象
+	数据抽象是指，只向外界提供关键信息，并隐藏其后台的实现细节，即只表现必要的信息而不呈现细节。
+		数据抽象是一种依赖于接口和实现分离的编程（设计）技术。
+		让我们举一个现实生活中的真实例子，比如一台电视机，您可以打开和关闭、切换频道、调整音量、添加外部组件（如喇叭、录像机、DVD 播放器），但是您不知道它的内部实现细节，也就是说，您并不知道它是如何通过缆线接收信号，如何转换信号，并最终显示在屏幕上。
+		因此，我们可以说电视把它的内部实现和外部接口分离开了，您无需知道它的内部实现原理，直接通过它的外部接口（比如电源按钮、遥控器、声量控制器）就可以操控电视。
+		现在，让我们言归正传，就 C++ 编程而言，C++ 类为数据抽象提供了可能。它们向外界提供了大量用于操作对象数据的公共方法，也就是说，外界实际上并不清楚类的内部实现。
+		例如，您的程序可以调用 sort() 函数，而不需要知道函数中排序数据所用到的算法。实际上，函数排序的底层实现会因库的版本不同而有所差异，只要接口不变，函数调用就可以照常工作。
+		在 C++ 中，我们使用类来定义我们自己的抽象数据类型（ADT）。您可以使用类 ostream 的 cout 对象来输出数据到标准输出，如下所示：
+			实例
+			#include "stdafx.h"
+			#include <iostream>
+			using namespace std;
+			 
+			int main( )
+			{
+			   cout << "Hello C++" <<endl;
+			   return 0;
+			}
+			
+		在这里，您不需要理解 cout 是如何在用户的屏幕上显示文本。您只需要知道公共接口即可，cout 的底层实现可以自由改变。
+	
+	访问标签强制抽象
+		在 C++ 中，我们使用访问标签来定义类的抽象接口。一个类可以包含零个或多个访问标签：
+			使用公共标签定义的成员都可以访问该程序的所有部分。一个类型的数据抽象视图是由它的公共成员来定义的。
+			使用私有标签定义的成员无法访问到使用类的代码。私有部分对使用类型的代码隐藏了实现细节。
+		访问标签出现的频率没有限制。每个访问标签指定了紧随其后的成员定义的访问级别。指定的访问级别会一直有效，直到遇到下一个访问标签或者遇到类主体的关闭右括号为止。
+		
+	数据抽象的好处
+		数据抽象有两个重要的优势：
+			类的内部受到保护，不会因无意的用户级错误导致对象状态受损。
+			类实现可能随着时间的推移而发生变化，以便应对不断变化的需求，或者应对那些要求不改变用户级代码的错误报告。
+			如果只在类的私有部分定义数据成员，编写该类的作者就可以随意更改数据。如果实现发生改变，则只需要检查类的代码，看看这个改变会导致哪些影响。如果数据是公有的，则任何直接访问旧表示形式的数据成员的函数都可能受到影响。
+
+	数据抽象的实例
+		C++ 程序中，任何带有公有和私有成员的类都可以作为数据抽象的实例。请看下面的实例：
+			实例
+			#include "stdafx.h"
+			#include <iostream>
+			using namespace std;
+			 
+			class Adder{
+			   public:
+			      // 构造函数
+			      Adder(int i = 0)
+			      {
+			        total = i;
+			      }
+			      // 对外的接口
+			      void addNum(int number)
+			      {
+			          total += number;
+			      }
+			      // 对外的接口
+			      int getTotal()
+			      {
+			          return total;
+			      };
+			   private:
+			      // 对外隐藏的数据
+			      int total;
+			};
+			int main( )
+			{
+			   Adder a;
+			   
+			   a.addNum(10);
+			   a.addNum(20);
+			   a.addNum(30);
+			 
+			   cout << "Total " << a.getTotal() <<endl;
+			   return 0;
+			}
+			当上面的代码被编译和执行时，它会产生下列结果：
+			Total 60
+			
+		上面的类把数字相加，并返回总和。公有成员 addNum 和 getTotal 是对外的接口，用户需要知道它们以便使用类。私有成员 total 是用户不需要了解的，但又是类能正常工作所必需的。
+	设计策略
+		抽象把代码分离为接口和实现。所以在设计组件时，必须保持接口独立于实现，这样，如果改变底层实现，接口也将保持不变。
+		在这种情况下，不管任何程序使用接口，接口都不会受到影响，只需要将最新的实现重新编译即可。
+		
+C++ 数据封装
+	所有的 C++ 程序都有以下两个基本要素：
+		程序语句（代码）：这是程序中执行动作的部分，它们被称为函数。
+		程序数据：数据是程序的信息，会受到程序函数的影响。
+	封装是面向对象编程中的把数据和操作数据的函数绑定在一起的一个概念，这样能避免受到外界的干扰和误用，从而确保了安全。数据封装引申出了另一个重要的 OOP 概念，即数据隐藏。
+	数据封装是一种把数据和操作数据的函数捆绑在一起的机制，数据抽象是一种仅向用户暴露接口而把具体的实现细节隐藏起来的机制。
+	数据封装的实例：
+		#include "stdafx.h"
+		#include <iostream>
+		using namespace std;
+		 
+		class Adder{
+		   public:
+		      // 构造函数
+		      Adder(int i = 0)
+		      {
+		        total = i;
+		      }
+		      // 对外的接口
+		      void addNum(int number)
+		      {
+		          total += number;
+		      }
+		      // 对外的接口
+		      int getTotal()
+		      {
+		          return total;
+		      };
+		   private:
+		      // 对外隐藏的数据
+		      int total;
+		};
+		int main( )
+		{
+		   Adder a;
+		   
+		   a.addNum(10);
+		   a.addNum(20);
+		   a.addNum(30);
+		 
+		   cout << "Total " << a.getTotal() <<endl;
+		   return 0;
+		}
+		当上面的代码被编译和执行时，它会产生下列结果：
+		Total 60
+		
+	设计策略
+		通常情况下，我们都会设置类成员状态为私有（private），除非我们真的需要将其暴露，这样才能保证良好的封装性。
+		这通常应用于数据成员，但它同样适用于所有成员，包括虚函数。
+		
+C++ 接口（抽象类）
+	接口描述了类的行为和功能，而不需要完成类的特定实现。
+	C++ 接口是使用抽象类来实现的，抽象类与数据抽象互不混淆，数据抽象是一个把实现细节与相关的数据分离开的概念。
+	如果类中至少有一个函数被声明为纯虚函数，则这个类就是抽象类。纯虚函数是通过在声明中使用 "= 0" 来指定的，如下所示：
+		class Box
+		{
+		   public:
+		      // 纯虚函数
+		      virtual double getVolume() = 0;
+		   private:
+		      double length;      // 长度
+		      double breadth;     // 宽度
+		      double height;      // 高度
+		};
+		
+	抽象类的实例：
+		#include "stdafx.h"
+		#include <iostream>
+ 
+		using namespace std;
+		 
+		// 基类
+		class Shape 
+		{
+		public:
+		   // 提供接口框架的纯虚函数
+		   virtual int getArea() = 0;
+		   void setWidth(int w)
+		   {
+		      width = w;
+		   }
+		   void setHeight(int h)
+		   {
+		      height = h;
+		   }
+		protected:
+		   int width;
+		   int height;
+		};
+		 
+		// 派生类
+		class Rectangle: public Shape
+		{
+		public:
+		   int getArea()
+		   { 
+		      return (width * height); 
+		   }
+		};
+		class Triangle: public Shape
+		{
+		public:
+		   int getArea()
+		   { 
+		      return (width * height)/2; 
+		   }
+		};
+		 
+		int main(void)
+		{
+		   Rectangle Rect;
+		   Triangle  Tri;
+		 
+		   Rect.setWidth(5);
+		   Rect.setHeight(7);
+		   // 输出对象的面积
+		   cout << "Total Rectangle area: " << Rect.getArea() << endl;
+		 
+		   Tri.setWidth(5);
+		   Tri.setHeight(7);
+		   // 输出对象的面积
+		   cout << "Total Triangle area: " << Tri.getArea() << endl; 
+		 
+		   return 0;
+		}
+		当上面的代码被编译和执行时，它会产生下列结果：
+		Total Rectangle area: 35
+		Total Triangle area: 17
+			
+	设计策略
+		面向对象的系统可能会使用一个抽象基类为所有的外部应用程序提供一个适当的、通用的、标准化的接口。然后，派生类通过继承抽象基类，就把所有类似的操作都继承下来。
+		外部应用程序提供的功能（即公有函数）在抽象基类中是以纯虚函数的形式存在的。这些纯虚函数在相应的派生类中被实现。
+		这个架构也使得新的应用程序可以很容易地被添加到系统中，即使是在系统被定义之后依然可以如此。
+
+C++ 文件和流
+	在 C++ 中进行文件处理，必须在 C++ 源代码文件中包含头文件 <iostream> 和 <fstream>。
+	
+	iostream 标准库，它提供了 cin 和 cout 方法分别用于从标准输入读取流和向标准输出写入流。
+	C++ 中另一个标准库 fstream，它定义了三个新的数据类型：
+		数据类型	描述
+		ofstream	该数据类型表示输出文件流，用于创建文件并向文件写入信息。
+		ifstream	该数据类型表示输入文件流，用于从文件读取信息。
+		fstream		该数据类型通常表示文件流，且同时具有 ofstream 和 ifstream 两种功能，这意味着它可以创建文件，向文件写入信息，从文件读取信息。
+		
+	打开文件
+		open() 函数是 fstream、ifstream 和 ofstream 对象的一个成员。
+			void open(const char *filename, ios::openmode mode);描述如下：
+			模式标志		描述
+			ios::app		追加模式。所有写入都追加到文件末尾。
+			ios::ate		文件打开后定位到文件末尾。
+			ios::in			打开文件用于读取。
+			ios::out		打开文件用于写入。
+			ios::trunc	如果该文件已经存在，其内容将在打开文件之前被截断，即把文件长度设为 0。
+			
+		例如，如果您想要以写入模式打开文件，并希望截断文件，以防文件已存在，那么您可以使用下面的语法：
+			ofstream outfile;
+			outfile.open("file.dat", ios::out | ios::trunc );
+		类似地，您如果想要打开一个文件用于读写，可以使用下面的语法：
+			fstream  afile;
+			afile.open("file.dat", ios::out | ios::in );
+	
+	关闭文件
+		当 C++ 程序终止时，它会自动关闭刷新所有流，释放所有分配的内存，并关闭所有打开的文件。但程序员应该养成一个好习惯，在程序终止前关闭所有打开的文件。
+		下面是 close() 函数的标准语法，close() 函数是 fstream、ifstream 和 ofstream 对象的一个成员。
+			void close();
+	
+	写入文件
+		在 C++ 编程中，我们使用流插入运算符（ << ）向文件写入信息，就像使用该运算符输出信息到屏幕上一样。唯一不同的是，在这里您使用的是 ofstream 或 fstream 对象，而不是 cout 对象。
+	
+	读取文件
+		在 C++ 编程中，我们使用流提取运算符（ >> ）从文件读取信息，就像使用该运算符从键盘输入信息一样。唯一不同的是，在这里您使用的是 ifstream 或 fstream 对象，而不是 cin 对象。
+
+	读取 & 写入实例
+		C++ 程序以读写模式打开一个文件。在向文件 afile.dat 写入用户输入的信息之后，程序从文件读取信息，并将其输出到屏幕上：
+			#include "stdafx.h"
+			#include "iostream"
+			#include "fstream"
+			using namespace std;
+			
+			//向文件内部写入数据，并将数据读出
+			void file_wr(void)
+			{
+				char data[100];
+				//向文件写入数据
+				ofstream outfile;
+				outfile.open("test.txt");
+				cout << "Write to the file" << endl;
+				cout << "Enter your name:" << endl;
+				cin.getline(data, 100);
+				outfile << data << endl;
+				cout << "Enter your age:" << endl;
+				cin >> data;
+				cin.ignore();
+				outfile << data << endl;
+				outfile.close();
+				//从文件读取数据
+				ifstream infile;
+				infile.open("test.txt");
+				cout << "Read from the file" << endl;
+				infile >> data;
+				cout << data << endl;
+				infile >> data;
+				cout << data << endl;
+				infile.close();
+			}
+			
+			//将数据从一文件复制到另一文件中
+			void file_copy(void)
+			{
+				char data[100];
+				ifstream infile;
+				ofstream outfile;
+				infile.open("test.txt");
+				outfile.open("test_1.txt");
+				cout << "copy from test.txt to test_1.txt" << endl;
+				while (!infile.eof())
+				{
+					infile >> data;
+					cout << data << endl;
+					outfile << data << endl;
+				}
+				infile.close();
+				outfile.close();
+			}
+			
+			//测试上述读写文件，与文件数据复制
+			int main(void)
+			{
+				file_wr();
+				file_copy();
+				return 0;
+			}
+			当上面的代码被编译和执行时，它会产生下列输入和输出：
+			$./a.out
+			Writing to the file
+			Enter your name: 
+			John
+			Enter your age:
+			20
+			Reading from the file
+			John
+			20
+			copy from test.txt to test_1.txt
+			John
+			20
+		上面的实例中使用了 cin 对象的附加函数，比如 getline()函数从外部读取一行，ignore() 函数会忽略掉之前读语句留下的多余字符。
+		
+	文件位置指针
+		istream 和 ostream 都提供了用于重新定位文件位置指针的成员函数。这些成员函数包括关于 istream 的 seekg（"seek get"）和关于 ostream 的 seekp（"seek put"）。
+		seekg 和 seekp 的参数通常是一个长整型。第二个参数可以用于指定查找方向。查找方向可以是 ios::beg（默认的，从流的开头开始定位），也可以是 ios::cur（从流的当前位置开始定位），也可以是 ios::end（从流的末尾开始定位）。
+		文件位置指针是一个整数值，指定了从文件的起始位置到指针所在位置的字节数。下面是关于定位 "get" 文件位置指针的实例：
+			// 定位到 fileObject 的第 n 个字节（假设是 ios::beg）
+			fileObject.seekg( n );
+			
+			// 把文件的读指针从 fileObject 当前位置向后移 n 个字节
+			fileObject.seekg( n, ios::cur );
+			
+			// 把文件的读指针从 fileObject 末尾往回移 n 个字节
+			fileObject.seekg( n, ios::end );
+			
+			// 定位到 fileObject 的末尾
+			fileObject.seekg( 0, ios::end );
+			
+C++ 异常处理
+	
+C++ 动态内存
+	了解动态内存在 C++ 中是如何工作的是成为一名合格的 C++ 程序员必不可少的。C++ 程序中的内存分为两个部分：
+		栈：在函数内部声明的所有变量都将占用栈内存。
+		堆：这是程序中未使用的内存，在程序运行时可用于动态分配内存。
+	很多时候，您无法提前预知需要多少内存来存储某个定义变量中的特定信息，所需内存的大小需要在运行时才能确定。
+	在 C++ 中，您可以使用特殊的运算符为给定类型的变量在运行时分配堆内的内存，这会返回所分配的空间地址。这种运算符即 new 运算符。
+	如果您不需要动态分配内存，可以使用 delete 运算符，删除之前由 new 运算符分配的内存。
+	
+	new 和 delete 运算符
+		下面是使用 new 运算符来为任意的数据类型动态分配内存的通用语法：
+			new data-type;
+		在这里，data-type 可以是包括数组在内的任意内置的数据类型，也可以是包括类或结构在内的用户自定义的任何数据类型。让我们先来看下内置的数据类型。
+		
+		例如，我们可以定义一个指向 double 类型的指针，然后请求内存，该内存在执行时被分配。我们可以按照下面的语句使用 new 运算符来完成这点：
+			double* pvalue  = NULL; // 初始化为 null 的指针
+			pvalue  = new double;   // 为变量请求内存
+			
+		如果自由存储区已被用完，可能无法成功分配内存。所以建议检查 new 运算符是否返回 NULL 指针，并采取以下适当的操作：
+			double* pvalue  = NULL;
+			if( !(pvalue  = new double ))
+			{
+			   cout << "Error: out of memory." <<endl;
+			   exit(1);
+			
+			}
+		malloc() 函数在 C 语言中就出现了，在 C++ 中仍然存在，但建议尽量不要使用 malloc() 函数。
+		new 与 malloc() 函数相比，其主要的优点是，new 不只是分配了内存，它还创建了对象。
+		
+		在任何时候，当您觉得某个已经动态分配内存的变量不再需要使用时，您可以使用 delete 操作符释放它所占用的内存，如下所示：
+			delete pvalue;        // 释放 pvalue 所指向的内存
+		
+		实例，演示了如何使用 new 和 delete 运算符：
+			#include "stdafx.h"
+			#include <iostream>
+			using namespace std;
+			
+			int main ()
+			{
+			   double* pvalue  = NULL; // 初始化为 null 的指针
+			   pvalue  = new double;   // 为变量请求内存
+			 
+			   *pvalue = 29494.99;     // 在分配的地址存储值
+			   cout << "Value of pvalue : " << *pvalue << endl;
+			 
+			   delete pvalue;         // 释放内存
+			 
+			   return 0;
+			}
+			当上面的代码被编译和执行时，它会产生下列结果：
+			Value of pvalue : 29495
+		
+	数组的动态内存分配
+		假设我们要为一个字符数组（一个有 20 个字符的字符串）分配内存，我们可以使用上面实例中的语法来为数组动态地分配内存，如下所示：
+			char* pvalue  = NULL;   // 初始化为 null 的指针
+			pvalue  = new char[20]; // 为变量请求内存
+			
+		要删除我们刚才创建的数组，语句如下：
+			delete [] pvalue;        // 删除 pvalue 所指向的数组
+			
+		下面是 new 操作符的通用语法，可以为多维数组分配内存，如下所示：
+			一维数组
+				// 动态分配,数组长度为 m
+				int *array=new int [m]；
+				 
+				//释放内存
+				delete [] array;
+			二维数组
+				int **array
+				// 假定数组第一维长度为 m， 第二维长度为 n
+				// 动态分配空间
+				array = new int *[m];
+				for( int i=0; i<m; i++ )
+				{
+				    array[i] = new int [n]  ;
+				}
+				//释放
+				for( int i=0; i<m; i++ )
+				{
+				    delete [] arrar[i];
+				}
+				delete [] array;
+				
+C++ 函数指针跳转到指定地址（例如：0x8000）执行程序的方法
+	使用函数指针，把一个纯数据强制转换为函数指针类型。
+	例如：
+		int main(void)
+		{
+			void (* my_function)(void);
+			//int *my_address = 0x8000;
+			my_function = (void (*)()) (0x8000);
+			my_function();
+		}
+		或者
+		其实更简单，不适用中间变量，直接一步到位：
+		int main(void)
+		{
+			(*(void(*)())0x8000)();
+		}
