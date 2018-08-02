@@ -31,7 +31,7 @@ Low Voltage Detection Function Characteristics
 		2.LVD低电压中断模式(需配置CILCR寄存器))
 
 Reset Cause and Clock Status Register(RCCSR(00040BH)/RCCSRC(00040DH)) 
-	1.当复位原因寄存器(RCCSR)和时钟状态寄存器(RCCSRC)被读取时，寄存器里面的数据才会清零。
+	1.当复位原因寄存器(RCCSR)和时钟状态寄存器(RCCSRC)被读取时，寄存器里面的数据才会清零.
 	2.在RCCSR寄存器里面可读取MCU复位的原因
 	3.复位原因列表(复位源→寄存器置位)：
 		|          复位原因                   |  PRST ERST MCRST SCRST SRST WRST  |
@@ -43,8 +43,8 @@ Reset Cause and Clock Status Register(RCCSR(00040BH)/RCCSRC(00040DH))
 		|Watchdog timer overflow				      |    *    *    *     *     *   1    |
 		
 Boot ROM Program Execution and Operation Mode and ROM Configuration Block	
-	1.当MCU复位时，MCU执行Boot ROM引导程序(address:0F:C000~10:0000H),引导程序读取部分引脚，这些引脚确定MCU模式。
-		根据引脚设置，MCU激活并行闪存编程模式，串行通信模式或开始执行用户程序。最后，Boot ROM程序将在Boot Vector中开始执行用户程序。
+	1.当MCU复位时，MCU执行Boot ROM引导程序(address:0F:C000~10:0000H),引导程序读取部分引脚，这些引脚确定MCU模式.
+		根据引脚设置，MCU激活并行闪存编程模式，串行通信模式或开始执行用户程序.最后，Boot ROM程序将在Boot Vector中开始执行用户程序.
 	2.模式的pin脚设置
 		| MD | P17_0 | DEBUG I/F |      Operation mode name        |
 		| 0  |   x   |     0     |   Serial Communication mode     |
@@ -52,9 +52,9 @@ Boot ROM Program Execution and Operation Mode and ROM Configuration Block
 	3.Serial Communication mode(串行通讯模式)
 		此模式用于MCU仿真
 	4.Internal Vector mode（内部向量模式）
-		内部向量模式是CPU运行模式，其中读取引导向量（用户程序起始地址）来自的内部存储器FF:FFDCH或DF:0040H。
+		内部向量模式是CPU运行模式，其中读取引导向量（用户程序起始地址）来自的内部存储器FF:FFDCH或DF:0040H.
 	5.Internal Vector mode（内部向量模式）配置引导向量的地址(用户程序的起始地址)
-		寄存器{ABVAM1, ABVAM0} = 292D3A7BH,Boot Vector从DF:0040H开始读取；否则，FF:FFDCH开始读取；
+		寄存器{ABVAM1, ABVAM0} = 292D3A7BH,Boot Vector从DF:0040H开始读取;否则，FF:FFDCH开始读取;
 	6.Function Description of RCB Markers 
 		1)flash读取加密和写入保护
 		2)设置NMI引脚(不能屏蔽的中断引脚)
@@ -81,15 +81,15 @@ SECTION 结构
 		|  10  |          I/O section       |      IO      |     IO    |       2        | 允许 |   无   |
 		|  11  |        Vector section      |   INTVECT    |   CONST   |       2        | 禁止 |   有   |
 	1.Code section
-		该 section 存放机器代码。
+		该 section 存放机器代码.
 		[例子]
 		输入 C 源代码 源文件名为 test.c
 		void main(void)
 		{
 		}
 	2.Initialized section
-		该 section 存放一些声明时就赋予初值的变量。C 语言中，该 section 对应于在声明时赋予初值的外部变量、外部静态变量和内部静态变量，且这些变
-		量未加‘CONST’限定符。其缺省的‘section’名是‘INIT’.
+		该 section 存放一些声明时就赋予初值的变量.C 语言中，该 section 对应于在声明时赋予初值的外部变量、外部静态变量和内部静态变量，且这些变
+		量未加‘CONST’限定符.其缺省的‘section’名是‘INIT’.
 		[例子]
 		输入 C 源代码
 		int i=0x11;
@@ -255,22 +255,22 @@ __far与__near
 		紧凑模式 16 位        24 位        -model compact（在该模式下 代码段使用近 __near 指针，数据段使用远程 __far 指针）
 		大模式   24 位        24 位        -model large（在该模式下 指针都是远程的 __far，无 __near）
 		
-		1)8位单片机的编译环境,最大地址为FFFFh（16 位地址），代码地址空间或者数据地址空间只能寻址16 位，根据上述，故为‘小模式’。
-		2)16位单片机的编译环境,最大地址为FF:FFFFh（24 位地址），为满足编译效率，配置模式与芯片实际的ROM/RAM的大小及地址范围有关。
-		3)例如MB96F690系列单片机，ROM大小在256.5KB + 32KB以内（在此地址区间内：DF:0000h~FF:FFFFh），RAM大小在16K以内（在此地址区间内：00:4200h~00:8000h），代码地址空间需寻址24 位，数据地址空间需寻址16 位，选择‘中模式’。
-		4)如果在变量上未加 __near/__far 类型限定符 则在编译时 根据编译所选的内存模式（小模式、中模式、紧凑模式或大模式）， 来决定变量对应的地址空间。
-		5)局部变量不能加这些类型限定符（__near/__far）。
-		6)要给变量/函数设定一定的地址空间范围 需要给变量/函数加上（__near/__far） 类型限定符。给变量/函数加上 （__near） 类型限定符，变量/函数就成为近程变量/函数，被放置在 16 位的地址空间里；给变量/函数加上 __far类型限定符，变量/函数就成为远程变量/函数，可放置在 24 位的地址空间里里的任何位置。
+		1)8位单片机的编译环境,最大地址为FFFFh（16 位地址），代码地址空间或者数据地址空间只能寻址16 位，根据上述，故为‘小模式’.
+		2)16位单片机的编译环境,最大地址为FF:FFFFh（24 位地址），为满足编译效率，配置模式与芯片实际的ROM/RAM的大小及地址范围有关.
+		3)例如MB96F690系列单片机，ROM大小在256.5KB + 32KB以内（在此地址区间内：DF:0000h~FF:FFFFh），RAM大小在16K以内（在此地址区间内：00:4200h~00:8000h），代码地址空间需寻址24 位，数据地址空间需寻址16 位，选择‘中模式’.
+		4)如果在变量上未加 __near/__far 类型限定符 则在编译时 根据编译所选的内存模式（小模式、中模式、紧凑模式或大模式）， 来决定变量对应的地址空间.
+		5)局部变量不能加这些类型限定符（__near/__far）.
+		6)要给变量/函数设定一定的地址空间范围 需要给变量/函数加上（__near/__far） 类型限定符.给变量/函数加上 （__near） 类型限定符，变量/函数就成为近程变量/函数，被放置在 16 位的地址空间里;给变量/函数加上 __far类型限定符，变量/函数就成为远程变量/函数，可放置在 24 位的地址空间里里的任何位置.
 	
 	4.__far与const的运用：
-		const常量不赋初值,默认存储在16bit地址；假如赋初值,默认存储在24bit地址,需在前面添加__far,如果不加__far，其他变量无法读取const内容；
+		const常量不赋初值,默认存储在16bit地址;假如赋初值,默认存储在24bit地址,需在前面添加__far,如果不加__far，其他变量无法读取const内容;
 		失败案例1：
 		#include "_ffmc16.h" 
-		// 赋初值的const类型且编译器设置为medium模式,变量被系统分配在代码区(24bit)，存储地址=0xFC5432；由于未加__far,程序只能寻址16bit；
+		// 赋初值的const类型且编译器设置为medium模式,变量被系统分配在代码区(24bit)，存储地址=0xFC5432;由于未加__far,程序只能寻址16bit;
 		uint8_t const month_table[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
 		void s_text_monthtodays( void )
 		{
-				uint8_t month_text[12] = {31,28,31,30,31,30,31,31,30,31,30,31};		// 顺便提醒：在定义局部变量的数组且赋初值时，会失败(month_text数组里面的值仍然==0xFF,原因不知道！)
+				uint8_t month_text[12] = {31,28,31,30,31,30,31,31,30,31,30,31};		// 顺便提醒：在定义局部变量的数组且赋初值时，会失败(month_text数组里面的值仍然==0xFF,原因不知道!)
 		    uint8_t rtdays;
 		    uint32_t address=0;
 		    
@@ -279,7 +279,7 @@ __far与__near
 		}
 		成功案例1：
 		#include "_ffmc16.h" 
-		// __far uint8_t const类型的变量强制分配在代码区(24bit)，存储地址=0xFC5432；
+		// __far uint8_t const类型的变量强制分配在代码区(24bit)，存储地址=0xFC5432;
 		__far uint8_t const month_table[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
 		void s_text_monthtodays( void )
 		{
@@ -291,7 +291,7 @@ __far与__near
 		}
 		成功案例2：
 		#include "_ffmc16.h" 
-		// uint8_t类型的变量默认分配在数据区，存储地址=0x214；
+		// uint8_t类型的变量默认分配在数据区，存储地址=0x214;
 		uint8_t month_table[12] = {31,28,31,30,31,30,31,31,30,31,30,31};			
 		void s_text_monthtodays( void )
 		{
