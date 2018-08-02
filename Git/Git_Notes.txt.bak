@@ -1,139 +1,139 @@
-1.文本编辑的格式最好用UTF-8 without BOM编码，所有语言使用同一种编码，既没有冲突，又被所有平台所支持.
-2.千万不要使用Windows自带的记事本编辑任何文本文件.原因是Microsoft开发记事本的团队使用了一个非常弱智的行为来保存UTF-8编码的文件，他们自作聪明地在每个文件开头添加了0xefbbbf(十六进制)的字符，你会遇到很多不可思议的问题，比如，网页第一行可能会显示一个“?”，明明正确的程序一编译就报语法错误，等等.
-3.建议下载Notepad++代替记事本，不但功能强大，而且免费!记得把Notepad++的默认编码设置为‘UTF-8 without BOM’即可：
-4.“Git Bash”安装配置
-		$ git config --global user.name "Your Name"
-		$ git config --global user.email "email@example.com"
-		因为Git是分布式版本控制系统，所以，每个机器都必须自报家门：你的名字和Email地址.你也许会担心，如果有人故意冒充别人怎么办?
-		这个不必担心，首先我们相信大家都是善良无知的群众，其次，真的有冒充的也是有办法可查的.
-		注意git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址.
+1。文本编辑的格式最好用UTF-8 without BOM编码，所有语言使用同一种编码，既没有冲突，又被所有平台所支持。
+2。千万不要使用Windows自带的记事本编辑任何文本文件。原因是Microsoft开发记事本的团队使用了一个非常弱智的行为来保存UTF-8编码的文件，他们自作聪明地在每个文件开头添加了0xefbbbf(十六进制)的字符，你会遇到很多不可思议的问题，比如，网页第一行可能会显示一个“?”，明明正确的程序一编译就报语法错误，等等。
+3。建议下载Notepad++代替记事本，不但功能强大，而且免费!记得把Notepad++的默认编码设置为‘UTF-8 without BOM’即可：
+4。“Git Bash”安装配置
+		$ git config --global user。name "Your Name"
+		$ git config --global user。email "email@example。com"
+		因为Git是分布式版本控制系统，所以，每个机器都必须自报家门：你的名字和Email地址。你也许会担心，如果有人故意冒充别人怎么办?
+		这个不必担心，首先我们相信大家都是善良无知的群众，其次，真的有冒充的也是有办法可查的。
+		注意git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。
 	创建版本库，这个仓库位于/Users/michael/learngit：
 		$ mkdir learngit
 		$ cd learngit
 		$ pwd
 		/Users/michael/learngit
-5.通过git init命令把这个目录变成Git可以管理的仓库
+5。通过git init命令把这个目录变成Git可以管理的仓库
 	$ git init
-	Initialized empty Git repository in /Users/michael/learngit/.git/
-6.添加到缓存并提交到仓库(多个add操作后，可一次性commit更新)：
-	$ git add file1.txt
-	$ git add file2.txt file3.txt
-	$ git commit -m "add 3 files."
-7.查看提交历史记录(只显示有效的历史版本，不能查看历史提交的命令)：
+	Initialized empty Git repository in /Users/michael/learngit/。git/
+6。添加到缓存并提交到仓库(多个add操作后，可一次性commit更新)：
+	$ git add file1。txt
+	$ git add file2。txt file3。txt
+	$ git commit -m "add 3 files。"
+7。查看提交历史记录(只显示有效的历史版本，不能查看历史提交的命令)：
 	$ git log 
 	或者 
 	$ git log --pretty=oneline		// 此命令输出信息较少
-8.回退到之前的版本：
-		$ git reset --hard HEAD^ 		// 回退到上一版本，HEAD^^(回退到上上一个版本)......HEAD~100(回退到往上100个版本)
+8。回退到之前的版本：
+		$ git reset --hard HEAD^ 		// 回退到上一版本，HEAD^^(回退到上上一个版本)。。。。。。HEAD~100(回退到往上100个版本)
 	回到未来的版本：
-		$ git reset --hard 1094a		// 1094a为版本号，只需要知道版本号前几位，Git会自动去找.
+		$ git reset --hard 1094a		// 1094a为版本号，只需要知道版本号前几位，Git会自动去找。
 	查看命令历史的记录(通过唯一的版本号，可回退或前进到任一历史版本)：
 		$ git reflog
 			e475afc HEAD@{1}: reset: moving to HEAD^
 			1094adb (HEAD -> master) HEAD@{2}: commit: append GPL
 			e475afc HEAD@{3}: commit: add distributed
 			eaadf4e HEAD@{4}: commit (initial): wrote a readme file
-9.查看文件内容：
-	$ cat readme.txt
-10.通过命令查看工作区的状态：
+9。查看文件内容：
+	$ cat readme。txt
+10。通过命令查看工作区的状态：
 	$ git status    // 可查看工作区的文件是否修改，是否需要add或者commit，以及是否新增文本文件
 	  工作区和暂存区：
 			工作区：/Users/michael/learngit文件夹内
-			版本库：工作区有一个隐藏目录.git，是Git的版本库.Git的版本库里存了很多东西，其中最重要的就是称为stage(或者叫index)的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD.
+			版本库：工作区有一个隐藏目录。git，是Git的版本库。Git的版本库里存了很多东西，其中最重要的就是称为stage(或者叫index)的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
 			工作区 → add到暂存区(stage) → commit到分支(master或者其他分支)
 		管理修改
-			1.查看工作区和版本库里面最新版本的区别：
-				$ git diff HEAD -- readme.txt
+			1。查看工作区和版本库里面最新版本的区别：
+				$ git diff HEAD -- readme。txt
 		撤销修改
-			1.让工作区的文件回到最近一次git commit或git add时的状态(回到最近一次版本库或暂存区的内存，暂存区优先)
-				$ git checkout -- readme.txt
-			2.用命令把提交到暂存区的内容撤销掉(unstage),重新放回工作区
-				$ git reset HEAD readme.txt
-			3.如果需撤销提交到版本库的内容，可利用版本回退的方式(仅限于本地版本库，如果推送到远程，就没法了)
+			1。让工作区的文件回到最近一次git commit或git add时的状态(回到最近一次版本库或暂存区的内存，暂存区优先)
+				$ git checkout -- readme。txt
+			2。用命令把提交到暂存区的内容撤销掉(unstage)，重新放回工作区
+				$ git reset HEAD readme。txt
+			3。如果需撤销提交到版本库的内容，可利用版本回退的方式(仅限于本地版本库，如果推送到远程，就没法了)
 			小结：
-				场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file.
-				场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD <file>，就回到了场景1，第二步按场景1操作.
-				场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库.
+				场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+				场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD <file>，就回到了场景1，第二步按场景1操作。
+				场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
 		删除文件
-			1.删除工作区文件
-				$ rm test.txt
-			2.执行第一步后，输入$ git status命令，可查看哪些文件被删除了，工作区和版本库就不一致了，有如下两种操作：
+			1。删除工作区文件
+				$ rm test。txt
+			2。执行第一步后，输入$ git status命令，可查看哪些文件被删除了，工作区和版本库就不一致了，有如下两种操作：
 				①删除版本库的文件
-					$ git rm test.txt
-				②删错了,需恢复工作区的文件(恢复为最新的版本库文件)
-					$ git checkout -- text,txt
+					$ git rm test。txt
+				②删错了，需恢复工作区的文件(恢复为最新的版本库文件)
+					$ git checkout -- text，txt
 			小结
-				命令git rm用于删除一个文件.如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容.
+				命令git rm用于删除一个文件。如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。
 	远程仓库
 		创建GitHub
-			1.自己搭建一台运行Git的服务器或者托管到GitHub网站上
-			2.本地Git仓库和GitHub仓库之间的传输是通过SSH加密的
+			1。自己搭建一台运行Git的服务器或者托管到GitHub网站上
+			2。本地Git仓库和GitHub仓库之间的传输是通过SSH加密的
 				①创建SSH Key
-					$ ssh-keygen -t rsa -C "tanzhengemail@gmail.com"				// 用户主目录里找到.ssh目录，里面有id_rsa(私钥)和id_rsa.pub(公钥)，
+					$ ssh-keygen -t rsa -C "tanzhengemail@gmail。com"				// 用户主目录里找到。ssh目录，里面有id_rsa(私钥)和id_rsa。pub(公钥)，
 				②登陆GitHub，打开“Account settings”，“SSH Keys”页面：
-					然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容：点“Add Key”，你就应该看到已经添加的Key：
+					然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa。pub文件的内容：点“Add Key”，你就应该看到已经添加的Key：
 		添加远程库(本地创建了一个Git仓库后，又想在GitHub创建一个Git仓库，并且让这两个仓库进行远程同步，这样，GitHub上的仓库既可以作为备份，又可以让其他人通过该仓库来协作)
-			1.首先，登陆GitHub，然后，在右上角找到“Create a new repo”按钮，创建一个新的仓库：
-			2.在Repository name填入learngit，其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库：
-			3.在本地的learngit仓库下运行命令：$ git remote add origin git@github.com:one-twothreefourfive/learngit.git
-				如果命令提示fatal: remote origin already exists.，如下操作：
+			1。首先，登陆GitHub，然后，在右上角找到“Create a new repo”按钮，创建一个新的仓库：
+			2。在Repository name填入learngit，其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库：
+			3。在本地的learngit仓库下运行命令：$ git remote add origin git@github。com:one-twothreefourfive/learngit。git
+				如果命令提示fatal: remote origin already exists。，如下操作：
 				1)先删除远程 Git 仓库
 					$ git remote rm origin
 				2)再添加远程 Git 仓库
-					$ git remote add origin git@github.com:one-twothreefourfive/learngit.git
-			4.把本地库当前分支master的所有内容推送到远程库上：$ git push -u origin master
-			5.第一次推送后，后面的推送命令可省略-u：git push origin master
-			6.SSH警告：当你第一次使用Git的clone或者push命令连接GitHub时，会得到一个警告：
-				The authenticity of host 'github.com (xx.xx.xx.xx)' can't be established.
-				RSA key fingerprint is xx.xx.xx.xx.xx.
+					$ git remote add origin git@github。com:one-twothreefourfive/learngit。git
+			4。把本地库当前分支master的所有内容推送到远程库上：$ git push -u origin master
+			5。第一次推送后，后面的推送命令可省略-u：git push origin master
+			6。SSH警告：当你第一次使用Git的clone或者push命令连接GitHub时，会得到一个警告：
+				The authenticity of host 'github。com (xx。xx。xx。xx)' can't be established。
+				RSA key fingerprint is xx。xx。xx。xx。xx。
 				Are you sure you want to continue connecting (yes/no)?
-				确认SSH钥匙并输入yes回车即可.
+				确认SSH钥匙并输入yes回车即可。
 			小结：
-				要关联一个远程库，使用命令git remote add origin git@github.com:one-twothreefourfive/learngit.git;
+				要关联一个远程库，使用命令git remote add origin git@github。com:one-twothreefourfive/learngit。git;
 				关联后，使用命令git push -u origin master第一次推送master分支的所有内容;
 				此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改;
 		从远程库克隆
-			1.首先，登陆GitHub，创建一个新的仓库，名字叫gitskills：(勾选Initialize this repository with a README)
-			2.远程库已经准备好了，下一步是用命令git clone克隆一个本地库：$ git clone git@github.com:michaelliao/gitskills.git
-			3.进入gitkills目录查看克隆文件：
+			1。首先，登陆GitHub，创建一个新的仓库，名字叫gitskills：(勾选Initialize this repository with a README)
+			2。远程库已经准备好了，下一步是用命令git clone克隆一个本地库：$ git clone git@github。com:michaelliao/gitskills。git
+			3。进入gitkills目录查看克隆文件：
 				$ cd gitskills
 				$ ls
-					README.md
-			4.多个人协作开发，那么每个人各自从远程克隆一份GitHub给出的地址不止一个，还可以用https://github.com/michaelliao/gitskills.git这样的地址(传输协议分为：git://(ssh协议)，https://(https协议)等其他协议).
+					README。md
+			4。多个人协作开发，那么每个人各自从远程克隆一份GitHub给出的地址不止一个，还可以用https://github。com/michaelliao/gitskills。git这样的地址(传输协议分为：git://(ssh协议)，https://(https协议)等其他协议)。
 			小结：
-				要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆.
-				Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快.
+				要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。
+				Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快。
 	分支管理
 		创建与合并分支
-			1.首先，我们创建dev分支，然后切换到dev分支：
+			1。首先，我们创建dev分支，然后切换到dev分支：
 				$ git checkout -b dev
 				Switched to a new branch 'dev'
-			2.git checkout命令加上-b参数表示创建并切换，相当于以下两条命令：
+			2。git checkout命令加上-b参数表示创建并切换，相当于以下两条命令：
 				$ git branch dev
 				$ git checkout dev
 				Switched to branch 'dev'
-			3.然后，用git branch命令查看当前分支：
+			3。然后，用git branch命令查看当前分支：
 				$ git branch
-				* dev			// git branch命令会列出所有分支，当前分支前面会标一个*号.
+				* dev			// git branch命令会列出所有分支，当前分支前面会标一个*号。
 				  master
-			4.然后提交dev分支上的版本库：
-				$ git add readme.txt 
+			4。然后提交dev分支上的版本库：
+				$ git add readme。txt 
 				$ git commit -m "branch test"
 				[dev b17d20e] branch test
-				 1 file changed, 1 insertion(+)
-			5.dev分支的工作完成，我们就可以切换回master分支：
+				 1 file changed， 1 insertion(+)
+			5。dev分支的工作完成，我们就可以切换回master分支：
 				$ git checkout master
 				Switched to branch 'master'
-			6.现在，我们把dev分支的工作成果合并到master分支上：
+			6。现在，我们把dev分支的工作成果合并到master分支上：
 				$ git merge dev				// git merge命令用于合并指定分支到当前分支
-				Updating d46f35e..b17d20e
+				Updating d46f35e。。b17d20e
 				Fast-forward					// 这次合并是“快进模式”，也就是直接把master指向dev的当前提交(改变指针指向)
-				 readme.txt | 1 +
-				 1 file changed, 1 insertion(+)
-			7.合并完成后，就可以放心地删除dev分支了：
+				 readme。txt | 1 +
+				 1 file changed， 1 insertion(+)
+			7。合并完成后，就可以放心地删除dev分支了：
 				$ git branch -d dev
-				Deleted branch dev (was b17d20e).
-			8.删除后，查看branch，就只剩下master分支了：
+				Deleted branch dev (was b17d20e)。
+			8。删除后，查看branch，就只剩下master分支了：
 				$ git branch
 				* master
 			小结：
@@ -144,279 +144,279 @@
 				创建+切换分支：git checkout -b <name>
 				合并某分支到当前分支：git merge <name>
 				删除分支：git branch -d <name>
-				因为创建、合并和删除分支非常快，所以Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在master分支上工作效果是一样的，但过程更安全.
+				因为创建、合并和删除分支非常快，所以Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在master分支上工作效果是一样的，但过程更安全。
 		解决冲突
-			1.新准备的feature1分支，继续我们的新分支开发：
+			1。新准备的feature1分支，继续我们的新分支开发：
 				$ git checkout -b feature1
 				Switched to a new branch 'feature1'
-			2.修改readme.txt求最后一行，改为：Creating a new branch is quick AND simple.
-			3.在feature1分支上提交：
-				$ git add readme.txt
+			2。修改readme。txt求最后一行，改为：Creating a new branch is quick AND simple。
+			3。在feature1分支上提交：
+				$ git add readme。txt
 				$ git commit -m "AND simple"
 				[feature1 14096d0] AND simple
-				 1 file changed, 1 insertion(+), 1 deletion(-)
-			4.切换到master分支：
+				 1 file changed， 1 insertion(+)， 1 deletion(-)
+			4。切换到master分支：
 				$ git checkout master
 				Switched to branch 'master'
-				Your branch is ahead of 'origin/master' by 1 commit.
+				Your branch is ahead of 'origin/master' by 1 commit。
 				(use "git push" to publish your local commits)
-			5.在master分支上把readme.txt文件的求最后一行对划线：Creating a new branch is quick & simple.
-			6.这时master分支与feature1分支的内容冲突，无法合并，需手动修改master上的内容为最终的说明.
-			7.最后，删除feature1分支：
+			5。在master分支上把readme。txt文件的求最后一行对划线：Creating a new branch is quick & simple。
+			6。这时master分支与feature1分支的内容冲突，无法合并，需手动修改master上的内容为最终的说明。
+			7。最后，删除feature1分支：
 				$ git branch -d feature1
-				Deleted branch feature1 (was 14096d0).
+				Deleted branch feature1 (was 14096d0)。
 		分支管理策略
-			如何禁用快速合并(Fast forward)，修改为普通合并(--no-ff)，需要在master分支上新建一个节点.
-				1.首先，仍然创建并切换dev分支：
+			如何禁用快速合并(Fast forward)，修改为普通合并(--no-ff)，需要在master分支上新建一个节点。
+				1。首先，仍然创建并切换dev分支：
 					$ git checkout -b dev
 					Switched to a new branch 'dev'	
-				2.修改readme.txt文件，并提交一个新的commit：
-					$ git add readme.txt 
+				2。修改readme。txt文件，并提交一个新的commit：
+					$ git add readme。txt 
 					$ git commit -m "add merge"
 					[dev f52c633] add merge
-					 1 file changed, 1 insertion(+)
-				3.现在，我们切换回master：
+					 1 file changed， 1 insertion(+)
+				3。现在，我们切换回master：
 					$ git checkout master
 					Switched to branch 'master'
-				4.备合并dev分支，请注意--no-ff参数，表示禁用Fast forward：
-					$ git merge --no-ff -m "merge with no-ff" dev			// 因为本次合并要创建一个新的commit，所以加上-m参数，把commit描述写进去.
-					Merge made by the 'recursive' strategy.
-					 readme.txt | 1 +
-					 1 file changed, 1 insertion(+)
-				5.合并后，我们用git log看看分支历史：
+				4。备合并dev分支，请注意--no-ff参数，表示禁用Fast forward：
+					$ git merge --no-ff -m "merge with no-ff" dev			// 因为本次合并要创建一个新的commit，所以加上-m参数，把commit描述写进去。
+					Merge made by the 'recursive' strategy。
+					 readme。txt | 1 +
+					 1 file changed， 1 insertion(+)
+				5。合并后，我们用git log看看分支历史：
 					$ git log --graph --pretty=oneline --abbrev-commit
 					*   e1e9c68 (HEAD -> master) merge with no-ff
 					|\  
 					| * f52c633 (dev) add merge
 					|/  
 					*   cf810e4 conflict fixed
-					...
+					。。。
 			分支策略
 				在实际开发中，我们应该按照几个基本原则进行分支管理：
-					1.首先，master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活;
-					2.那在哪干活呢?干活都在dev分支上，也就是说，dev分支是不稳定的，到某个时候，比如1.0版本发布时，再把dev分支合并到master上，在master分支发布1.0版本;
-					3.你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了.
-						所以，团队合作的分支看起来就像这样：团队成员统一把开发历史合并到dev分支上，待dev分支上的项目调试完成后，再把调试OK的版本上传到master分支上.
+					1。首先，master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活;
+					2。那在哪干活呢?干活都在dev分支上，也就是说，dev分支是不稳定的，到某个时候，比如1。0版本发布时，再把dev分支合并到master上，在master分支发布1。0版本;
+					3。你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了。
+						所以，团队合作的分支看起来就像这样：团队成员统一把开发历史合并到dev分支上，待dev分支上的项目调试完成后，再把调试OK的版本上传到master分支上。
 			小结
-				Git分支十分强大，在团队开发中应该充分应用.
-				合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并.
+				Git分支十分强大，在团队开发中应该充分应用。
+				合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
 		
 		Bug分支
 			当你接到一个修复一个代号101的错误的任务时，很自然地，想你创建³³一个分支issue-101来修复它，但是，等等，正在当前dev上进行的工作还没有提交：
-			并不是你不想提交，而是工作只进行到一半，还没法提交，预计完成还需1天时间.但是，必须在两个小时内修复该错误，怎么办?
-			1.储藏当前分支的现场，等以后恢复现场后继续工作：
+			并不是你不想提交，而是工作只进行到一半，还没法提交，预计完成还需1天时间。但是，必须在两个小时内修复该错误，怎么办?
+			1。储藏当前分支的现场，等以后恢复现场后继续工作：
 				$ git stash
 					Saved working directory and index state WIP on dev: f52c633 add merge
-			2.首先确定要在哪个分支上修复的bug，需要假定在master分支上修复，从就master创建³³临时分支：
+			2。首先确定要在哪个分支上修复的bug，需要假定在master分支上修复，从就master创建³³临时分支：
 				$ git checkout master
 					Switched to branch 'master'
-					Your branch is ahead of 'origin/master' by 6 commits.
+					Your branch is ahead of 'origin/master' by 6 commits。
 				  (use "git push" to publish your local commits)
 				$ git checkout -b issue-101
 					Switched to a new branch 'issue-101'
-			3.现在修复bug，需要把“Git是自由软件......”改为“Git是一个自由软件......”，然后提交：
-				$ git add readme.txt 
+			3。现在修复bug，需要把“Git是自由软件。。。。。。”改为“Git是一个自由软件。。。。。。”，然后提交：
+				$ git add readme。txt 
 				$ git commit -m "fix bug 101"
 				[issue-101 4c805e2] fix bug 101
-				 1 file changed, 1 insertion(+), 1 deletion(-)
-			4.修复完成后，到e月刊master分支，并完成合并，删除求最后issue-101分支：
+				 1 file changed， 1 insertion(+)， 1 deletion(-)
+			4。修复完成后，到e月刊master分支，并完成合并，删除求最后issue-101分支：
 				$ git checkout master
 					Switched to branch 'master'
-					Your branch is ahead of 'origin/master' by 6 commits.
+					Your branch is ahead of 'origin/master' by 6 commits。
 				  (use "git push" to publish your local commits)
 				$ git merge --no-ff -m "merged bug fix 101" issue-101
-					Merge made by the 'recursive' strategy.
-				 readme.txt | 2 +-
-				 1 file changed, 1 insertion(+), 1 deletion(-)
-			5.太棒了，原计划两个小时的缺陷修复只花了5分钟!现在接着回到dev分支干活了!
+					Merge made by the 'recursive' strategy。
+				 readme。txt | 2 +-
+				 1 file changed， 1 insertion(+)， 1 deletion(-)
+			5。太棒了，原计划两个小时的缺陷修复只花了5分钟!现在接着回到dev分支干活了!
 				$ git checkout dev
 					Switched to branch 'dev'
 				$ git status
 					On branch dev
-					nothing to commit, working tree clean
-			6.现在dev分支内容被隐藏了，需要查看隐藏列表：
+					nothing to commit， working tree clean
+			6。现在dev分支内容被隐藏了，需要查看隐藏列表：
 				$ git stash list
 					stash@{0}: WIP on dev: f52c633 add merge
-			7.隐藏内容通过以下命令恢复：
+			7。隐藏内容通过以下命令恢复：
 				$ git stash pop						// 恢复的同时自动删除藏匿内容($ git stash apply也能恢复，隐藏内容不删除，需要$ git stash drop命令删除)
 					On branch dev
 					Changes to be committed:
-					  (use "git reset HEAD <file>..." to unstage)
+					  (use "git reset HEAD <file>。。。" to unstage)
 					
-					    new file:   hello.py
+					    new file:   hello。py
 					Changes not staged for commit:
-					  (use "git add <file>..." to update what will be committed)
-					  (use "git checkout -- <file>..." to discard changes in working directory)
+					  (use "git add <file>。。。" to update what will be committed)
+					  (use "git checkout -- <file>。。。" to discard changes in working directory)
 					
-					    modified:   readme.txt
+					    modified:   readme。txt
 					Dropped refs/stash@{0} (5d677e2ee266f39ea296182fb2354265b91b3b2a)
-			8.进入隐藏列表，再次确认隐藏内容(无隐藏内容为空)：
+			8。进入隐藏列表，再次确认隐藏内容(无隐藏内容为空)：
 				$ git stash list
-			9.假如有多处隐藏内容，通过下列命令恢复指定指定的藏匿处：
+			9。假如有多处隐藏内容，通过下列命令恢复指定指定的藏匿处：
 				$ git stash apply stash@{0}				// stash@{0}可通过$ git stash list命令获取
 			小结：
 				修复错误时，我们会通过创建新的错误分支进行修复，然后合并，最后删除;
-				当手头工作没有完成时，工作先把现场git stash一下，然后去修复的bug，修复后，再git stash pop，回到工作现场.
+				当手头工作没有完成时，工作先把现场git stash一下，然后去修复的bug，修复后，再git stash pop，回到工作现场。
 				
 		Feature分支
-			每添加一个新功能，最好新建一个feature分支，在上面开发，完成后，合并，最后，删除该feature分支.
-			1.于是准备开发：
+			每添加一个新功能，最好新建一个feature分支，在上面开发，完成后，合并，最后，删除该feature分支。
+			1。于是准备开发：
 				$ git checkout -b feature-vulcan
 					Switched to a new branch 'feature-vulcan'	
-			2.5分钟后，开发完毕：
-				$ git add vulcan.py
+			2。5分钟后，开发完毕：
+				$ git add vulcan。py
 				$ git status
 					On branch feature-vulcan
 					Changes to be committed:
-					  (use "git reset HEAD <file>..." to unstage)
+					  (use "git reset HEAD <file>。。。" to unstage)
 					
-					    new file:   vulcan.py
+					    new file:   vulcan。py
 				$ git commit -m "add feature vulcan"
 					[feature-vulcan 287773e] add feature vulcan
-					 1 file changed, 2 insertions(+)
-					 create mode 100644 vulcan.py
-			3.切回dev，准备合并：
+					 1 file changed， 2 insertions(+)
+					 create mode 100644 vulcan。py
+			3。切回dev，准备合并：
 				$ git checkout dev
-			4.准备合并时，接到上级命令，因经费不足，新功能必须取消!(删除Feature分支)
+			4。准备合并时，接到上级命令，因经费不足，新功能必须取消!(删除Feature分支)
 				$ git branch -d feature-vulcan							// 由于分支未合并，Git提醒分支删除失败，需执行-D-命令
-					error: The branch 'feature-vulcan' is not fully merged.
-					If you are sure you want to delete it, run 'git branch -D feature-vulcan'.
-			5.Git提醒：feature-vulcan分支还没有被合并，如果删除，将丢失掉修改，如果要强行删除，需要使用大写的-D参数.
+					error: The branch 'feature-vulcan' is not fully merged。
+					If you are sure you want to delete it， run 'git branch -D feature-vulcan'。
+			5。Git提醒：feature-vulcan分支还没有被合并，如果删除，将丢失掉修改，如果要强行删除，需要使用大写的-D参数。
 				$ git branch -D feature-vulcan
-					Deleted branch feature-vulcan (was 287773e).
+					Deleted branch feature-vulcan (was 287773e)。
 			小结
 				开发一个新feature，最好新建一个分支;
-				如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除.
+				如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
 		
 		多人协作
 			远程仓库获取
-				当你从远程仓库克隆时，实际上Git自动把本地的master分支和远程的master分支对应起来了，远程仓库的默认名称是origin.
-				1.要查看远程库的信息，用git remote：
+				当你从远程仓库克隆时，实际上Git自动把本地的master分支和远程的master分支对应起来了，远程仓库的默认名称是origin。
+				1。要查看远程库的信息，用git remote：
 					$ git remote
 						origin
-				2.或者，用git remote -v显示更详细的信息：
+				2。或者，用git remote -v显示更详细的信息：
 					$ git remote -v
-						origin  git@github.com:michaelliao/learngit.git (fetch)
-						origin  git@github.com:michaelliao/learngit.git (push)		
+						origin  git@github。com:michaelliao/learngit。git (fetch)
+						origin  git@github。com:michaelliao/learngit。git (push)		
 			推送分支
-				推送分支，就是把该分支上的所有本地提交推送到远程库.推送时，要指定本地分支，这样，Git就会把该分支推送到远程库对应的远程分支上：
-					1.推送主分支master
+				推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分支，这样，Git就会把该分支推送到远程库对应的远程分支上：
+					1。推送主分支master
 						$ git push origin master
-					2.推送其他分支，比如dev
+					2。推送其他分支，比如dev
 						$ git push origin dev
 				实际开发并不是一定要把本地分支往远程推送，那么，哪些分支需要推送，哪些不需要呢?
-					1.master分支是主分支，因此要时刻与远程同步;
-					2.dev分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步;
-					3.bug分支只用于在本地修复bug，就没必要推到远程了，除非老板要看看你每周到底修复了几个bug;
-					4.feature分支是否推到远程，取决于你是否和你的小伙伴合作在上面开发.
+					1。master分支是主分支，因此要时刻与远程同步;
+					2。dev分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步;
+					3。bug分支只用于在本地修复bug，就没必要推到远程了，除非老板要看看你每周到底修复了几个bug;
+					4。feature分支是否推到远程，取决于你是否和你的小伙伴合作在上面开发。
 			抓取分支
-				1.模拟一个你的小伙伴，可以在另一台电脑(注意要把SSH Key添加到GitHub)或者同一台电脑的另一个目录下克隆：
-					$ git clone git@github.com:michaelliao/learngit.git
-						Cloning into 'learngit'...
-						remote: Counting objects: 40, done.
-						remote: Compressing objects: 100% (21/21), done.
-						remote: Total 40 (delta 14), reused 40 (delta 14), pack-reused 0
-						Receiving objects: 100% (40/40), done.
-						Resolving deltas: 100% (14/14), done.
-				2.当你的小伙伴从远程库clone时，默认情况下，你的小伙伴只能看到本地的master分支.不信可以用git branch命令看看：
+				1。模拟一个你的小伙伴，可以在另一台电脑(注意要把SSH Key添加到GitHub)或者同一台电脑的另一个目录下克隆：
+					$ git clone git@github。com:michaelliao/learngit。git
+						Cloning into 'learngit'。。。
+						remote: Counting objects: 40， done。
+						remote: Compressing objects: 100% (21/21)， done。
+						remote: Total 40 (delta 14)， reused 40 (delta 14)， pack-reused 0
+						Receiving objects: 100% (40/40)， done。
+						Resolving deltas: 100% (14/14)， done。
+				2。当你的小伙伴从远程库clone时，默认情况下，你的小伙伴只能看到本地的master分支。不信可以用git branch命令看看：
 					$ git branch
 						* master
-				3.现在，你的小伙伴要在dev分支上开发，就必须创建远程origin的dev分支到本地，于是他用这个命令创建本地dev分支：
+				3。现在，你的小伙伴要在dev分支上开发，就必须创建远程origin的dev分支到本地，于是他用这个命令创建本地dev分支：
 					$ git checkout -b dev origin/dev
-				4.现在，他就可以在dev上继续修改，然后，时不时地把dev分支push到远程：
-					$ git add env.txt
+				4。现在，他就可以在dev上继续修改，然后，时不时地把dev分支push到远程：
+					$ git add env。txt
 					$ git commit -m "add env"
 						[dev 7a5e5dd] add env
-						 1 file changed, 1 insertion(+)
-						 create mode 100644 env.txt
+						 1 file changed， 1 insertion(+)
+						 create mode 100644 env。txt
 					$ git push origin dev
-						Counting objects: 3, done.
-						Delta compression using up to 4 threads.
-						Compressing objects: 100% (2/2), done.
-						Writing objects: 100% (3/3), 308 bytes | 308.00 KiB/s, done.
-						Total 3 (delta 0), reused 0 (delta 0)
-						To github.com:michaelliao/learngit.git
-						   f52c633..7a5e5dd  dev -> dev
-				5.你的小伙伴已经向origin/dev分支推送了他的提交，而碰巧你也对同样的文件作了修改，并试图推送：
-					$ cat env.txt
+						Counting objects: 3， done。
+						Delta compression using up to 4 threads。
+						Compressing objects: 100% (2/2)， done。
+						Writing objects: 100% (3/3)， 308 bytes | 308。00 KiB/s， done。
+						Total 3 (delta 0)， reused 0 (delta 0)
+						To github。com:michaelliao/learngit。git
+						   f52c633。。7a5e5dd  dev -> dev
+				5。你的小伙伴已经向origin/dev分支推送了他的提交，而碰巧你也对同样的文件作了修改，并试图推送：
+					$ cat env。txt
 						env
-					$ git add env.txt
+					$ git add env。txt
 					$ git commit -m "add new env"
 						[dev 7bd91f1] add new env
-						 1 file changed, 1 insertion(+)
-						 create mode 100644 env.txt
+						 1 file changed， 1 insertion(+)
+						 create mode 100644 env。txt
 					$ git push origin dev
-						To github.com:michaelliao/learngit.git
+						To github。com:michaelliao/learngit。git
 						 ! [rejected]        dev -> dev (non-fast-forward)
-						error: failed to push some refs to 'git@github.com:michaelliao/learngit.git'
+						error: failed to push some refs to 'git@github。com:michaelliao/learngit。git'
 						hint: Updates were rejected because the tip of your current branch is behind
-						hint: its remote counterpart. Integrate the remote changes (e.g.
-						hint: 'git pull ...') before pushing again.
-						hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-				6.推送失败，因为你的小伙伴的最新提交和你试图推送的提交有冲突，解决办法也很简单，
+						hint: its remote counterpart。 Integrate the remote changes (e。g。
+						hint: 'git pull 。。。') before pushing again。
+						hint: See the 'Note about fast-forwards' in 'git push --help' for details。
+				6。推送失败，因为你的小伙伴的最新提交和你试图推送的提交有冲突，解决办法也很简单，
 					Git已经提示我们，先用git pull把最新的提交从origin/dev抓下来，然后，在本地合并，解决冲突，再推送：
 					$ git pull
-						There is no tracking information for the current branch.
-						Please specify which branch you want to merge with.
-						See git-pull(1) for details.=
+						There is no tracking information for the current branch。
+						Please specify which branch you want to merge with。
+						See git-pull(1) for details。=
 						    git pull <remote> <branch>=
 						If you wish to set tracking information for this branch you can do so with:=
 						    git branch --set-upstream-to=origin/<branch> dev
-				7.git pull也失败了，原因是没有指定本地dev分支与远程origin/dev分支的链接，根据提示，设置dev和origin/dev的链接：
+				7。git pull也失败了，原因是没有指定本地dev分支与远程origin/dev分支的链接，根据提示，设置dev和origin/dev的链接：
 					$ git branch --set-upstream-to=origin/dev dev
-						Branch 'dev' set up to track remote branch 'dev' from 'origin'.
-				8.再pull：
+						Branch 'dev' set up to track remote branch 'dev' from 'origin'。
+				8。再pull：
 					$ git pull
-						Auto-merging env.txt
-						CONFLICT (add/add): Merge conflict in env.txt
-						Automatic merge failed; fix conflicts and then commit the result.
-				9.这回git pull成功，但是合并有冲突，需要手动解决，解决的方法和分支管理中的解决冲突完全一样.解决后，提交，再push：
+						Auto-merging env。txt
+						CONFLICT (add/add): Merge conflict in env。txt
+						Automatic merge failed; fix conflicts and then commit the result。
+				9。这回git pull成功，但是合并有冲突，需要手动解决，解决的方法和分支管理中的解决冲突完全一样。解决后，提交，再push：
 					$ git commit -m "fix env conflict"
 						[dev 57c53ab] fix env conflict
 					$ git push origin dev
-						Counting objects: 6, done.
-						Delta compression using up to 4 threads.
-						Compressing objects: 100% (4/4), done.
-						Writing objects: 100% (6/6), 621 bytes | 621.00 KiB/s, done.
-						Total 6 (delta 0), reused 0 (delta 0)
-						To github.com:michaelliao/learngit.git
-						   7a5e5dd..57c53ab  dev -> dev
+						Counting objects: 6， done。
+						Delta compression using up to 4 threads。
+						Compressing objects: 100% (4/4)， done。
+						Writing objects: 100% (6/6)， 621 bytes | 621。00 KiB/s， done。
+						Total 6 (delta 0)， reused 0 (delta 0)
+						To github。com:michaelliao/learngit。git
+						   7a5e5dd。。57c53ab  dev -> dev
 				最后，多人协作的工作模式通常是这样：
-					1.首先，可以试图用git push origin <branch-name>推送自己的修改;
-					2.如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并;
-					3.如果合并有冲突，则解决冲突，并在本地提交;
-					4.没有冲突或者解决掉冲突后，再用git push origin <branch-name>推送就能成功!
-					如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream-to <branch-name> origin/<branch-name>.
-					这就是多人协作的工作模式，一旦熟悉了，就非常简单.
+					1。首先，可以试图用git push origin <branch-name>推送自己的修改;
+					2。如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并;
+					3。如果合并有冲突，则解决冲突，并在本地提交;
+					4。没有冲突或者解决掉冲突后，再用git push origin <branch-name>推送就能成功!
+					如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream-to <branch-name> origin/<branch-name>。
+					这就是多人协作的工作模式，一旦熟悉了，就非常简单。
 				小结
 					查看远程库信息，使用git remote -v;
 					本地新建的分支如果不推送到远程，对其他人就是不可见的;
 					从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交;
 					在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致;
 					建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name;
-					从远程抓取分支，使用git pull，如果有冲突，要先处理冲突.
+					从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
 					
 			Rebase
 				
 		标签管理
 			前言
-				发布一个版本时，我们通常先在版本库中打一个标签(tag)，这样，就唯一确定了打标签时刻的版本.将来无论什么时候，取某个标签的版本，就是把那个打标签的时刻的历史版本取出来.所以，标签也是版本库的一个快照.
+				发布一个版本时，我们通常先在版本库中打一个标签(tag)，这样，就唯一确定了打标签时刻的版本。将来无论什么时候，取某个标签的版本，就是把那个打标签的时刻的历史版本取出来。所以，标签也是版本库的一个快照。
 			创建标签
-				1.在Git中打标签非常简单，首先，切换到需要打标签的分支上：
+				1。在Git中打标签非常简单，首先，切换到需要打标签的分支上：
 					$ git branch
 						* dev
 						  master
 					$ git checkout master
 						Switched to branch 'master'
-				2.然后，敲命令git tag <name>就可以打一个新标签：
-					$ git tag v1.0
-				3.可以用命令git tag查看所有标签：
+				2。然后，敲命令git tag <name>就可以打一个新标签：
+					$ git tag v1。0
+				3。可以用命令git tag查看所有标签：
 					$ git tag
-						v1.0
-				4.默认标签是打在最新提交的commit上的.有时候，如果忘了打标签，比如，现在已经是周五了，但应该在周一打的标签没有打，怎么办?
+						v1。0
+				4。默认标签是打在最新提交的commit上的。有时候，如果忘了打标签，比如，现在已经是周五了，但应该在周一打的标签没有打，怎么办?
 					方法是找到历史提交的commit id，然后打上就可以了：
 					$ git log --pretty=oneline --abbrev-commit
-						12a631b (HEAD -> master, tag: v1.0, origin/master) merged bug fix 101
+						12a631b (HEAD -> master， tag: v1。0， origin/master) merged bug fix 101
 						4c805e2 fix bug 101
 						e1e9c68 merge with no-ff
 						f52c633 add merge
@@ -424,136 +424,136 @@
 						5dc6824 & simple
 						14096d0 AND simple
 						b17d20e branch test
-						d46f35e remove test.txt
-						b84166e add test.txt
+						d46f35e remove test。txt
+						b84166e add test。txt
 						519219b git tracks changes
 						e43a48b understand how stage works
 						1094adb append GPL
 						e475afc add distributed
 						eaadf4e wrote a readme file
-				5.比方说要对add merge这次提交打标签，它对应的commit id是f52c633，敲入命令：
-					$ git tag v0.9 f52c633
-				6.再用命令git tag查看标签：
+				5。比方说要对add merge这次提交打标签，它对应的commit id是f52c633，敲入命令：
+					$ git tag v0。9 f52c633
+				6。再用命令git tag查看标签：
 					$ git tag
-						v0.9
-						v1.0
-				7.注意，标签不是按时间顺序列出，而是按字母排序的.可以用git show <tagname>查看标签信息：
-					$ git show v0.9
-						commit f52c63349bc3c1593499807e5c8e972b82c8f286 (tag: v0.9)
-						Author: Michael Liao <askxuefeng@gmail.com>
+						v0。9
+						v1。0
+				7。注意，标签不是按时间顺序列出，而是按字母排序的。可以用git show <tagname>查看标签信息：
+					$ git show v0。9
+						commit f52c63349bc3c1593499807e5c8e972b82c8f286 (tag: v0。9)
+						Author: Michael Liao <askxuefeng@gmail。com>
 						Date:   Fri May 18 21:56:54 2018 +0800
 						    add merge
-						diff --git a/readme.txt b/readme.txt
-				8.可以看到，v0.9确实打在add merge这次提交上.还可以创建带有说明的标签，用-a指定标签名，-m指定说明文字：
-					$ git tag -a v0.1 -m "version 0.1 released" 1094adb
-				9.用命令git show <tagname>可以看到说明文字：
-					$ git show v0.1
-						tag v0.1
-						Tagger: Michael Liao <askxuefeng@gmail.com>
+						diff --git a/readme。txt b/readme。txt
+				8。可以看到，v0。9确实打在add merge这次提交上。还可以创建带有说明的标签，用-a指定标签名，-m指定说明文字：
+					$ git tag -a v0。1 -m "version 0。1 released" 1094adb
+				9。用命令git show <tagname>可以看到说明文字：
+					$ git show v0。1
+						tag v0。1
+						Tagger: Michael Liao <askxuefeng@gmail。com>
 						Date:   Fri May 18 22:48:43 2018 +0800
-						version 0.1 released
-						commit 1094adb7b9b3807259d8cb349e7df1d4d6477073 (tag: v0.1)
-						Author: Michael Liao <askxuefeng@gmail.com>
+						version 0。1 released
+						commit 1094adb7b9b3807259d8cb349e7df1d4d6477073 (tag: v0。1)
+						Author: Michael Liao <askxuefeng@gmail。com>
 						Date:   Fri May 18 21:06:15 2018 +0800
 						    append GPL
-						diff --git a/readme.txt b/readme.txt
+						diff --git a/readme。txt b/readme。txt
 						
-				注意：标签总是和某个commit挂钩.如果这个commit既出现在master分支，又出现在dev分支，那么在这两个分支上都可以看到这个标签.
+				注意：标签总是和某个commit挂钩。如果这个commit既出现在master分支，又出现在dev分支，那么在这两个分支上都可以看到这个标签。
 				小结
 					命令git tag <tagname>用于新建一个标签，默认为HEAD，也可以指定一个commit id;
-					命令git tag -a <tagname> -m "blablabla..."可以指定标签信息;
-					命令git tag可以查看所有标签.
+					命令git tag -a <tagname> -m "blablabla。。。"可以指定标签信息;
+					命令git tag可以查看所有标签。
 			
 			操作标签
-				1.如果标签打错了，也可以删除：
-					$ git tag -d v0.1
-					Deleted tag 'v0.1' (was f15b0dd)
-				2.因为创建的标签都只存储在本地，不会自动推送到远程.所以，打错的标签可以在本地安全删除.
+				1。如果标签打错了，也可以删除：
+					$ git tag -d v0。1
+					Deleted tag 'v0。1' (was f15b0dd)
+				2。因为创建的标签都只存储在本地，不会自动推送到远程。所以，打错的标签可以在本地安全删除。
 				如果要推送某个标签到远程，使用命令git push origin <tagname>：
-					$ git push origin v1.0
-						Total 0 (delta 0), reused 0 (delta 0)
-						To github.com:michaelliao/learngit.git
-						 * [new tag]         v1.0 -> v1.0
-				3.或者，一次性推送全部尚未推送到远程的本地标签：
+					$ git push origin v1。0
+						Total 0 (delta 0)， reused 0 (delta 0)
+						To github。com:michaelliao/learngit。git
+						 * [new tag]         v1。0 -> v1。0
+				3。或者，一次性推送全部尚未推送到远程的本地标签：
 					$ git push origin --tags
-						Total 0 (delta 0), reused 0 (delta 0)
-						To github.com:michaelliao/learngit.git
-						 * [new tag]         v0.9 -> v0.9
-				4.如果标签已经推送到远程，要删除远程标签就麻烦一点，先从本地删除：
-					$ git tag -d v0.9
-						Deleted tag 'v0.9' (was f52c633)
-				5.然后，从远程删除.删除命令也是push，但是格式如下：
-					$ git push origin :refs/tags/v0.9
-						To github.com:michaelliao/learngit.git
-						 - [deleted]         v0.9
-				最后：要看看是否真的从远程库删除了标签，可以登陆GitHub查看.
+						Total 0 (delta 0)， reused 0 (delta 0)
+						To github。com:michaelliao/learngit。git
+						 * [new tag]         v0。9 -> v0。9
+				4。如果标签已经推送到远程，要删除远程标签就麻烦一点，先从本地删除：
+					$ git tag -d v0。9
+						Deleted tag 'v0。9' (was f52c633)
+				5。然后，从远程删除。删除命令也是push，但是格式如下：
+					$ git push origin :refs/tags/v0。9
+						To github。com:michaelliao/learngit。git
+						 - [deleted]         v0。9
+				最后：要看看是否真的从远程库删除了标签，可以登陆GitHub查看。
 				小结
 					命令git push origin <tagname>可以推送一个本地标签;
 					命令git push origin --tags可以推送全部未推送过的本地标签;
 					命令git tag -d <tagname>可以删除一个本地标签;
-					命令git push origin :refs/tags/<tagname>可以删除一个远程标签.
+					命令git push origin :refs/tags/<tagname>可以删除一个远程标签。
 					
 		使用GitHub
 			小结
 				在GitHub上，可以任意Fork开源仓库;
 				自己拥有Fork后的仓库的读写权限;
-				可以推送pull request给官方仓库来贡献代码.
+				可以推送pull request给官方仓库来贡献代码。
 				
 		使用码云
-			使用GitHub时，国内的用户经常遇到的问题是访问速度太慢，有时候还会出现无法连接的情况(原因你懂的).
-			如果我们希望体验Git飞一般的速度，可以使用国内的Git托管服务——码云(gitee.com).
-			和GitHub相比，码云也提供免费的Git仓库.此外，还集成了代码质量检测、项目演示等功能.对于团队协作开发，码云还提供了项目管理、代码托管、文档管理的服务，5人以下小团队免费.
+			使用GitHub时，国内的用户经常遇到的问题是访问速度太慢，有时候还会出现无法连接的情况(原因你懂的)。
+			如果我们希望体验Git飞一般的速度，可以使用国内的Git托管服务——码云(gitee。com)。
+			和GitHub相比，码云也提供免费的Git仓库。此外，还集成了代码质量检测、项目演示等功能。对于团队协作开发，码云还提供了项目管理、代码托管、文档管理的服务，5人以下小团队免费。
 			
 		自定义Git
 			前沿：
-				在安装Git一节中，我们已经配置了user.name和user.email，实际上，Git还有很多可配置项.
+				在安装Git一节中，我们已经配置了user。name和user。email，实际上，Git还有很多可配置项。
 				比如，让Git显示颜色，会让命令输出看起来更醒目：
-					$ git config --global color.ui true
-				这样，Git会适当地显示不同的颜色.
+					$ git config --global color。ui true
+				这样，Git会适当地显示不同的颜色。
 			忽略特殊文件：
 			
 			配置别名
 			
 			搭建Git服务器
 				安装Git：
-					搭建Git服务器需要准备一台运行Linux的机器，强烈推荐用Ubuntu或Debian，这样，通过几条简单的apt命令就可以完成安装.
+					搭建Git服务器需要准备一台运行Linux的机器，强烈推荐用Ubuntu或Debian，这样，通过几条简单的apt命令就可以完成安装。
 					假设你已经有sudo权限的用户账号，下面，正式开始安装：
-					1.安装git：
+					1。安装git：
 						$ sudo apt-get install git
-					2.创建一个git用户，用来运行git服务：
+					2。创建一个git用户，用来运行git服务：
 						$ sudo adduser git
-					3.创建证书登录：
-						收集所有需要登录的用户的公钥，就是他们自己的id_rsa.pub文件，把所有公钥导入到/home/git/.ssh/authorized_keys文件里，一行一个.
-					4.初始化Git仓库：先选定一个目录作为Git仓库，假定是/srv/sample.git，在/srv目录下输入命令：
-						$ sudo git init --bare sample.git
-						Git就会创建一个裸仓库，裸仓库没有工作区，因为服务器上的Git仓库纯粹是为了共享，所以不让用户直接登录到服务器上去改工作区，并且服务器上的Git仓库通常都以.git结尾.然后，把owner改为git：
-						$ sudo chown -R git:git sample.git
-					5.禁用shell登录：
-						出于安全考虑，第二步创建的git用户不允许登录shell，这可以通过编辑/etc/passwd文件完成.找到类似下面的一行：
-						git:x:1001:1001:,,,:/home/git:/bin/bash
+					3。创建证书登录：
+						收集所有需要登录的用户的公钥，就是他们自己的id_rsa。pub文件，把所有公钥导入到/home/git/。ssh/authorized_keys文件里，一行一个。
+					4。初始化Git仓库：先选定一个目录作为Git仓库，假定是/srv/sample。git，在/srv目录下输入命令：
+						$ sudo git init --bare sample。git
+						Git就会创建一个裸仓库，裸仓库没有工作区，因为服务器上的Git仓库纯粹是为了共享，所以不让用户直接登录到服务器上去改工作区，并且服务器上的Git仓库通常都以。git结尾。然后，把owner改为git：
+						$ sudo chown -R git:git sample。git
+					5。禁用shell登录：
+						出于安全考虑，第二步创建的git用户不允许登录shell，这可以通过编辑/etc/passwd文件完成。找到类似下面的一行：
+						git:x:1001:1001:，，，:/home/git:/bin/bash
 						改为：
-						git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
-						这样，git用户可以正常通过ssh使用git，但无法登录shell，因为我们为git用户指定的git-shell每次一登录就自动退出.
-					6.克隆远程仓库：
+						git:x:1001:1001:，，，:/home/git:/usr/bin/git-shell
+						这样，git用户可以正常通过ssh使用git，但无法登录shell，因为我们为git用户指定的git-shell每次一登录就自动退出。
+					6。克隆远程仓库：
 						现在，可以通过git clone命令克隆远程仓库了，在各自的电脑上运行：
-						$ git clone git@server:/srv/sample.git
-						Cloning into 'sample'...
-						warning: You appear to have cloned an empty repository.
-						剩下的推送就简单了.
+						$ git clone git@server:/srv/sample。git
+						Cloning into 'sample'。。。
+						warning: You appear to have cloned an empty repository。
+						剩下的推送就简单了。
 				管理公钥
-					如果团队很小，把每个人的公钥收集起来放到服务器的/home/git/.ssh/authorized_keys文件里就是可行的.如果团队有几百号人，就没法这么玩了，这时，可以用Gitosis来管理公钥.
+					如果团队很小，把每个人的公钥收集起来放到服务器的/home/git/。ssh/authorized_keys文件里就是可行的。如果团队有几百号人，就没法这么玩了，这时，可以用Gitosis来管理公钥。
 					这里我们不介绍怎么玩Gitosis了，几百号人的团队基本都在500强了，相信找个高水平的Linux管理员问题不大
 				管理权限
-					有很多不但视源代码如生命，而且视员工为窃贼的公司，会在版本控制系统里设置一套完善的权限控制，每个人是否有读写权限会精确到每个分支甚至每个目录下.
-					因为Git是为Linux源代码托管而开发的，所以Git也继承了开源社区的精神，不支持权限控制.不过，因为Git支持钩子(hook)，所以，可以在服务器端编写一系列脚本来控制提交等操作，达到权限控制的目的.Gitolite就是这个工具.
-					这里我们也不介绍Gitolite了，不要把有限的生命浪费到权限斗争中.
+					有很多不但视源代码如生命，而且视员工为窃贼的公司，会在版本控制系统里设置一套完善的权限控制，每个人是否有读写权限会精确到每个分支甚至每个目录下。
+					因为Git是为Linux源代码托管而开发的，所以Git也继承了开源社区的精神，不支持权限控制。不过，因为Git支持钩子(hook)，所以，可以在服务器端编写一系列脚本来控制提交等操作，达到权限控制的目的。Gitolite就是这个工具。
+					这里我们也不介绍Gitolite了，不要把有限的生命浪费到权限斗争中。
 				小结
 					搭建Git服务器非常简单，通常10分钟即可完成;
 					要方便管理公钥，用Gitosis;
-					要像SVN那样变态地控制权限，用Gitolite.
+					要像SVN那样变态地控制权限，用Gitolite。
 					
 	附件(常用 Git 命令清单)
-		地址：http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html
+		地址：http://www。ruanyifeng。com/blog/2015/12/git-cheat-sheet。html
 		
 		
-参考文献：https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000(Git教程)
+参考文献：https://www。liaoxuefeng。com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000(Git教程)

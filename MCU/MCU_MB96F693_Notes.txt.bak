@@ -1,0 +1,308 @@
+Power supply voltage:	
+	2。7 - 5。5V 	Normal work voltage
+	2。0 - 5。5V 	Maintains RAM data in stop mode
+	
+Flash Memory Write/Erase Characteristics：
+	扇区擦除时间
+		大扇区：1。6~7。5s
+		小扇区：0。4~2。1s
+		加密扇区：0。31~1。65s
+	16bit数据的写入时间
+		25~400us
+	芯片擦除时间
+		8。31~40。05s
+	写入/擦除周期和保持时间
+		1000次：20年
+		10000次：10年
+		100000次：5年
+		
+Low Voltage Detection Function Characteristics 
+	低电压选择
+		 寄存器				      Min  Typ   Max
+		CILCR:LVL = 0000B → 2。70 2。90 3。10 V
+		CILCR:LVL = 0001B → 2。79 3。00 3。21 V
+		CILCR:LVL = 0010B → 2。98 3。20 3。42 V 
+		CILCR:LVL = 0011B → 3。26 3。50 3。74 V
+		CILCR:LVL = 0100B → 3。45 3。70 3。95 V
+		CILCR:LVL = 0111B → 3。73 4。00 4。27 V
+		CILCR:LVL = 1001B → 3。91 4。20 4。49 V
+	LVD工作模式
+		1。LVD低电压复位模式(需在启动文件5。10中设置LVDRLM=55H且配置RCR寄存器)
+		2。LVD低电压中断模式(需配置CILCR寄存器))
+
+Reset Cause and Clock Status Register(RCCSR(00040BH)/RCCSRC(00040DH)) 
+	1。当复位原因寄存器(RCCSR)和时钟状态寄存器(RCCSRC)被读取时，寄存器里面的数据才会清零。
+	2。在RCCSR寄存器里面可读取MCU复位的原因
+	3。复位原因列表(复位源→寄存器置位)：
+		|          复位原因                   |  PRST ERST MCRST SCRST SRST WRST  |
+		|Power reset (Power-on or low voltage)|    1    1    1     1     1   1    |
+		|External reset request via RSTX pin  |    *    1    *     *     *   *    |
+		|Main clock stop detection reset      |    *    *    1     *     *   *    |
+		|Sub clock stop detection reset       |    *    *    *     1     *   *    |
+		|Software reset request 				      |    *    *    *     *     1   *    |
+		|Watchdog timer overflow				      |    *    *    *     *     *   1    |
+		
+Boot ROM Program Execution and Operation Mode and ROM Configuration Block	
+	1。当MCU复位时，MCU执行Boot ROM引导程序(address:0F:C000~10:0000H)，引导程序读取部分引脚，这些引脚确定MCU模式。
+		根据引脚设置，MCU激活并行闪存编程模式，串行通信模式或开始执行用户程序。最后，Boot ROM程序将在Boot Vector中开始执行用户程序。
+	2。模式的pin脚设置
+		| MD | P17_0 | DEBUG I/F |      Operation mode name        |
+		| 0  |   x   |     0     |   Serial Communication mode     |
+		| 0  |   x   |     1     |      Internal Vector mode       |
+	3。Serial Communication mode(串行通讯模式)
+		此模式用于MCU仿真
+	4。Internal Vector mode（内部向量模式）
+		内部向量模式是CPU运行模式，其中读取引导向量（用户程序起始地址）来自的内部存储器FF:FFDCH或DF:0040H。
+	5。Internal Vector mode（内部向量模式）配置引导向量的地址(用户程序的起始地址)
+		寄存器{ABVAM1， ABVAM0} = 292D3A7BH，Boot Vector从DF:0040H开始读取;否则，FF:FFDCH开始读取;
+	6。Function Description of RCB Markers 
+		1)flash读取加密和写入保护
+		2)设置NMI引脚(不能屏蔽的中断引脚)
+		3)设置中断向量的起始地址
+		4)设置引导向量(用户程序的起始地址)的地址选择
+		5)设置USART扫描是否打开
+		6)设置副时钟振荡器
+		7)设置低电压复位功能
+		8)设置看门狗定时器
+		9)jump to Boot Vector address
+	
+SECTION 结构
+	列表：
+		| 序号 |         Section 类型       |   Section名  |    类型   | 边界对齐[字节] | 写入 | 初始值 |
+		|   1  |         Code section       |     CODE     |    CODE   |       2        | 禁止 |   有   |
+		|   2  |     Initialized section    |     INIT     |    DATA   |       2        | 允许 |   无   |
+		|   3  |    Initial value of INIT   |    DCONST    |    CONST  |       2        | 禁止 |   有   |
+		|   4  |      Constant section      |    CONST     |    CONST  |       2        | 禁止 |   有   |
+		|   5  |     RAM area of CONST      |    CINIT     |    DATA   |       2        | 禁止 |   无   |
+		|   6  |        Data section        |     DATA     |    DATA   |       2        | 允许 |   无   |
+		|   7  | Initialized direct section |   DIRINIT    |    DIR    |       2        | 允许 |   无   |
+		|   8  |  Initial value of DIRINIT  |   DIRCONST   |  DIRCONST |       2        | 允许 |   有   |
+		|   9  |        Direct section      |   DIRDATA    |    DIR    |       2        | 允许 |   无   |
+		|  10  |          I/O section       |      IO      |     IO    |       2        | 允许 |   无   |
+		|  11  |        Vector section      |   INTVECT    |   CONST   |       2        | 禁止 |   有   |
+	1。Code section
+		该 section 存放机器代码。
+		[例子]
+		输入 C 源代码 源文件名为 test。c
+		void main(void)
+		{
+		}
+	2。Initialized section
+		该 section 存放一些声明时就赋予初值的变量。C 语言中，该 section 对应于在声明时赋予初值的外部变量、外部静态变量和内部静态变量，且这些变
+		量未加‘CONST’限定符。其缺省的‘section’名是‘INIT’。
+		[例子]
+		输入 C 源代码
+		int i=0x11;
+		static int j=0x22;
+		void main(void)
+		{
+		 static int k=0x33;
+		}
+	3。Initial value of INIT
+		一些声明时就赋予初值的变量，该 section 存放其初值 存放’INIT‘section中变量对应的初值，该 section 被放置在ROM里面，必须使用 startup 文件(比
+		如使用随 C 编译器附带的 start905s。asm)里的初始化例程，把该 section 里的初值传送到'INIT'section 中相应的变量里去 其缺省的 section 名是 DCONST。
+		[例子]
+		与上一例子相同 输入 C 源代码
+		int i=0x11;
+		static int j=0x22;
+		void main(void)
+		{
+			static int k=0x33;
+		}
+	4。Constant section
+		该 section 存放一些声明时就赋予初值的'常量'变量， 在C语言中，该section 对应于在声明时赋予初值的外部变量、外部静态变量和内部静态变量
+		且这些变量加有‘CONST’限定符，其缺省的 section 名是'CONST'。
+		[例子]
+		输入 C 源代码
+		const int i=0x11;
+		const static int j=0x22;
+		void main(void)
+		{
+			const static int k=0x33;
+		}
+	5。RAM area of CCONST
+		该 section 存放一些声明时就赋予初值的'常量'变量，其前提是:如果
+		使用的 CPU 类型不支持 ROM 镜像的功能，编译时使用 -ramconst 编译
+		选项才会生成该 section，必须使用 startup 文件(比如 使用随 C 编译器附带的
+		start905s。asm)里的初始化例程，把'CONST'section 里的初值传送到该 section
+		中相应的变量里去。其缺省的 section 名是'CINIT'要注意的是:虽然对'常
+		量'变量(加'CONST'限定符)进行赋值，在编译时会有警告提示，但缺省
+		情况下进行软件模拟("Simulator Debugger")不会发生运行错误。
+		[例子]
+		输入 C 源代码
+		const int i=0x11;
+		const static int j=0x22;
+		void main(void)
+		{
+			const static int k=0x33;
+			i =0xff; /* 这一行 在编译时有警告提示
+			但在软件模拟时不发生运行错误 */
+		}
+	6。Data section
+		该 section 存放一些声明时不赋予初值的变量，在 C 语言中 该 section 对
+		应于在声明时不赋予初值的外部变量\外部静态变量和内部静态变量，不管这
+		些变量上是否加'CONST'限定符，其缺省的 section 名是'DATA'。
+		[例子]
+		输入 C 源代码
+		int i;
+		static int j;
+		const int k;
+		void main(void)
+		{
+			static int k;
+		}
+	7。Initialized direct section
+		该 section 存放一些声明时赋予初值的变量，且这些变量加有'__direct'
+		类型限定符，在 C 语言中 该 section 对应于在声明时赋予初值的外部变量\外
+		部静态变量和内部静态变量，这些变量加有'__direct'类型限定符但未加
+		CONST 类型限定符，其缺省的 section 名是'DIRINIT'。
+		[例子]
+		输入 C 源代码
+		__direct int i=0x12;
+		__direct static int j=0x34;
+		void main(void)
+		{
+		 __direct static int k=0x56;
+		}
+	8。Initial value of DIRINIT
+		该 section 存放'DIRINIT'section 中变量对应的初值 该 section 被放置
+		在 ROM 里面，必须使用 startup 文件(比如 使用随 C 编译器附带的 start905s。asm)
+		里的初始化例程，把该 section 里的初值传送到，DIRINIT，section 中相应的
+		变量里去，其缺省的 section 名是'DIRCONST'。
+		[例子]
+		输入 C 源代码
+		__direct int i=0x12;
+		__direct static int j=0x34;
+		void main(void)
+		{
+		 __direct static int k=0x56;
+		}
+	9。Direct section
+		该 section 存放一些声明时没有赋予初值的变量，且这些变量加有
+		'__direct'类型限定符，在 C 语言中 该 section 对应于在声明时未赋予初值
+		的外部变量\外部静态变量和内部静态变量 这些变量加有'__direct'类型
+		限定符而不管这些变量上是否加有'CONST'限定符 其缺省的 section 名是
+		DIRDATA
+		[例子]
+		输入 C 源代码
+		__direct int i;
+		__direct static int j;
+		void main(void)
+		{
+		 __direct static int k;
+		}
+	10。I/O section
+		该 section 存放那些加有'__io'类型限定符的变量，在 C 语言中 该 section
+		对应于那些加有'__io'类型限定符的外部变量\外部静态变量和内部静态变
+		量，不管这些变量上是否加有'CONST'限定符 其缺省的 section 名是'IO'
+		[例子]
+		输入 C 源代码
+		__io int i;
+		__io static int j;
+		void main(void)
+		{
+			__io static int k;
+		}
+	11。Vector section
+		该 section 存放中断向量表，使用富士通 C 语言中的扩展指令'#pragma
+		intvect'就可以产生该 section，其缺省的 section 名是'INTVECT'。
+		[例子]
+		输入 C 源代码
+		#pragma intvect timerbase_int 36
+		void main(void)
+		{
+		}
+		__interrupt void timerbase_int(void)
+		{
+		}
+		
+__far与__near
+	1。《网上》解释：
+		近程就是near，远程就是far
+		主要早期16位cpu上的dos系统，内存地址是20位的，但寄存器是16位的
+		这样一个16位的指针，也就是near指针，能访问的内存范围只有64K，但20位的内存地址，实际允许定义大于64K的数据，这样，一个指针就实际就有些数据能访问到，而有些数据不能访问到，这实际是很不好控制也很令人费解的事
+		而far指针，实际用2个寄存器组合来访问数据，就可以访问所有内存范围了，但是由于这个指针每次参与运算，都要重新计算2个寄存器的值，会造成速度上的一些损失
+		所以near和far指针各有各的优势，都有存在的理由
+		但在现代，计算机的寄存器已经和地址长度完全一致了，32位系统，地址是32位，寄存器也是32位，64位系统，地址是64位，寄存器也是64位，near和far指针的概念已经不需要了
+	
+	2。《富士通16位微控制器C语言手册-提高深入篇。pdf》解释：
+		近程/远程变量(或函数)的定义
+		一般格式
+		__near Variable definition;
+		__far Variable definition;
+		说明 要给变量/函数设定一定的地址空间范围，需要给变量/函数加上
+		__near/__far 类型限定符，给变量/函数加上 __near 类型限定符，变量/函
+		数就成为近程变量/函数 被放置在 16 位的地址空间里，给变量/函数加上 __far
+		类型限定符 变量/函数就成为远程变量/函数 可放置在 24 位的地址空间里里的任何位置
+		如果在变量上未加 __near/__far 类型限定符，则在编译时 根据编译所
+		选的内存模式:小模式、中模式、紧凑模式或大模式来决定变量对应的地址空间，
+		局部变量不能加这些类型限定符，
+		当远指针( far )被强制类型转换为近指针( near )，其高 8 位被抛弃
+		当近指针( near )被强制类型转换为远指针( far )，段寄存器 DTB 的值被赋予远指针的高 8 位，
+		当局部变量的地址被赋予远指针，段寄存器 USB 或 SSB 的值被赋予远指针的高 8 位，
+		但是 如果局部变量的地址先被赋予近指针，然后近指针
+		再被强制类型转换成远指针 则段寄存器 DTB 的值被赋予远指针的高 8 位这样就出错了，
+		如果在远程函数 加'__far'类型限定符 里调用了近程函数 加'__near'
+		类型限定符，则这两个函数必须位于同一 SECTION 里，其原因是调用远程
+		函数时要设置 PCB 段寄存器，而调用近程函数时不设置 PCB 段寄存器，
+		变量的定义不能跨越段的边界，否则编译生成的代码无法对其正确存取。
+	
+	3。归纳总结：
+		富士通编译器可设置为为四种编译模式：
+		内存模式 代码地址空间 数据地址空间 编译选项*
+		小模式   16 位        16 位        -model small（在该模式下 指针都是近程的 __near，无 __far）
+		中模式   24 位        16 位        -model medium（在该模式下 代码段使用远 __far 指针，数据段使用近程 __near 指针）
+		紧凑模式 16 位        24 位        -model compact（在该模式下 代码段使用近 __near 指针，数据段使用远程 __far 指针）
+		大模式   24 位        24 位        -model large（在该模式下 指针都是远程的 __far，无 __near）
+		
+		1)8位单片机的编译环境，最大地址为FFFFh（16 位地址），代码地址空间或者数据地址空间只能寻址16 位，根据上述，故为‘小模式’。
+		2)16位单片机的编译环境，最大地址为FF:FFFFh（24 位地址），为满足编译效率，配置模式与芯片实际的ROM/RAM的大小及地址范围有关。
+		3)例如MB96F690系列单片机，ROM大小在256。5KB + 32KB以内（在此地址区间内：DF:0000h~FF:FFFFh），RAM大小在16K以内（在此地址区间内：00:4200h~00:8000h），代码地址空间需寻址24 位，数据地址空间需寻址16 位，选择‘中模式’。
+		4)如果在变量上未加 __near/__far 类型限定符 则在编译时 根据编译所选的内存模式（小模式、中模式、紧凑模式或大模式）， 来决定变量对应的地址空间。
+		5)局部变量不能加这些类型限定符（__near/__far）。
+		6)要给变量/函数设定一定的地址空间范围 需要给变量/函数加上（__near/__far） 类型限定符。给变量/函数加上 （__near） 类型限定符，变量/函数就成为近程变量/函数，被放置在 16 位的地址空间里;给变量/函数加上 __far类型限定符，变量/函数就成为远程变量/函数，可放置在 24 位的地址空间里里的任何位置。
+	
+	4。__far与const的运用：
+		const常量不赋初值，默认存储在16bit地址;假如赋初值，默认存储在24bit地址，需在前面添加__far，如果不加__far，其他变量无法读取const内容;
+		失败案例1：
+		#include "_ffmc16。h" 
+		// 赋初值的const类型且编译器设置为medium模式，变量被系统分配在代码区(24bit)，存储地址=0xFC5432;由于未加__far，程序只能寻址16bit;
+		uint8_t const month_table[12] = {31，28，31，30，31，30，31，31，30，31，30，31};
+		void s_text_monthtodays( void )
+		{
+				uint8_t month_text[12] = {31，28，31，30，31，30，31，31，30，31，30，31};		// 顺便提醒：在定义局部变量的数组且赋初值时，会失败(month_text数组里面的值仍然==0xFF，原因不知道!)
+		    uint8_t rtdays;
+		    uint32_t address=0;
+		    
+		    rtdays = month_table[0];			// rtdays读取失败，rtdays=0xFF;
+		    address = &month_table[0];		// address读取失败，只能读取前16it地址，rtdays=0x5432(正确的地址：0xFC5432);
+		}
+		成功案例1：
+		#include "_ffmc16。h" 
+		// __far uint8_t const类型的变量强制分配在代码区(24bit)，存储地址=0xFC5432;
+		__far uint8_t const month_table[12] = {31，28，31，30，31，30，31，31，30，31，30，31};
+		void s_text_monthtodays( void )
+		{
+		    uint8_t rtdays;
+		    uint32_t address=0;
+		    
+		    rtdays = month_table[0];			// rtdays读取成功，rtdays=0x31;
+		    address = &month_table[0];		// address读取功，能读取前24it地址，rtdays=0xFC5432(正确的地址：0xFC5432);
+		}
+		成功案例2：
+		#include "_ffmc16。h" 
+		// uint8_t类型的变量默认分配在数据区，存储地址=0x214;
+		uint8_t month_table[12] = {31，28，31，30，31，30，31，31，30，31，30，31};			
+		void s_text_monthtodays( void )
+		{
+		    uint8_t rtdays;
+		    uint32_t address=0;
+		    
+		    rtdays = month_table[0];			// rtdays读取成功，rtdays=0x31;
+		    address = &month_table[0];		// address读取功，只能读取前16it地址，rtdays=0x214(正确的地址：0x214);
+		}
+		
+		
+参考文献：富士通16位微控制器C语言手册-提高深入篇。pdf(C Manual Advanced。pdf)
+					MB96690 数据手册。pdf
+					MB96690 系列硬件手册。pdf
