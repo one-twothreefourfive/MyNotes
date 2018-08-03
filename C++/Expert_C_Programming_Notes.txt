@@ -540,7 +540,7 @@
 			说明
 			1.根据传统，虚拟内存使用一张很大且分段的表，另外还有页表记住所有字节的位置以及它们的主人。
 			2.规则13的结果就是各自运行中每个进程的虚拟地址都类似，即使进程的数量有变化。
-			3.虚拟内存管理器也拥有自己的一些字节，它们中的有些也和进程的字节一样在内存和磁盘中移来移去，但是m
+			3.虚拟内存管理器也拥有自己的一些字节，它们中的有些也和进程的字节一样在内存和磁盘中移来移去，但是，
 			  它的有些字节使用频率非常之高，所以常驻内存。
 			4.按照上述规则，经常引用的字节更有可能被存放在内存中，而不太被引用的字节更有可能存放在磁盘中，这可以提高内存的使用效率。
 			
@@ -571,7 +571,207 @@
 			
 第8章（为什么程序员无法分清万圣节和圣诞节）
 169页
-	
+	8.2 根据位模式构筑图形
+		图标或图形，是一种小型的位模式映射于屏幕产生的图像。一个位代表图形的一个像素。
+		C语言中，典型的16*16的黑白图形可能如下：
+			static unsigned short stopwatch[] = {
+				0x07C6,
+				0x1FF7,
+				0x383B,
+				0x500C,
+				0x500C,
+				0xC006,
+				0xC006,
+				0xDF06,
+				0xC106,
+				0xC106,
+				0x510C,
+				0x510C,
+				0x3838,
+				0x1FF0,
+				0x07C0,
+				0x0000
+			};
+			上面的C语言常量并未提供有关图形实际模样的任何线索。这里有一个惊人的#define定义的优雅集合，
+			允许程序建立常量使它们看上去像是屏幕上的图形。
+			#define X )*2+1
+			#define _ )*2
+			#define s ((((((((((((((((0			/* 用于创建16位宽的图形 */
+			/* 使用上面的宏定义，程序就可以描述出对应的图形，程序的自描述能力大大加强 */
+			static unsigned short stopwatch[] = 
+			{
+				s _ _ _ _ _ X X X X X _ _ _ X X _,
+				s _ _ _ _ _ X X X X X _ _ _ X X _,
+				s _ _ X X X _ _ _ _ _ X X X _ X X,
+				s _ X X _ _ _ _ _ _ _ _ _ X X _ _,
+				s _ X X _ _ _ _ _ _ _ _ _ X X _ _,
+				s X X _ _ _ _ _ _ _ _ _ _ _ X X _,
+				s X X _ _ _ _ _ _ _ _ _ _ _ X X _,
+				s X X _ X X X X X _ _ _ _ _ X X _,
+				s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+				s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+				s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+				s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+				s _ _ X X X _ _ _ _ _ X X X _ _ _,
+				s _ _ _ X X X X X X X X X _ _ _ _,
+				s _ _ _ _ _ X X X X X _ _ _ _ _ _,
+				s _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+			};
+			注意：千万不要忘记在绘图结束后清除这些宏定义，否则可能会给你后面的代码带来不可预测的后果。
+					#ifdef X
+						#undef X
+					#endif
+					/*------*/
+					#ifdef _
+						#undef _
+					#endif
+					/*------*/
+					#ifdef s
+						#undef s
+					#endif
+					/*------*/
+					
+		C语言实例：
+			#include	<stdio.h>
+			
+			#define X )*2+1
+			#define _ )*2
+			#define s ((((((((((((((((0			/* 用于创建16位宽的图形 */
+			/* 使用上面的宏定义，程序就可以描述出对应的图形，程序的自描述能力大大加强 */
+			static unsigned short stopwatch[] =
+			{
+			#if 1
+				s _ _ _ _ _ X X X X X _ _ _ X X _,
+				s _ _ _ _ _ X X X X X _ _ _ X X _,
+				s _ _ X X X _ _ _ _ _ X X X _ X X,
+				s _ X X _ _ _ _ _ _ _ _ _ X X _ _,
+				s _ X X _ _ _ _ _ _ _ _ _ X X _ _,
+				s X X _ _ _ _ _ _ _ _ _ _ _ X X _,
+				s X X _ _ _ _ _ _ _ _ _ _ _ X X _,
+				s X X _ X X X X X _ _ _ _ _ X X _,
+				s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+				s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+				s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+				s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+				s _ _ X X X _ _ _ _ _ X X X _ _ _,
+				s _ _ _ X X X X X X X X X _ _ _ _,
+				s _ _ _ _ _ X X X X X _ _ _ _ _ _,
+				s _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+			#else
+				s _ _ _ _ _ X X X X X _ _ _ X X _,
+				s _ _ _ _ _ X X X X X _ _ _ X X _,
+				s _ _ X X X _ _ X _ _ X X X _ X X,
+				s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+				s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+				s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+				s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+				s X X X X X X X X X X X X X X X _,
+				s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+				s X X _ _ _ _ _ X _ _ _ _ _ X X _,
+				s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+				s _ X X _ _ _ _ X _ _ _ _ X X _ _,
+				s _ _ X X X _ _ _ _ _ X X X _ _ _,
+				s _ _ _ X X X X X X X X X _ _ _ _,
+				s _ _ _ _ _ X X X X X _ _ _ _ _ _,
+				s _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+			#endif
+			};
+			
+			#define ushort_bit_length 16
+			void main()
+			{
+				int buf_length;
+				buf_length = sizeof(stopwatch)/2;
+				printf("buf_length = %d\n", buf_length);
+				printf("\n");
+			
+				for (int i = 0; i < buf_length; i++)
+				{
+					for (int j = 0; j < ushort_bit_length; j++)
+					{
+						if (j == 0)
+						{
+							printf("s");
+						}
+						else
+						{
+							if ((stopwatch[i] << j) & 0x8000)
+							{
+								printf("X");
+							}
+							else
+							{
+								printf("_");
+							}
+						}
+					}
+					printf("\n");
+				}
+				printf("\n");
+			
+				#ifdef X
+					#undef X
+				#endif
+			
+				#ifdef _
+					#undef _
+				#endif
+			
+				#ifdef s
+					#undef s
+				#endif
+			
+				#ifdef X
+					printf("#ifdef X able\n");
+				#else
+					printf("#undef X able\n");
+				#endif
+			
+				#ifdef _
+					printf("#ifdef _ able\n");
+				#else
+					printf("#undef _ able\n");
+				#endif
+			
+				#ifdef s
+					printf("#ifdef s able\n");
+				#else
+					printf("#undef s able\n");
+				#endif
+			}
+
+	8.4 原型之痛
+		
+	8.5 原型在什么地方会失败
+		不要再函数的声明和定义中混用新旧两种风格
+			1.坚决不要再函数声明和定义中混用新旧两种风格。如果函数在头文件中的声明是K&R
+				C风格的，那么函数的定义也应该使用K&R C风格的语法。
+				例：int foo();	
+						int foo(a,b) 
+						int a;
+						int b;
+						{
+							;
+						}
+			2.如果函数具有ANSI C原型,那么在它的定义中也使用ANSI C风格语法。
+				例：int foo(int a,int b);	
+						int foo(int a,int b) 
+						{
+							;
+						}
+		
+	8.6 不需要按回车键就能得到一个字符
+		
+
+
+
+
+
+
+
+
+
+
 
 
 
