@@ -81,14 +81,58 @@ Python教程
 						C:\work> python hello.py                            
 						Hello, world!  
 	使用文本编辑器
-		
+		推荐两款文本编辑器：
+			1.一个是Sublime Text，免费使用，但是不付费会弹出提示框：
+			2.一个是Notepad++，免费使用，有中文界面：
+			请注意，用哪个都行，但是绝对不能用Word和Windows自带的记事本。Word保存的不是纯文本文件，而记事本会自作聪明地在文件开始的地方加上几个特殊字符（UTF-8 BOM），结果会导致程序运行出现莫名其妙的错误。
+		安装好文本编辑器后，输入以下代码：
+			print('hello, world')
+		把当前目录切换到hello.py所在目录，就可以运行这个程序了：
+			C:\work>python hello.py
+			hello, world
+		小结
+			用文本编辑器写Python程序，然后保存为后缀为.py的文件，就可以用Python直接运行这个程序了。
+			Python的交互模式和直接运行.py文件有什么区别呢？
+			直接输入python进入交互模式，相当于启动了Python解释器，但是等待你一行一行地输入源代码，每输入一行就执行一行。
+			直接运行.py文件相当于启动了Python解释器，然后一次性把.py文件的源代码给执行了，你是没有机会以交互的方式输入源代码的。
+			用Python开发程序，完全可以一边在文本编辑器里写代码，一边开一个交互式命令窗口，在写代码的过程中，把部分代码粘到命令行去验证，事半功倍！前提是得有个27'的超大显示器！
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+	Python代码运行助手
+		Python代码运行助手可以让你在线输入Python代码，然后通过本机运行的一个Python脚本来执行代码。
+	
+	输入和输出
+		输出(print())
+			print()函数的几种用法：
+			1.用print()在括号中加上字符串，就可以向屏幕上输出指定的文字。比如输出'hello, world'，用代码实现如下：
+				>>> print('hello, world')
+				hello, world
+			2.print()函数也可以接受多个字符串，用逗号“,”隔开，逗号“,”会输出一个空格，就可以连成一串输出：
+				>>> print('The quick brown fox', 'jumps over', 'the lazy dog')
+				The quick brown fox jumps over the lazy dog
+			3.print()也可以打印整数，或者计算结果：
+				>>> print(100 + 200)
+				300
+				或者
+				>>> print('100 + 200 =', 100 + 200)
+				100 + 200 = 300
+		输入(input())
+			input()函数的几种用法：
+			1.ython提供了一个input()，可以让用户输入字符串，并存放到一个变量里。比如输入用户的名字：
+				>>> name = input()
+				Michael
+			  你可以输入任意字符，然后按回车后完成输入。答案是存放到name变量里了。可以直接输入name查看变量内容：
+				>>> name
+				'Michael'
+			2.name作为一个变量就是一个字符串。要打印出name变量的内容，除了直接写name然后按回车外，还可以用print()函数：
+				>>> print("My name is",name)
+				My name is Michael
+			3.input()可以让你显示一个字符串来提示用户，于是我们把代码改成：
+				>>> name = input('please enter your name: ')
+				please enter your name: Michael
+				>>> print('hello,', name)
+				hello, Michael
+    
+Python基础	
+	小结
+		Python使用缩进来组织代码块，请务必遵守约定俗成的习惯，坚持使用4个空格的缩进。
+		在文本编辑器中，需要设置把Tab自动转换为4个空格，确保不混用Tab和空格。
