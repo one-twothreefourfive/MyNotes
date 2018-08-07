@@ -309,7 +309,7 @@
 					2.dev分支是开发分支,团队所有成员都需要在上面工作,所以也需要与远程同步;
 					3.bug分支只用于在本地修复bug,就没必要推到远程了,除非老板要看看你每周到底修复了几个bug;
 					4.feature分支是否推到远程,取决于你是否和你的小伙伴合作在上面开发.
-			抓取分支
+			抓取分支（并解决冲突）
 				1.模拟一个你的小伙伴,可以在另一台电脑(注意要把SSH Key添加到GitHub)或者同一台电脑的另一个目录下克隆：
 					$ git clone git@github.com:michaelliao/learngit.git
 						Cloning into 'learngit'...
