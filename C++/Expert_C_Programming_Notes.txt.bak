@@ -762,6 +762,107 @@
 		
 	8.6 不需要按回车键就能得到一个字符
 		Micorsoft和Borland的C编译器提供了getch()（或getche()，它可以使字符在读取的同时回显于屏幕上）来获取单个字符，而不用等待整行结束。
+		Windows 系统下的 vs 中可以使用 _kbhit() 函数来获取键盘事件，使用时需要加入 conio.h 头文件。
+		
+		C/C++ 获取键盘事件
+			1.Windows 系统下的 vs中的用法：
+				#include <conio.h>
+				#include <iostream>
+				 
+				using namespace std;
+				 
+				int main()
+				{
+					int ch;
+					while (1){
+						if (_kbhit()){//如果有按键按下，则_kbhit()函数返回真
+							ch = _getch();//使用_getch()函数获取按下的键值
+							cout << ch;
+							if (ch == 27){ break; }//当按下ESC时循环，ESC键的键值时27.
+						}
+					}
+					system("pause");
+				}
+			2.在 Unix/Linux 下，并没有提供 kbhit() 函数。我们可以自己来实现 kbhit() 程序。
+			  在UNIX中，有两种方法实现逐字符的输入，一种很难，一种很容易。
+				1）.容易的方法让stty程序来实现这个功能：（通过终端命令的方式间接实现）
+					#include <stdio.h>
+					main()
+					{	
+						int c;
+						system("stty raw");			/* 终端驱动处于一次一个字符模式 */
+						c = getchar();
+						system("stty cooked");		/* 终端驱动处又回到一次一行模式 */
+						
+					}
+					总结：
+						a.最后一行不能省略system("stty cooked");因为程序结束后，终端字符驱动特性还会延续下去。
+						  这和设置环境变量明显不同，后者在进程结束后自动消失。
+						b.此方法把I/O设置为raw状态实现阻塞式读入，如果终端没有字符输入，进程就一直等待，直到字符输入为止。
+				2）.此方案可实现非阻塞式读入，使用ioctl()（I/O控制）系统调用。此函数可判断是否有按键按下,通过轮询判断按键按下，才进行字符读入：
+					//#include <sys/filio.h>	/* 此头文件在Linux下Ubuntu系统编译出错，可能只能用于Unix系统，用<sys/ioctl.h>替代 */		
+					#include <sys/ioctl.h>		/* BSD and Linux，ioctl()函数的头文件 */
+					#include <errno.h>			/* errno变量的头文件 */
+					#include <stdio.h>
+					
+					int kbhit()
+					{
+						int i;
+						
+						errno=0;				/* 如果库函数调用或系统调用遇到问题时，errno变量被设置以提示问题原因 */	
+						if(ioctl(0,FIONREAD,&i) < 0)
+						{
+							if(errno == EBADF) printf("errno:bad file number");
+							if(errno == EINVAL) printf("errno:invalid argument");
+						}
+						return i;
+					}
+					main()
+					{	
+						int i = 0;
+						char c=' ';
+						
+						system("stty raw -echo");		/* 终端驱动处于一次一个字符模式且关闭回显 */
+						printf("input 'q' quit \n");	/* printf()函数内如果不加"\n"，可能导致终端设备不显示此内容 */
+						for(;c!='q';i++)
+						{
+							if(kbhit())
+							{
+								c = getchar();
+								printf("\n got %c,on iteration = %d",c,i);
+							}
+						}
+						system("stty cooked echo");		/* 终端驱动处又回到一次一行模式且打开回显 */
+					}
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
