@@ -810,10 +810,9 @@
 						int i;
 						
 						errno=0;				/* 如果库函数调用或系统调用遇到问题时，errno变量被设置以提示问题原因 */	
-						if(ioctl(0,FIONREAD,&i) < 0)
-						{
-							if(errno == EBADF) printf("errno:bad file number");
-							if(errno == EINVAL) printf("errno:invalid argument");
+						if(ioctl(0,FIONREAD,&i) < 0) {
+							if(errno == EBADF) printf("errno: bad file number");
+							if(errno == EINVAL) printf("errno: invalid argument");
 						}
 						return i;
 					}
@@ -824,10 +823,8 @@
 						
 						system("stty raw -echo");		/* 终端驱动处于一次一个字符模式且关闭回显 */
 						printf("input 'q' quit \n");	/* printf()函数内如果不加"\n"，可能导致终端设备不显示此内容 */
-						for(;c!='q';i++)
-						{
-							if(kbhit())
-							{
+						for(;c!='q';i++) {
+							if(kbhit()) {
 								c = getchar();
 								printf("\n got %c,on iteration = %d",c,i);
 							}
@@ -835,8 +832,48 @@
 						system("stty cooked echo");		/* 终端驱动处又回到一次一行模式且打开回显 */
 					}
 				
-
-
+		Linux/Unix下广泛应用的图形函数库curses,取代stty命令，改写上面的main函数代码：
+			#include <curses.h>			/* 使用curses函数库和前面定义的kbhit()函数 */
+			#include <errno.h>
+			#include <sys/ioctl.h>
+			
+			int kbhit()
+			{
+				int i;
+			
+				errno=0;
+				if(ioctl(0,FIONREAD,&i) < 0) {
+					if(errno == EBADF) printf("errno:bad file number");
+					if(errno == EINVAL) printf("errno: invalid argument");
+				}
+				return i;
+			}
+			main()
+			{
+				char c='';
+				int i = 0;
+				
+				initscr();				/* 初始化curses函数 */
+				cbreak();
+				noecho();				/* 按键时不在屏幕回显字符 */
+				mvprintw(0,0,"Press 'q' quit \n");
+				refresh();
+				
+				while(c != 'q') {
+					if(kbhit()) {
+						c = getchar();	/* 不会阻塞，因为我们知道有个字符正在等待 */
+						mvprintw(1,0,"got %c,on iteration %d \n",c,++i);
+						refresh();
+					}
+				}
+				nocbreak();
+				echo();
+				endwin();				/* 结束curses进程 */
+			}
+			总结：
+				a.可以直接在usr/include下查看是否有该头文件<curses.h>，如果没有需安装curses库（>sudo apt-get install ncurses-dev ），
+				  curses函数库的头文件和库文件就被分别安装在/usr/include/和/usr/lib/下。
+				b.在编译程序时，直接使用命令：gcc program.c -o program -lcurses，完成编译，运行。
 
 
 
