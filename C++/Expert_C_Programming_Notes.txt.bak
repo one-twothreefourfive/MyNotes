@@ -933,7 +933,8 @@
 		    }
 		3.编程挑战：（把上述编程片段补充完整，实现散列函数）
 			#include <stdio.h>
-			#include <malloc.h>
+	//#include <stdlib.h>
+	//#include <string.h
 			
 			#define NIL 0
 			#define SAME 1
@@ -941,7 +942,7 @@
 			typedef struct s_hash_file 
 			{
 				char fname[20];
-				stuct s_hash_file *flink;
+				struct s_hash_file *flink;
 			} file;
 			
 		    int hash_filename(char *s) 
