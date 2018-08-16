@@ -897,8 +897,126 @@
 		  就像main函数的参数一样，我们熟悉的int argc；char *argv[]机制非常普遍，可以成功的运用在你所定义的函数中。
 		
 	8.8 软件比硬件困难
-		
-
+		1.FMS编写代码时使用两个明显的阶段：
+		  a.首先进行状态切换，只有当他们处于工作状态时才提供动作。
+		  b.可调式性代码的方式构建框架：把系统分成几个部分，先让程序总体运行。只有基本的程序运行后，你才为那些复杂的细节完善、性能调整和算法优化进行编码。
+		2.运用可调式编码方式实现散列函数：
+		  a.先完成最简单能运行的程序，就是散列函数总是返回0：
+		  	/* hash_file:占位符s为将来更复杂的程序预留位置 */
+		  	int hash_filename(char *s) {
+		  		return 0;
+		  	}
+		    调用这个散列函数的程序如下：
+		    /**
+		     * find_file:定位以前建立的文件描述符，需要时可以新建一个
+		     */
+		    file find_filename(char *s)
+		    {
+		    	int hash_value = hash_filename(s);
+		    	file f;
+		    	for(f = file_hash_table[hash_value];f != NIL;f = f -> flink) {
+		    		if(strcmp(f->fname,s) == SAME) {
+		    			return f;
+		    		}
+		    	}
+		    	
+		    	f = allocate_file(s);
+		    	f->flink = file_hash_table[hash_value];
+		    	file_hash_table[hash_value] = f;
+		    	return f;
+		    }
+		    上述效果像是一个散列表还未被使用，所有元素存储在第0个元素后面的链表之中。使得函数很容易实现和调试，因为无需实现散列函数的具体值，
+		    下面实现hash_filename()函数：
+		    int hash_filename(char *s) {
+		    	int length = strlen(s);
+		    	return (length+4*(s[0]+4*s[length/2])) / FILE_HASH;
+		    }
+		3.编程挑战：（把上述编程片段补充完整，实现散列函数）
+			#include <stdio.h>
+			#include <malloc.h>
+			
+			#define NIL 0
+			#define SAME 1
+			#define FILE_HASH 20
+			typedef struct s_hash_file 
+			{
+				char fname[20];
+				struct s_hash_file *flink;
+			} file;
+			
+		    int hash_filename(char *s) 
+		    {
+		    	int length = strlen(s);
+		    	return (length+4*(s[0]+4*s[length/2])) / FILE_HASH;
+		    }
+		    file allocate_file(char *s)
+		    {
+		    	int length = strlen(s);		// 例如：char *s="1234567890"; strlen(s)= 10 >>>> 如果要获得这个字符串的长度，则一定要使用 strlen
+		    	file *f_new=NULL;
+		    	
+		    	f_new = (file*)malloc(length);
+		    	if(f_new == NULL) {
+		    		printf("不能分配内存空间");
+		    	}
+		    	return *f_new;
+		    }
+		    
+		    file find_filename(char *s)
+		    {
+		    	int hash_value = hash_filename(s);
+		    	file f;
+		    	for(f = file_hash_table[hash_value];f != NIL;f = f -> flink) {
+		    		if(strcmp(f->fname,s) == SAME) {
+		    			return f;
+		    		}
+		    	}
+		    	
+		    	f = allocate_file(s);
+		    	f->flink = file_hash_table[hash_value];
+		    	file_hash_table[hash_value] = f;
+		    	return f;
+		    }
+		    
+		    void main()
+		    {
+		    	file f;
+		    	char *s="abcdefg";
+				file file_hash_table[FILE_HASH];
+				memset(file_hash_table, 0, sizeof(file)*FILE_HASH); 
+		    	
+		    	f = find_filename(char *s);
+		    	printf("name=%s",f->fname);
+		    }
+		 4.补充知识（strlen与sizeof的区别？）
+			a.sizeof
+				sizeof(...)是运算符，在头文件中typedef为unsigned int，其值在编译时即计算好了，参数可以是数组、指针、类型、对象、函数等。
+				它的功能是：获得保证能容纳实现所建立的最大对象的字节大小。
+				由于在编译时计算，因此sizeof不能用来返回动态分配的内存空间的大小。实际上，用sizeof来返回类型以及静态分配的对象、结构或数组所占的空间，返回值跟对象、结构、数组所存储的内容没有关系。
+				具体而言，当参数分别如下时，sizeof返回的值表示的含义如下：
+				数组——编译时分配的数组空间大小；
+				指针——存储该指针所用的空间大小（存储该指针的地址的长度，是长整型，应该为4）；
+				类型——该类型所占的空间大小；
+				对象——对象的实际占用空间大小；
+				函数——函数的返回类型所占的空间大小。函数的返回类型不能是void。
+				**************
+			b.strlen
+			    strlen(...)是函数，要在运行时才能计算。参数必须是字符型指针（char*）。当数组名作为参数传入时，实际上数组就退化成指针了。
+			    它的功能是：返回字符串的长度。该字符串可能是自己定义的，也可能是内存中随机的，该函数实际完成的功能是从代表该字符串的第一个地址开始遍历，直到遇到结束符NULL。返回的长度大小不包括NULL。
+			c.举例：
+			    eg1.char arr[10] = "What?";
+		            int len_one = strlen(arr);
+		            int len_two = sizeof(arr); 
+		            cout << len_one << " and " << len_two << endl; 
+			    	输出结果为：5 and 10
+			    	点评：sizeof返回定义arr数组时，编译器为其分配的数组空间大小，不关心里面存了多少数据。strlen只关心存储的数据内容，不关心空间的大小和类型。
+			    eg2.char * parr = new char[10];
+			        int len_one = strlen(parr);
+			        int len_two = sizeof(parr);
+			        int len_three = sizeof(*parr);
+			        cout << len_one << " and " << len_two << " and " << len_three << endl;
+			        输出结果：23 and 4 and 1
+			        点评：第一个输出结果23实际上每次运行可能不一样，这取决于parr里面存了什么（从parr[0]开始知道遇到第一个NULL结束）；第二个结果实际上本意是想计算parr所指向的动态内存空间的大小，但是事与愿违，sizeof认为parr是个字符指针，因此返回的是该指针所占的空间（指针的存储用的是长整型，所以为4）;第三个结果，由于*parr所代表的是parr所指的地址空间存放的字符，所以长度为1。
+			        ************
 
 
 
