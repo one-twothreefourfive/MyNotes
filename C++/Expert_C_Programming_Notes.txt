@@ -900,7 +900,7 @@
 		1.FMS编写代码时使用两个明显的阶段：
 		  a.首先进行状态切换，只有当他们处于工作状态时才提供动作。
 		  b.可调式性代码的方式构建框架：把系统分成几个部分，先让程序总体运行。只有基本的程序运行后，你才为那些复杂的细节完善、性能调整和算法优化进行编码。
-		2.运用可调式编码方式实现散列函数：
+		2.运用可调式编码方式实现“散列函数”：
 		  a.先完成最简单能运行的程序，就是散列函数总是返回0：
 		  	/* hash_file:占位符s为将来更复杂的程序预留位置 */
 		  	int hash_filename(char *s) {
@@ -934,60 +934,159 @@
 		3.编程挑战：（把上述编程片段补充完整，实现散列函数）
 			#include <stdio.h>
 			#include <stdlib.h>
-			#include <string.h
+			#include <string.h>
 			
-			#define NIL 0
-			#define SAME 1
-			#define FILE_HASH 20
-			typedef struct s_hash_file 
+			#define TABLE_SIZE (16)		// TABLE_SIZE赋值为16或者2的幂次；否则，不能通过data & (TABLE_SIZE-1)计算索引值（data % TABLE_SIZE的方式计算索引值）
+            
+            /* handlersh表和基本数据节点 */
+            typedef struct _node {
+				int data;
+				struct _node* next;
+			} NODE;
+			
+			typedef struct _hash_table {
+				NODE* value[TABLE_SIZE];
+			} HASH_TABLE;
+			
+			typedef enum {
+				FALSE = 0,
+				TRUE
+			}STATUS;
+			
+            /* 创建hash表 */
+			HASH_TABLE* create_hash_table()
 			{
-				char fname[20];
-				struct s_hash_file *flink;
-			} file;
+				HASH_TABLE* pHashTb1 = (HASH_TABLE*)malloc(sizeof(HASH_TABLE));
+				memset(pHashTb1, 0, sizeof(HASH_TABLE));
+				return pHashTb1;
+			}
+            
+            /* 在hash表当中寻找数据 */
+			NODE* find_data_in_hash(HASH_TABLE* pHashTbl, int data)
+			{
+				int i=0;
+				NODE* pNode;
+				if (NULL == pHashTbl)
+					return NULL;
 			
-		    int hash_filename(char *s) 
-		    {
-		    	int length = strlen(s);
-		    	return (length+4*(s[0]+4*s[length/2])) / FILE_HASH;
-		    }
-		    file allocate_file(char *s)
-		    {
-		    	int length = strlen(s);		// 例如：char *s="1234567890"; strlen(s)= 10 >>>> 如果要获得这个字符串的长度，则一定要使用 strlen
-		    	file *f_new=NULL;
-		    	
-		    	f_new = (file*)malloc(length);
-		    	if(f_new == NULL) {
-		    		printf("不能分配内存空间");
-		    	}
-		    	return *f_new;
-		    }
-		    
-		    file find_filename(char *s)
-		    {
-		    	int hash_value = hash_filename(s);
-		    	file f;
-		    	for(f = file_hash_table[hash_value];f != NIL;f = f -> flink) {
-		    		if(strcmp(f->fname,s) == SAME) {
-		    			return f;
-		    		}
-		    	}
-		    	
-		    	f = allocate_file(s);
-		    	f->flink = file_hash_table[hash_value];
-		    	file_hash_table[hash_value] = f;
-		    	return f;
-		    }
-		    
-		    void main()
-		    {
-		    	file f;
-		    	char *s="abcdefg";
-				file file_hash_table[FILE_HASH];
-				memset(file_hash_table, 0, sizeof(file)*FILE_HASH); 
-		    	
-		    	f = find_filename(char *s);
-		    	printf("name=%s",f->fname);
-		    }
+				//if (NULL == (pNode = pHashTbl->value[data % TABLE_SIZE]))
+				if (NULL == (pNode = pHashTbl->value[data & (TABLE_SIZE - 1)]))
+					return NULL;
+			
+				while (pNode){
+					if (data == pNode->data)
+						return pNode;
+					pNode = pNode->next;
+					i++;
+				}
+				return NULL;
+			}
+            
+            /* 在hash表当中插入数据 */
+			STATUS insert_data_into_hash(HASH_TABLE* pHashTbl, int data)
+			{
+				NODE* pNode;
+				if (NULL == pHashTbl)
+					return FALSE;
+			
+				//if (NULL == pHashTbl->value[data % TABLE_SIZE]){
+				if (NULL == pHashTbl->value[data & (TABLE_SIZE - 1)]){
+					pNode = (NODE*)malloc(sizeof(NODE));
+					memset(pNode, 0, sizeof(NODE));
+					pNode->data = data;
+					//pHashTbl->value[data % TABLE_SIZE] = pNode;
+					pHashTbl->value[data & (TABLE_SIZE - 1)] = pNode;
+					return TRUE;
+				}
+			
+				if (NULL != find_data_in_hash(pHashTbl, data))
+					return FALSE;
+			
+				//pNode = pHashTbl->value[data % TABLE_SIZE];
+				pNode = pHashTbl->value[data & (TABLE_SIZE - 1)];
+				while (NULL != pNode->next)
+					pNode = pNode->next;
+			
+				pNode->next = (NODE*)malloc(sizeof(NODE));
+				memset(pNode->next, 0, sizeof(NODE));
+				pNode->next->data = data;
+				return TRUE;
+			}
+            
+            /* 从hash表中删除数据 */
+			STATUS delete_data_from_hash(HASH_TABLE* pHashTbl, unsigned long int data)
+			{
+				NODE* pHead;
+				NODE* pNode;
+				//if (NULL == pHashTbl || NULL == pHashTbl->value[data % TABLE_SIZE])
+				if (NULL == pHashTbl || NULL == pHashTbl->value[data & (TABLE_SIZE - 1)])
+					return FALSE;
+			
+				if (NULL == (pNode = find_data_in_hash(pHashTbl, data)))
+					return FALSE;
+			
+				//if (pNode == pHashTbl->value[data % TABLE_SIZE]){
+				if (pNode == pHashTbl->value[data & (TABLE_SIZE - 1)]){
+					//pHashTbl->value[data % TABLE_SIZE] = pNode->next;
+					pHashTbl->value[data & (TABLE_SIZE - 1)] = pNode->next;
+					goto final;
+				}
+			
+				//pHead = pHashTbl->value[data % TABLE_SIZE];
+				pHead = pHashTbl->value[data & (TABLE_SIZE - 1)];
+				while (pNode != pHead->next)
+					pHead = pHead->next;
+				pHead->next = pNode->next;
+			
+				final:
+				free(pNode);
+				return TRUE;
+			}
+			
+			/* the classic Times33 hash function */
+			static int hash_33(char* key)
+			{
+				int hash = 0;
+				while (*key) {
+					hash = (hash << 5) + hash + *key++;
+					//hash = hash * 33 + *key++;
+				}
+				return hash;
+			}
+			
+			void main()
+			{
+				NODE* p_node = NULL;
+				HASH_TABLE* p_hash_table = NULL; 
+				STATUS e_status;
+				int hash_code;
+				char input[] = "book";
+				char input2[] = "tanzheng";
+			
+				p_hash_table = create_hash_table();
+				if (p_hash_table != NULL) {	
+					printf("create hash_table ok,address=%p \n", p_hash_table);
+					hash_code = hash_33(input);
+					e_status = insert_data_into_hash(p_hash_table, hash_code);
+					e_status = insert_data_into_hash(p_hash_table, hash_code);
+					e_status = insert_data_into_hash(p_hash_table, 16139);
+					e_status = insert_data_into_hash(p_hash_table, 7723);
+					e_status = insert_data_into_hash(p_hash_table, 7724);
+					e_status = insert_data_into_hash(p_hash_table, 7725);
+                    e_status = delete_data_from_hash(p_hash_table, 16139);
+                    e_status = delete_data_from_hash(p_hash_table, 7724);
+					if (e_status == TRUE) {
+						printf("SUCCESS \n");
+					}
+					else {
+						printf("FAILURE \n");
+					}
+				}
+			}
+			注意：1.TABLE_SIZE赋值为16或者2的幂次；否则，不能通过data & (TABLE_SIZE-1)计算索引值（data % TABLE_SIZE的方式计算索引值）。
+				  2.Hash算法最终得到的index结果，完全取决于Key的Hashcode值的最后几位。（上述的Hashcode算法用的hash_33()函数）。
+				  3.Hash碰撞时，运用链表保存对应的索引结构下,称为"链式扩展"。
+                  4.
 		 4.补充知识（strlen与sizeof的区别？）
 			a.sizeof
 				sizeof(...)是运算符，在头文件中typedef为unsigned int，其值在编译时即计算好了，参数可以是数组、指针、类型、对象、函数等。
