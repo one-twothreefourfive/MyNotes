@@ -1086,7 +1086,8 @@
 			注意：1.TABLE_SIZE赋值为16或者2的幂次；否则，不能通过data & (TABLE_SIZE-1)计算索引值（data % TABLE_SIZE的方式计算索引值）。
 				  2.Hash算法最终得到的index结果，完全取决于Key的Hashcode值的最后几位。（上述的Hashcode算法用的hash_33()函数）。
 				  3.Hash碰撞时，运用链表保存对应的索引结构下,称为"链式扩展"。
-                  4.
+                  4.HashMap负载因子，默认值为0.75f。当HashMap.Size≥0.75*TABLE_SIZE，需要扩展TABLE_SIZE的大小；防止Key映射位置发生冲突的几率降低。
+                
 		 4.补充知识（strlen与sizeof的区别？）
 			a.sizeof
 				sizeof(...)是运算符，在头文件中typedef为unsigned int，其值在编译时即计算好了，参数可以是数组、指针、类型、对象、函数等。
