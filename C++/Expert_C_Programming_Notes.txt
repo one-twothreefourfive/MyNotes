@@ -1118,8 +1118,59 @@
 			        输出结果：23 and 4 and 1
 			        点评：第一个输出结果23实际上每次运行可能不一样，这取决于parr里面存了什么（从parr[0]开始知道遇到第一个NULL结束）；第二个结果实际上本意是想计算parr所指向的动态内存空间的大小，但是事与愿违，sizeof认为parr是个字符指针，因此返回的是该指针所占的空间（指针的存储用的是长整型，所以为4）;第三个结果，由于*parr所代表的是parr所指的地址空间存放的字符，所以长度为1。
 			        ************
-
-
+			        
+	8.9 如何进行强制类型转换，为何要进行类型强制转换
+		1.复杂的类型转换可以按3各步骤编写：
+			1）一个对象的声明，它的类型就是想要转换的结果类型。
+			2）删除标识符（以及任何和extern之类的存储限定符），并把剩余的内容放在一对括号里。
+			3）把第2步产生的内容放在需要进行类型转换的对象左边。
+		2.举例：
+			1）建立一个指向printf()函数的指针：
+				extern int printf(const char*,...);
+				void main()
+				{
+					void* f = (void*)printf;
+					(*(int(*)(const char*,...))f)("I'm ok! \n");
+				}
+				或
+				extern int printf(const char*,...);
+				typedef int(*p_function)(const char*,...);
+				void main()
+				{
+					p_function f;
+					f = &printf;
+					(*f)("I'm ok! \n");
+				}
+			2）void和void*指针使用规范:
+				void和void*指针的含义：
+					void的字面意思是“无类型”，void*则为“无类型指针”，void*可以指向任何类型的数据。void几乎只有“注释”和限制程序的作用，因为从来没有人会定义一个void变量。
+				规则一：如果函数没有返回值，那么应声明为void类型
+				规则二：如果函数无参数，那么应声明其参数为void
+				规则三：小心使用void指针类型
+					   解释：a.在ANSIC标准中，不允许对void指针进行算术运算如pvoid++或pvoid+=1等，而在GNU中则允许，
+				               因为在缺省情况下，GNU认为void *与char *一样。sizeof(*pvoid )== sizeof( char)。
+				             b.void指针可以指向任意类型的数据，亦即可用任意数据类型的指针对void指针赋值。例如：
+							   int * pint;
+							   void *pvoid;
+							   pvoid = pint; /* 不过不能 pint= pvoid; */
+							   如果要将pvoid赋给其他类型指针，则需要强制类型转换如：pint= (int *)pvoid;
+				规则四：如果函数的参数可以是任意类型指针，那么应声明其参数为void*
+					   解释：典型的如内存操作函数memcpy和memset的函数原型分别为：
+							 void * memcpy(void*dest,constvoid*src,size_tlen);
+							 void * memset(void*buffer,intc,size_tnum);
+							 这样，任何类型的指针都可以传入memcpy和memset中，这也真实地体现了内存操作函数的意义。
+				规则五：void不能代表一个真实的变量
+					   解释：下面代码都企图让void代表一个真实的变量，因此都是错误的代码：
+							 void a;//错误
+							 function(void a);//错误
+							 
+	8.10 国际C语言混乱代码大赛
+	
+第9章（再论数组）
+199页	
+	
+	
+	
 
 
 
