@@ -162,7 +162,38 @@
 				(use "git push" to publish your local commits)
 			5.在master分支上把readme.txt文件的求最后一行对划线：Creating a new branch is quick & simple.
 			6.这时master分支与feature1分支的内容冲突,无法合并,需手动修改master上的内容为最终的说明.
-			7.最后,删除feature1分支：
+				内容冲突,我们可以直接查看readme.txt文件的内容：
+					Git is a distributed version control system.
+					Git is free software distributed under the GPL.
+					Git has a mutable index called stage.
+					Git tracks changes of files.
+					<<<<<<< HEAD
+					Creating a new branch is quick & simple.
+					=======
+					Creating a new branch is quick AND simple.
+					>>>>>>> feature1
+				Git的用<<<<<<<，=======，>>>>>>>标记出不同分支的内容，我们修改如下后保存：
+					Creating a new branch is quick and simple.
+				再提交：
+					$ git add readme.txt 
+					$ git commit -m "conflict fixed"
+					[master cf810e4] conflict fixed
+			7.feature1分支在节点上，用带参数的git log可以看到分支的合并情况：
+				$ git log --graph --pretty=oneline --abbrev-commit
+				*   cf810e4 (HEAD -> master) conflict fixed
+				|\  
+				| * 14096d0 (feature1) AND simple
+				* | 5dc6824 & simple
+				|/  
+				* b17d20e branch test
+				* d46f35e (origin/master) remove test.txt
+				* b84166e add test.txt
+				* 519219b git tracks changes
+				* e43a48b understand how stage works
+				* 1094adb append GPL
+				* e475afc add distributed
+				* eaadf4e wrote a readme file
+			8.最后,删除feature1分支：
 				$ git branch -d feature1
 				Deleted branch feature1 (was 14096d0).
 		分支管理策略
