@@ -168,7 +168,7 @@
 				
 				std::cout << "Value of &x[0] variable: ";
 				std::cout << &x[0] << std::endl;
-	
+				
 				std::cout << "Value of (void *)x variable: ";
 				std::cout << (void *)x << std::endl;
 				
@@ -202,12 +202,10 @@
 				std::cout << "Value of &y_pter variable: ";
 				std::cout << &y_pter << std::endl;
 				
-				if ((void *)str1 == (void *)str2)
-				{
+				if ((void *)str1 == (void *)str2) {
 					std::cout << "(void *)str1 == (void *)str2" << std::endl;
 				}
-				else
-				{
+				else {
 					std::cout << "(void *)str1 != (void *)str2" << std::endl;
 				}
 				std::cout << "Value of (void *)str1 variable: ";
@@ -219,19 +217,19 @@
 
 				return 0;
 			}
-			Value of x variable: 							tanzheng
-			Value of &x[0] variable: 					tanzheng
-			Value of (void *)x variable:			00FEFE0C
-			Value of &x variable: 						00FEFE0C
+			Value of x variable: 				tanzheng
+			Value of &x[0] variable: 			tanzheng
+			Value of (void *)x variable:		00FEFE0C
+			Value of &x variable: 				00FEFE0C
 			Value of (void *)&x[0] variable: 	00FEFE0C
-			Value of x_pter variable: 				tanzheng
-			Value of (void *)x_pter variable: 00FEFE0C
-			Value of &x_pter variable: 				00FEFE00
-			Value of y variable: 							00FEFDD8
-			Value of &y variable: 						00FEFDD8
-			Value of &y[0] variable: 					00FEFDD8
-			Value of y_pter variable: 				00FEFDD8
-			Value of &y_pter variable: 				00FEFDCC
+			Value of x_pter variable: 			tanzheng
+			Value of (void *)x_pter variable:	00FEFE0C
+			Value of &x_pter variable: 			00FEFE00
+			Value of y variable: 				00FEFDD8
+			Value of &y variable: 				00FEFDD8
+			Value of &y[0] variable: 			00FEFDD8
+			Value of y_pter variable: 			00FEFDD8
+			Value of &y_pter variable: 			00FEFDCC
 			(void *)str1 == (void *)str2
 			Value of (void *)str1 variable: 	0038DC78
 			Value of (void *)str2 variable: 	0038DC78
@@ -244,7 +242,7 @@
 				1)y表示指针y对应的内存空间(可以说就是指针本身的值)
 	   			2)&y表示当前指针对应的内存空间的首地址(存放指针的地址)
 	   			3)*y表示指针y所指向的变量对应的整个内存空间.(指针指向的空间)
-	   		3.char*为什么能直接赋值字符串,常规操作时赋予指针地址？比如：char *str=“tanzheng”;
+	   		3.char*为什么能直接赋值字符串,常规操作时需要赋予指针地址？比如：char *str=“tanzheng”;
 	   			1)字符串保存在文字常量区,编译时就确定了,程序运行时实际就是把保存“tanzheng”这个地址,赋值给指针变量str.
 	   			2)把上述定义的指针变量赋值,比如：*str='A',会报错误.因为*str属于字符常量区,此内存区域只读不能写.
 			4.定义连个字符串,比如：char *str1=“tanzheng”;char *str2=“tanzheng”,运行结果为：str1与str2的指针地址相等,为什么？
@@ -264,7 +262,6 @@
 			1.Interpositioning就是通过编写与库函数同名的函数来取代该函数的行为.
 			2.同名函数会让程序调用时出错.
 			准则;不要让程序中的任何符号成为全局的.除非有意把他们作为程序的接口之一.(通过把函数声明为static函数,使它在所在文件之外不可见或者另外取一个函数名字)
-		
 		
 第6章
 115页
@@ -341,8 +338,8 @@
 		MicrosoftC认可下面的内存模型：
 			small		所有指针都为16位,代码和数据都限定在一个单一的段中,程序最大规模为128KB(代码段和数据段各64KB)
 			large		所有指针都为32位,程序可以包含许多个64KB的段
-			medium	代码指针为32位,所以代码段可能有多个.数据指针为16位,所以只有一个64KB的数据段.
-		  compact medium的另一种形式：代码指针为16位,所以代码最多不超过64KB.数据指针为32位,所以数据可以占据多个段,但堆栈里的数据仍限制在一个64KB的段内.
+			medium		代码指针为32位,所以代码段可能有多个.数据指针为16位,所以只有一个64KB的数据段.
+		  	compact medium的另一种形式：代码指针为16位,所以代码最多不超过64KB.数据指针为32位,所以数据可以占据多个段,但堆栈里的数据仍限制在一个64KB的段内.
 		MicrosoftC认可下面非标准的关键字：
 			__near  16位指针
 			__far   32位指针,但它所指的对象必须全部位于同一个段中(所有的对象均不得超过64KB)
@@ -797,7 +794,6 @@
 						system("stty raw");			/* 终端驱动处于一次一个字符模式 */
 						c = getchar();
 						system("stty cooked");		/* 终端驱动处又回到一次一行模式 */
-						
 					}
 					总结：
 						a.最后一行不能省略system("stty cooked");因为程序结束后，终端字符驱动特性还会延续下去。
@@ -1218,11 +1214,28 @@
 		  
 	9.3 为什么C语言把数组形参当作指针
 		1.数组形参时如何引用的：
-		  1）
-		  		
-
-
-
+		  1）对下标形式的数组形参访问所需要的几个步骤：
+		  	func(char p[]);		...		c = p[i];
+		  	func(char* p);		...		c = p[i];
+		  	编译器符号表显示P可以取值从堆栈指针sp便宜14个位置：
+		  		运行时步骤1：从SP偏移14个位置找到函数的活动记录，取出实参（假如实参地址=5081）。
+		  		运行时步骤2：取i的值，并与5081相加。
+		  		运行时步骤3：取出地址(5081+i)的内容。
+		  
+	9.4 数组片段的下标
+	  	1.
+	  	
+	9.5 数组和指针可交换性的总结
+		1.用a[i]的形式对数组进行访问总是被编译器“改写”或解释成*(a+i)这样指针访问。
+		2.指针始终时指针，绝对不能改写成数组。你可以用下标形式访问指针，一般都是指针作为函数参数时，而且你知道实际传递给函数的是一个数组。
+		3.在特定的上下文钟，也就是它作为函数的参数（也只有这种情况），一个数组的声明可以看作是一个指针，作为函数参数的数组始终会被编译器修改成为指向数组第一个元素的指针。
+		4.因此，当把一个数组定义为函数的参数时，可以选择把它定义为数组，也可以定义指针，不管选择哪种方法，在函数内部事实上获得的都是指针，
+		5.在其他所有情况钟，定义和声明必须匹配。如果声明了数组，在其他文件钟也要定义数组，指针也是如此，
+	  	
+	9.6 C语言的多维数组
+		1.
+		
+		
 
 
 
