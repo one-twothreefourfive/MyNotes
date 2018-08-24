@@ -115,7 +115,7 @@
 	  	/*Bentley和Rolls_Royce的类型相同,都是指向char的指针*/
 		3.typedef struct fruit{ int weight, price_per_lb; } fruit; 
 			声明的两种方式：struct fruit mandarin; 	/* 使用结构标签“fruit” */
-											fruit mandarin; 				/* 使用结构类型“fruit” */
+							fruit mandarin; 				/* 使用结构类型“fruit” */
 		4.结构标签可以取一个“_tag”结尾的名字,使得辨认特定名字变得简单.
 		5.strcmp函数比较两个字符串是否相等？当两个字符串相等时,返回值是0.		
       例如：if (!strcmp(s, "volatile")) return QUALIFIER;
@@ -1233,15 +1233,99 @@
 		5.在其他所有情况钟，定义和声明必须匹配。如果声明了数组，在其他文件钟也要定义数组，指针也是如此，
 	  	
 	9.6 C语言的多维数组
-		1.
-		
-		
-
-
-
-
-
-
+		9.6.1 把所有其他语言都把这称为“数组的数组”
+			1.不同的语言中，”多维数组“的含义各有不同。
+			2.在C语言中，可以像下面这样声明一个10*20的多维数组：
+				char carrot[10][20];
+			  或者声明一个看上去更像“数组的数组”形式：
+			  	typedef char vegetable[20];
+			  	vegetable carrot[10];		/* 相当于char carrot[10][20] */
+			  carror[i][j]数组编译器在编译时会把它解析为*(*(carrot+i)+j)的形式		
+		9.6.2 如何分解多维数组
+			1.先声明一个多维数组，如下：
+				int apricot[2][3][5];
+				下列多种方法为他在内存中定位：
+				1）int (*p)[3][5] = apricot;		/* sizeof(apricot)=120 */
+				2）int (*r)[5] = apricot[i];		/* sizeof(apricot[i])=60 */
+				3）int (*t) = apricot[i][j];		/* sizeof(apricot[i][j])=20 */
+				4）int u = apricot[i][j][k];		/* sizeof(apricot[i][j][k])=4 */
+			2.使用下面声明，编写一个程序，打印r和t的十六进制初始值（使用printf和%x），对两个指针（++），在打印新值：
+				int apricot[2][3][5];
+				int (*r)[5]=apricot[0];
+				int* t=apricot[0][0];
+				void main() {
+					printf("r'address=%x",r);
+					printf("t'address=%x",t);
+					r++;
+					t++;
+					printf("r++'address=%x",r);
+					printf("t++'address=%x",t);
+				}
+				r'address=9b0680
+				t'address=9b0680
+				r++'address=9b0694
+				t++'address=9b0684
+		9.6.3 内存中的数组是如何布局的
+			1.在多维数组中，最右边的下标最先变化。
+			2.多维数组最大的用途是存储多个字符串。
+		9.6.4 如何对数组进行初始化
+			1.举例：
+				short cantaloupe[2][5] = {
+				//short cantaloupe[][5] = {
+					{10,12,3,4,-5},
+					{11,13,13,14,-5},
+				}；
+				注意：最后一个初始化值后面加了一个逗号，也可以省略它。同时也可以把数组左边下标的长度省略，
+					  编译器通过初始化值推断出它的长度。
+			2.如果数组的长度比提供的初始化值个数多，剩余的元素自动填充0。
+			  如果元素的类型是指针，那么它们被初始化为NULL。
+			  如果元素的类型是float，那么它们被初始化为0.0。
+			3.下面是初始化二维字符串数组的方法：
+				1）二维字符串数组初始化：
+					char vegetable[][9] = {
+						"beet",
+						"barley",
+						"basil",
+						"broccli",
+						"beans"
+					};
+			    2）一种更有用方法是建立指针数组，因此：
+				  	char *vegetable[] = {
+						"beet",
+						"barley",
+						"basil",
+						"broccli",
+						"crispy fried patatoes"	/* 没问题 */
+					};
+				注意：指针数组的初始化与字符“数组的数组”初始化部分是一样的。
+				      只有字符串常量才可以初始化指针数组。指针数组不能由非字符串类型直接初始化。
+				3）指针数组通过非字符串类型初始化的错误示范：
+					int *wights[]= {	/* 无法编译成功 */
+						{1,2,2};
+						{2,3,4,4,4};
+						{2,5,2,4}
+					};					/* 无法编译成功 */
+				4）如果想用这种方式对指针数组初始化，可以创建几个单独的数组，然后用数组名来初始化原来的数组：
+					int row_1[] = {1,2,2};
+					int row_2[] = {2,3,4,4,4};
+					int row_3[] = {2,5,2,4};
+					int *wights[]= {	
+						row_1,
+						row_2,
+						row_3
+					};
+					printf("wights[0][0]=%d \n", wights[0][0]);
+					
+					2
+				
+				
+				
+				
+				
+				
+				
+				
+			  
 
 
 
