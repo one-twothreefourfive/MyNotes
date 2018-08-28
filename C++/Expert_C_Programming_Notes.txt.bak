@@ -489,12 +489,12 @@
 						1)在指针赋值之前就用来引用内存,或向库函数传送一个野指针,引起段错误.
 						2)对指针进行释放之后再访问它的内容,导致段错误.可以在free函数后,即释放指针后再将它置为NULL.
 							例如：free(p);
-										p = NULL;
+								  p = NULL;
 					2.重写(overwrite)错误:
 						1)再数组边界外写入数据,再动态分配的内存两端以外写入数据,或改写一些堆管理数据的结构.(在动态分配内存之前的写入数据很容易发生次错误)
 							例如：p=malloc(256);
-										p[-1]=0;			
-										p[256]=0;			/* -1和256都越界了 */
+								  p[-1]=0;			
+								  p[256]=0;			/* -1和256都越界了 */
 					3.指针释放引起的错误:
 						1)释放同一内存块两次及以上
 						2)释放一块未曾使用malloc分配的内存(未用malloc函数分配的内存块,就调用free函数释放!)
@@ -505,15 +505,13 @@
 						不必担心在取下一个元素地址时还要引用它，代码如下：
 							失败的案例：
 								struct node *start,*p;
-								for(p = start;p;p = p->next)
-								{
+								for(p = start;p;p = p->next) {
 									free(p);									/* p = p->next语句,程序对已经释放的指针进行解除指针操作 */
 								}		
 								
 							正确的案例：
 								struct node *start,*p,*tmp;
-								for(p = start;p;p = tmp)
-								{
+								for(p = start;p;p = tmp) {
 									tmp = p->next;
 									free(p);
 								}
@@ -1324,13 +1322,65 @@
 	10.2 指针数组就是Iliffe向量		
 		1.可以通过声明一个一维指针数组，其中每个指针指向一个字符串来取得二维字符数组的效果。声明如下：
 			char* pa[4];与(char*)pa[4];
-		2.用来实现多维数组的指针数组有多种名字，如“Iliffe向量”、“display”、“dope向量”、
-		3.
+		2.用来实现多维数组的指针数组有多种名字，如“Iliffe向量”、“display”、“dope向量”。
+		  这种形式的指针数组是一种强大的编程技巧，在C语言中得到广泛的运用。
+		3.这种数组必须用指向为字符串而分配的内存的指针进行初始化，可以在编译时用常量初始化，也可以运用如下循环的方式分配内存：
+		  1）分别用4次循环调用malloc分配整个X*Y个数据的数组内存：
+			for(i=0;i<4;i++) {
+				pea[i]=(char*)malloc(6);
+			}
+		  2）a.另一种方法是一次性用malloc分配整个X*Y个数据的数组内存：
+		  		char* p;
+				p=(char*)malloc(row_size*column_size*sizeof(char));
+		     b.然后，使用一个循环，用指针指向这块内存的各个区域：
+		     	for(i=0;i<4;i++) {
+					pea[i]=p+(i*column_size*sizeof(char));
+				}
+			 c.整个数组能够保证存储再连续的内存中，即按C分配静态数组的次序。
+			 d.一次性用malloc分配的例程：
+				void main()
+				{
+					char* pea[4];		/* 一维指针数组，类似于2维数组 */
+					char* p=NULL;
+					char row_size=4, column_size=6;
+					
+					if (p == NULL) {
+						p = (char*)malloc(row_size*column_size*sizeof(char));
+						memset(p, 0, row_size*column_size*sizeof(char));
+					}
+					else {
+						return;
+					}
+					printf("p=%p \n", p);
+					for (int i = 0; i<row_size; i++) {
+						pea[i] = p + (i*column_size*sizeof(char));
+						printf("pea[%d]=%p \n", i, pea[i]);
+					}
+					free(p);
+					p = NULL;
+					for (int i = 0; i<row_size; i++) {
+						pea[i] = NULL;
+					}
+					printf("p=%p \n", p);
+					printf("&pea[0][0]=%p \n", &pea[0][0]);
+					printf("&pea[0][5]=%p \n", &pea[0][5]);
+					printf("&pea[1][0]=%p \n", &pea[1][0]);
+					printf("&pea[1][5]=%p \n", &pea[1][5]);
+					printf("&pea[2][0]=%p \n", &pea[2][0]);
+					printf("&pea[2][5]=%p \n", &pea[2][5]);
+					printf("&pea[3][0]=%p \n", &pea[3][0]);
+					printf("&pea[3][5]=%p \n", &pea[3][5]);
+				}
+			 注意：这种方式减少调用malloc的维护性开销，但缺点是处理完一个字符串时，无法单独将其释放。
+		4.当你看见squash[i][j]这样的形式时，你不知道它是怎样被声明的！
+		  当你看到squash[i][j]这样的引用形式，你并不知道squash声明为：
+		  	int squash[][];
 			
-				
-				l
-				
-			  
+		
+		
+		
+		
+		
 
 
 
