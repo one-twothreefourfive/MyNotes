@@ -1538,7 +1538,117 @@
 				3）三维或更多维的数组 --- 都无法使用。必须把它分解为几个维度更少的数组。
 			对于多维数组作为函数传递的支持缺乏是C语言存在的内在限制。这使得用C语言编写某些特定的类型的程序非常困难（如数值分析算法）。
 	10.6 使用指针从函数返回一个数组
-		
+		1.前面一节，我们分析了怎样把数组作为参数传递给函数。本节讨论数据的转换：从函数返回一个数组。
+		2.严格的说，无法直接从函数返回一个数组。但是可以返回一个指向任何数据结构的指针，当然也可以是指向数组的指针。记住，声明必须在使用之前。
+			一个声明和定义的例子：
+				int (*paf())[20];		/* paf是一个函数，它返回一个指向包括20个int元素的数组的指针 */
+				int (*paf())[20] {
+					int (*pear)[20];
+					pear=(int (*)[20])calloc(20,sizeof(int));
+					if(pear==NULL) longjmp(error,1);
+					return pear;
+				}
+				void main()
+				{
+					int (*result)[20];	/* 声明一个指向20个int元素的数组的指针 */
+					result = paf();
+					(*result)[3] = 12;
+					printf("result'address=%p \n", result);
+					printf("result[0][3]=%d \n", result[0][3]);
+					free(result);							/*  free(起始地址的指针) 对内存进行释放 */
+					result = NULL;
+					printf("result'address=%p \n", result);
+				}
+				pear'address=01375278
+				result'address=01375278
+				result[0][3]=12
+				result'address=00000000
+			或者使用结构体的方式：
+				struct a_tag {
+					int array[20];
+				}x,y;
+				struct a_tag my_function() {
+					y.array[0] = 10;
+					y.array[1] = 13;
+					return y;
+				}
+				void main()
+				{
+					x = my_function();
+					x.array[0] = 12;
+					printf("x.array[0]=%d \n", x.array[0]);
+					printf("x.array[1]=%d \n", x.array[1]);
+					printf("y.array[0]=%d \n", y.array[0]);
+					printf("y.array[1]=%d \n", y.array[1]);
+				}
+				x.array[0]=12
+				x.array[1]=13
+				y.array[0]=10
+				y.array[1]=13
+		3.注意：不能从函数返回一个指向函数的局部变量的指针。
+	10.7 使用指针创建和使用动态数组
+		1.当预先不知道数据的长度时，可以使用动态数组。（绝大多数具有数组的编程语言都能够在运行时设置数组的长度，但是ANSI C不支持）
+		2.在ANSI C中，数组是静态的---数组的长度在编译时便已确定不变。在这个领域，C语言支持很弱，甚至不能运用下面的形式：
+			const int limit=100;
+			char plum[limit];		/* 在C语言中，编译错误error；在C++中，这样的语句合法 */
+		3.我们讨论C语言中如何实现动态数组，它的基本思路是使用malloc库函数（内存分配）来得到只想一大块内存的指针，然后，像引用数组一样引用这块内存，其机理就是一个数组下表访问可以改写为一个指针加上偏移量：
+			#include	<stdio.h>
+			#include	<stdlib.h>
+			char *fgets(char *str, int n, FILE *stream);
+			int atoi(const char *nptr);
+			void main()
+			{
+				int size;
+				char *dynamic;
+				char input[10];
+				printf("Please enter size of array：");
+				size = atoi(fgets(input, 7, stdin));	
+				dynamic = (char*)malloc(size);
+
+				dynamic[0] = 'a';
+				dynamic[size-1] = 'z';
+				printf("size=%d \n", size);
+				printf("dynamic[0]=%d \n", dynamic[0]);
+				printf("dynamic[size-1]=%d \n", dynamic[size - 1]);
+			}
+			Please enter size of array：13
+			size=13
+			dynamic[0]=97
+			dynamic[size-1]=122
+
+			解释1：fgets函数，从标准流stdin读取一行（一般指键盘输入到缓冲区里的东西），当读取 (7-1) 个字符或者读取到换行符时，并把它存储在input所指向的字符串内
+			解释2：atoi函数是把字符串转换成整型数的一个函数,直到遇上数字或正负符号才开始做转换，而在遇到非数字或字符串结束符('\0')才结束转换，并将结果返回（atoi函数只能转换带数字的字符串）。
+		4.我们真正需要实现的是使表具有根据需要自动增长的能力，这样它的唯一限制就是内存的总容量。如果不是直接声明一个数组，而是在运行时堆上分配数组的内存，这样可以实现这个目标。有个库函数realloc()，它能够对现有的内存块重新分配（通常是使它扩大），同时不会丢掉原先内存块的内容。当需要在动态表中增长一个项目时，可以进行如下操作：
+			1）对表进行检查，看看它是否真的已满。
+			2）如果确实已满，使用realloc()函数扩展表的长度。并进行检查，确保realloc()操作成功进行。
+			3）在表中增加所需要的项目。
+			用C代码表示，如下：
+				int current_element = 0;
+				int total_element = 128;
+				char *dynamic = (char*)malloc(total_element);
+				void add_element(char c) {
+					if (current_element == (total_element - 1)) {
+						total_element *= 2;
+						dynamic = (char*)realloc(dynamic, total_element);
+						if (dynamic == NULL);// error('Coundn't expend the table');
+					}
+					printf("dynamic=%p \n", dynamic);
+					current_element++;
+					dynamic[current_element] = c;
+				}
+				void main()
+				{
+					for (int i = 0; i < 3 * 128; i++) {
+						add_element(i);
+						printf("dynamic[%d]=%d \n",i,dynamic[i]);
+					}
+
+				}
+			注意：在实践中，不要把realloc()函数的返回值直接赋值给字符指针，如果realloc()函数失败，它会使指针的值变为NULL，这样就无法对现有的表进行访问。
+
+
+
+
 
 
 
