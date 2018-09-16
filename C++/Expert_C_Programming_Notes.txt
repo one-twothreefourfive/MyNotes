@@ -1748,8 +1748,68 @@
 				{
 					printf("in peel");
 				}
+	11.7 如何调用成员函数
+		1.调用成员函数，必须在需要调用的成员函数前面附上类的实例名（或称类的变量，也就是对象）：
+			Fruit melon,orange,banana;
+			void mian() {
+				melon.slice();
+				orange.juice();
+				return 0;
+			}
+		2.每个成员函数都有一个this指针，它是隐式赋给该函数的，它允许对象在成员函数内部引用对象本身。注意，在成员函数内部this指针并没有显式出现，这是语言本身设计的。
+			class Fruit {
+				public:
+					void peel();
+				private:
+					int weight,calories_per_oz;
+			};
+			void Fruit::peel() {
+				printf("this per=%p \n",this);
+				this->weight--;
+				weight--;			/* this->weight和weight是一个变量，存储地址一样 */
+			}
+			Fruit apple;
+			void main()
+			{
+				printf("address of apple=%x \n",&apple);
+				apple.peel();
+			}
+			address of apple=9ff320
+			this per=009FF320
+		3.构造函数和析构函数
+			1）绝大多数类至少具有一个构造函数。当类的对象被创建时，构造函数被隐式的调用了，它负责对象的初始化。
+			2）类也存在一个清理函数，称为析构函数。当对象被销毁时，析构函数被自动调用。析构函数不如构造函数常用，它里面的代码一般用于处理一些特殊的终止要求以及垃圾收集等。有些人把析构函数当作一种保险方法来确保当对象离开适当的范围时，同步锁总能被释放。所以它们不仅清除对象，还清除对象所持有的锁。
+			3）构造函数和析构函数都非常重要，因为类外部的任何函数都不能访问类的private数据成员。因此，需要类内部有一个特权函数来创建一个对象并对其进行初始化。
+			4）C++的类中可以声明多个构造函数，由于构造函数的名字和类的名字一样，通过参数来区分它们：
+				Classname::Classname(arguments) {...};
+				以Fruit为例：
+				class Fruit {
+					public:
+						peel();
+						slice();
+						juice();
+						Fruit(int i,int j);		/* 构造函数 */
+						~Fruit();				/* 析构函数 */
+					private:
+						int weight,calories_per_oz;
+				}
+				// 构造函数
+				Fruit::Fruit(int i,int j) {
+					weight=i;
+					calories_per_oz=j;
+				}
+				// 析构函数
+				Fruit::~Fruit() {
+					printf("over");
+				}
+				// 对象声明时由构造函数进行初始化
+				Fruit melon(4,5),banana(12,8);
+			5）构造函数是必要的，因为类通常包含一些结构，而结构又可能包含许多字段。这就需要复杂的初始化。当类的对象被创建时，构造函数会被自动调用，程序员永远不应该显式的调用构造函数。至于全局和静态对象，它们的构造函数会在程序开始时被自动调用，而当程序终止时，它们的析构函数会被自动调用。
+			6）构造函数和析构函数违反了C语言中“一切工作自己负责”的原则，它们可以使大量工作在程序运行时隐式的完成，减轻程序员的负担，只不过违背了C语言的哲学。
+	11.8 继承---复用已经定义的操作
 
-		
+
+
 
 
 
