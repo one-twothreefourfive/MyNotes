@@ -60,6 +60,12 @@
 			8	.../*其它代码*/
 			9	free(p);
 			10	p = NULL;/*请加上这句*/
+		第三、用new或者malloc分配内存后，需用memset()函数初始化足够长度的字符串，否则字符串的结尾不是‘\0’，就会显示乱码;
+			例如：
+				char *s=NULL;
+				char len=10;
+				s = new char[len+1];
+				memset(s,0,len+1);		// 分配的字符串全部赋值为‘\0’
 			
 4.sizeof和strlen的区别
 	1）sizeof和strlen的区别
