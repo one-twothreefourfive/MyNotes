@@ -1,0 +1,192 @@
+C常用的输入/输出命令：
+	1、getchar() & putchar() 函数，标准函数
+	2、gets() & puts() 函数，标准函数
+	3、scanf() 和 printf() 函数，标准函数
+	4、getch() 函数，非标准函数，请注意移植性
+	5、getche() 函数，非标准函数，请注意移植性
+
+	1、getchar() & putchar()函数
+		#include <stdio.h>
+		int main( )
+		{
+		   int c;
+		 
+		   printf( "Enter a value :");
+		   c = getchar( );
+		 
+		   printf( "\nYou entered: ");
+		   putchar( c );
+		   printf( "\n");
+		   return 0;
+		}
+		Enter a value :runoob
+		
+		You entered: r
+
+		1）getchar()解释：
+			a、int getchar(void) 函数从屏幕读取下一个可用的字符，并把它返回为一个整数。这个函数在同一个时间内只会读取一个单一的字符。您可以在循环内使用这个方法，以便从屏幕上读取多个字符。
+			b、它与getch()、getche()的区别在于: getchar()函数等待输入直到按回车才结束,  回车前的所有输入字符都会逐个显示在屏幕上，但只有第一个字符作为有效值返回。
+		2）putchar()解释：int putchar(int c) 函数把字符输出到屏幕上，并返回相同的字符。这个函数在同一个时间内只会输出一个单一的字符。您可以在循环内使用这个方法，以便在屏幕上输出多个字符。
+	2、gets() & puts() 函数
+		#include <stdio.h>
+		int main( )
+		{
+		   char str[100];
+		 
+		   printf( "Enter a value :");
+		   gets( str );
+		 
+		   printf( "\nYou entered: ");
+		   puts( str );
+		   return 0;
+		}
+		Enter a value :runoob
+
+		You entered: runoob
+
+		1）gets()解释：char *gets(char *s) 函数从 stdin 读取一行到 s 所指向的缓冲区，直到一个终止符或 EOF。
+		2）puts()解释：int puts(const char *s) 函数把字符串 s 和一个尾随的换行符写入到 stdout。
+	3、scanf() 和 printf() 函数
+		#include <stdio.h>
+		int main( ) {
+		 
+		   char str[100];
+		   int i;
+		 
+		   printf( "Enter a value :");
+		   scanf("%s %d", str, &i);
+		 
+		   printf( "\nYou entered: %s %d ", str, i);
+		   printf("\n");
+		   return 0;
+		}
+		Enter a value :runoob 123
+
+		You entered: runoob 123
+
+		1）scanf()解释：int scanf(const char *format, ...) 函数从标准输入流 stdin 读取输入，并根据提供的 format 来浏览输入。
+		2）printf()解释：int printf(const char *format, ...) 函数把输出写入到标准输出流 stdout ，并根据提供的格式产生输出。
+		3）format解释：可以是一个简单的常量字符串，但是您可以分别指定 %s、%d、%c、%f 等来输出或读取字符串、整数、字符或浮点数。还有许多其他可用的格式选项，可以根据需要使用。
+	4、getch() 函数   // 头文件#include<conio.h>
+		用法1：
+			#include<stdio.h> 
+			#include<conio.h>
+			main ()
+			{
+				char ch;
+				ch=getch();                        //
+				std::cout<<ch<<std::endl;
+			}
+			输入：j
+			输出：j
+
+			用法1解释：从键盘上读入一个字符, 读入的字符不能回显在屏幕上，无需回车或其他按键，立即执行下一条cout流语句，cout流用于显示字符ch。
+		用法2：
+			#include<stdio.h> 
+			#include<conio.h>
+			main() 
+			{ 
+				char c; 
+				while ((c=getchar())!='/n')   /*每个getchar()依次读入一个字符*/
+				printf("%c",c);    /*按照原样输出*/
+				getch();       /*等待按任一健*/ 
+			}
+
+			用法2解释：程序的末尾加上它，利用它来实现程序运行完了暂停不退出的效果。
+		用法3：
+			#include<stdio.h>
+			#include<conio.h>
+			void main()
+			{
+				char ch;
+				for(int i=0;i<5;i++)
+				{
+					ch=getch();
+					//printf("%c",ch);
+				}
+			}
+
+			用法3解释：按5次任意键程序就结束了，且屏幕上什么都没有显示。
+		用法4：
+			#include<stdio.h>
+			#include<conio.h>
+			void main()
+			{
+			    char ch='*';
+			    while(ch=='*')
+			    {
+			        printf("/n按 * 继续循环，按其他键退出！");
+			        ch=getch();
+			    }
+			    printf("/n退出程序！");
+			}
+			用法4解释：可实现屏幕无回显的情况下，任意键退出效果；在无回显情况下，其他命令暂时未找到实现此效果的方法。
+
+		注意：函数原型是int getch(void)，C语言的函数，C++也可以兼容，但是尽量不用或少用。
+	5、getche(); 	// 头文件#include<conio.h>
+		#include<stdio.h> 
+		#include<conio.h>
+		main ()
+		{
+			char ch;
+			ch=getche();              
+		}
+
+		输入：j
+		输出：j
+
+		getche解释：函数原型是int getche(void);从键盘上读入一个字符, 读入的字符并回显在屏幕上，然后跳转下一条语句。
+
+	注意：C语言的函数，C++也可以兼容，但是尽量不用或少用。
+
+C++常用的输入/输出命令：
+	1、C++输入流与输出流的基本操作
+		cin语句的一般格式为：
+		    cin>>变量1>>变量2>>……>>变量n;
+		cout语句的一般格式为：
+		    cout<<表达式1<<表达式2<<……<<表达式n;
+	2、标准输入流（cin）和输出流（cout）  
+		用法1：最基本，也是最常用的用法，输入一个数字：
+			#include <iostream>
+			using namespace std;
+			main ()
+			{
+				int a,b;
+				cin>>a>>b;
+				cout<<a+b<<endl;
+			}
+			输入：2[回车]3[回车] 或者 2[空格]3[回车] 或者 2[TAB]3[回车]
+			输出：5
+
+		用法2：接受一个字符串，遇“空格”、“TAB”、“回车”都结束
+			#include <iostream>
+			using namespace std;
+			main ()
+			{
+				char a[20];
+				cin>>a;
+				cout<<a<<endl;
+			}
+			输入：jkljkljkl
+			输出：jkljkljkl
+
+			输入：jkljkl jkljkl       //遇空格结束
+			输出：jkljkl
+
+		 cin解释：C++ 编译器根据要输入值的数据类型，选择合适的流提取运算符来提取值，并把它存储在给定的变量中。流提取运算符 >> 在一个语句中可以多次使用。
+		 cout解释：C++ 编译器根据要输出变量的数据类型，选择合适的流插入运算符来显示值。<< 运算符被重载来输出内置类型（整型、浮点型、double 型、字符串和指针）的数据项。流插入运算符 << 在一个语句中可以多次使用，如上面实例中所示，endl 用于在行末添加一个换行符。
+
+C++的输入/输出（I/O）的特点：
+	1、就像C语言具有自己的标准I/O函数库一样，C++特性之一就是自身拥有一套新的I/O程序和概念。C++有一个iostream.h头文件，提供I/O接口，更符合OOP的理念。
+	2、C++使用<<操作符（输出，或称“插入”）和>>操作符（输入，或称“提取”）来替代C语言的putchar()和getchar()等函数。
+	3、<<和>>操作符在C语言中用作左移位和右移位操作符，但它们被重载用于C++的IO。编译器查看操作数的类型，决定是产生移位代码还是I/O代码。如果左边的操作数是一个流（stream），该操作符就作为I/O操作符。
+	4、iostream.h头文件定义的流（stream），包括了 cin、cout、cerr 和 clog 对象，分别对应于标准输入流、标准输出流、非缓冲标准错误流和缓冲标准错误流。
+	5、使用操作符而不是函数来操作I/O具有四个巨大的优点：
+		1）操作符可被定义，用于任何类型。这样就不需要为每种类型准备一个单独的函数或者字符串格式化限定符如%d。
+		2）与使用函数相比，当你输出多条信息时，使用操作符操作I/O具有概念上的方便性。就像可以书写i+j+k+l这样的表达式一样，操作符的左结合性确保你可以合理的把多个I/O操作数链在一起：
+			cout<<"the value is"<< i <<endl;
+		3）它提供一个附加的层，简化了类似scanf()这样的函数的格式控制和使用方法。我们应该认识到scanf()家族确实应该简化（尽管它的手册非常简短）。
+		4）对<<和>>操作符进行重载，在一个单一的操作中读取和书写整个对象不仅是可能的，而且是非常重要的。在前面的章节里已经有过一个这样的重载例子。
+	6、你仍然可以在C++中使用C语言的stdio.h中的函数，但尽早转向C++的I/O特性是非常值得的。
+
+注意：C语言标准函数有很多危险函数，例如：scanf()、gets()、fgets()、strcpy()、strcat() 等，但它们都有一个缺陷，就是不安全，可能会导致数组溢出或者缓冲区溢出，让黑客有可乘之机，从而发起“缓冲区溢出”攻击。必要用替代的安全函数或者不使用！！
