@@ -263,9 +263,9 @@ C++文件流的基本用法：
 		   This is another line 
 		2）从文件中读入数据也可以用与 cin>>的使用同样的方法：
 			// reading a text file
-		    #include <iostream.h>
-		    #include <fstream.h>
 		    #include <stdlib.h>
+		    #include <iostream>
+		    #include <fstream>
 		    
 		    int main () {
 		        char buffer[256];
