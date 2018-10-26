@@ -139,7 +139,7 @@ C常用的输入/输出命令：
 
 	注意：C语言的函数，C++也可以兼容，但是尽量不用或少用。
 
-C++常用的输入/输出命令：
+C的输入/输出（I/O）命令：
 	1、C++输入流与输出流的基本操作
 		cin语句的一般格式为：
 		    cin>>变量1>>变量2>>……>>变量n;
@@ -176,7 +176,7 @@ C++常用的输入/输出命令：
 		 cin解释：C++ 编译器根据要输入值的数据类型，选择合适的流提取运算符来提取值，并把它存储在给定的变量中。流提取运算符 >> 在一个语句中可以多次使用。
 		 cout解释：C++ 编译器根据要输出变量的数据类型，选择合适的流插入运算符来显示值。<< 运算符被重载来输出内置类型（整型、浮点型、double 型、字符串和指针）的数据项。流插入运算符 << 在一个语句中可以多次使用，如上面实例中所示，endl 用于在行末添加一个换行符。
 
-C++的输入/输出（I/O）的特点：
+C++的输入/输出（I/O）命令：
 	1、就像C语言具有自己的标准I/O函数库一样，C++特性之一就是自身拥有一套新的I/O程序和概念。C++有一个iostream.h头文件，提供I/O接口，更符合OOP的理念。
 	2、C++使用<<操作符（输出，或称“插入”）和>>操作符（输入，或称“提取”）来替代C语言的putchar()和getchar()等函数。
 	3、<<和>>操作符在C语言中用作左移位和右移位操作符，但它们被重载用于C++的IO。编译器查看操作数的类型，决定是产生移位代码还是I/O代码。如果左边的操作数是一个流（stream），该操作符就作为I/O操作符。
@@ -206,6 +206,8 @@ C++文件流的基本用法：
 			void open(const wchar_t *_Filename,
 			        ios_base::openmode mode= ios_base::in | ios_base::out,
 			        int prot = ios_base::_Openprot)；
+		   函数is_open():
+				函数is_open()返回一个bool类型，打开成功返回1，失败0;但是函数open()无返回；
 		3）参数：	filename    操作文件名
         		mode        打开文件的方式
 				prot        打开文件的属性   //基本很少用到，在查看资料时，发现有两种方式
@@ -233,7 +235,7 @@ C++文件流的基本用法：
 			4	系统文件
 		对于文件的属性也可以使用“或”运算和“+”进行组合使用，这里就不做说明了。
 
-		注意：很多程序中，可能会碰到ofstream out("Hello.txt"), ifstream in("..."),fstream foi("...")这样的的使用，并没有显式的去调用open（）函数就进行文件的操作，直接调用了其默认的打开方式，因为在stream类的构造函数中调用了open()函数,并拥有同样的构造函数，所以在这里可以直接使用流对象进行文件的操作，默认方式如下：
+		注意：很多程序中，可能会碰到ofstream out("Hello.txt"), ifstream in("..."),fstream foi("...")这样的的使用，并没有显式的去调用open()函数就进行文件的操作，直接调用了其默认的打开方式，因为在stream类的构造函数中调用了open()函数,并拥有同样的构造函数，所以在这里可以直接使用流对象进行文件的操作，默认方式如下：
 			ofstream out("...", ios::out);
 			ifstream in("...", ios::in);
 			fstream foi("...", ios::in|ios::out);
@@ -245,11 +247,11 @@ C++文件流的基本用法：
 	3、写入文件
 		1）类ofstream, ifstream 和fstream 是分别从ostream, istream 和iostream 中引申而来的。这就是为什么 fstream 的对象可以使用其父类的成员来访问数据。一般来说，我们将使用这些类与同控制台(console)交互同样的成员函数(cin 和 cout)来进行输入输出。如下面的例题所示，我们使用重载的插入操作符<<：
 		    // writing on a text file
-		    #include <fiostream.h>
+		    #include <fstream>
 		    int main () {
-		        ofstream out("out.txt");
-		        if (out.is_open()) 
-		       {
+		        ofstream out("d:\out.txt");
+		        if (out.is_open()) 	
+				{
 		            out << "This is a line.\n";
 		            out << "This is another line.\n";
 		            out.close();
