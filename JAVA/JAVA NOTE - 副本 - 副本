@@ -1,0 +1,3129 @@
+JAVA快速入门：
+	JAVA简介
+		小结
+		一个Java源码只能定义一个public类型的class，并且class名称和文件名要完全一致；
+
+		使用javac可以将.java源码编译成.class字节码；
+
+		使用java可以运行一个已编译的Java程序，参数是类名。
+
+	JAVA程序基础
+		Java程序基本结构:
+		    类名要求：
+				类名必须以英文字母开头，后接字母，数字和下划线的组合
+				习惯以大写字母开头（例如：Hello）
+
+		    方法名要求：
+				类名必须以英文字母开头，后接字母，数字和下划线的组合
+				习惯以小写字母开头（例如：main）
+
+		变量和数据类型：
+			基本数据类型:
+				byte   1字节
+				short  2字节
+				int    4字节
+				long   8字节
+				float  4字节
+				double 8字节
+				char   2字节(Java的char类型除了可表示标准的ASCII外，还可以表示一个Unicode字符,使用单引号',表示一个字符)
+				默认带符号的类型，比如：byte(-128 ~ 127)、short(-32768 ~ 32767)、int(-2147483648 ~ 2147483647)
+
+				char:
+					public class Main {
+					    public static void main(String[] args) {
+					        char a = 'A';
+					        char zh = '中';
+					        System.out.println(a);
+					        System.out.println(zh);
+					    }
+					}
+					output:
+					A
+					中
+			变量：
+				定义变量时，要遵循作用域最小化原则，尽量将变量定义在尽可能小的作用域，并且，不要重复使用变量名。
+			小结：
+				Java提供了两种变量类型：基本类型和引用类型
+				基本类型包括整型，浮点型，布尔型，字符型。
+				变量可重新赋值，等号是赋值语句，不是数学意义的等号。
+				常量在初始化后不可重新赋值，使用常量便于理解程序意图。
+
+		整数运算：
+		浮点数运算：
+		布尔运算：
+			对于布尔类型boolean，永远只有true和false两个值。
+		字符和字符串：
+			字符：
+				一个char保存一个Unicode字符：
+					char c1 = 'A';
+					char c2 = '中';
+				要显示一个字符的Unicode编码，只需将char类型直接赋值给int类型即可：
+					int n1 = 'A'; // 字母“A”的Unicodde编码是65
+					int n2 = '中'; // 汉字“中”的Unicode编码是20013
+				转义字符\u+Unicode编码来表示一个字符：
+					char c3 = '\u0041'; // 'A'，因为十六进制0041 = 十进制65
+					char c4 = '\u4e2d'; // '中'，因为十六进制4e2d = 十进制2001
+
+			字符串类型：
+				用双引号"..."表示字符串：
+					String s3 = "中文 ABC"; // 包含6个字符，其中有一个空格
+				字符串之间有“引号需显示，用转义字符\：
+					String s = "abc\"xyz"; // 包含7个字符: a, b, c, ", x, y, z
+				因为\是转义字符，所以，两个\\表示一个\字符：
+					String s = "abc\\xyz"; // 包含7个字符: a, b, c, \, x, y, z
+				常见的转义字符包括：
+					\" 表示字符"
+					\' 表示字符'
+					\\ 表示字符\
+					\n 表示换行符
+					\r 表示回车符
+					\t 表示Tab
+					\u#### 表示一个Unicode编码的字符
+					例如：
+						String s = "ABC\n\u4e2d\u6587"; // 包含6个字符: A, B, C, 换行符, 中, 文
+
+			字符串连接：
+				public class Main {
+				    public static void main(String[] args) {
+				        String s1 = "Hello";
+				        String s2 = "world";
+				        String s = s1 + " " + s2 + "!";
+				        System.out.println(s);
+					}
+				}
+				output:
+				Hello world!
+		数组类型
+			定义一个数组类型的变量，使用数组类型“类型[]”，例如，int[]
+				int[] ns = new int[5];
+				ns[0] = 68;
+		        ns[1] = 79;
+		        ns[2] = 91;
+		        ns[3] = 85;
+		        ns[4] = 62;
+		    Java的数组有几个特点：
+				数组所有元素初始化为默认值，整型都是0，浮点型是0.0，布尔型是false；
+				数组一旦创建后，大小就不可改变。
+			数组变量.length获取数组大小:
+				public class Main {
+				    public static void main(String[] args) {
+				        // 5位同学的成绩:
+				        int[] ns = new int[] { 68, 79, 91, 85, 62 };	// 指定初始化的元素
+				        System.out.println(ns.length); 					// 编译器自动推算数组大小为5
+				    }
+				}
+				output:
+				5
+
+	流程控制：
+		输入和输出：
+			输出：
+				public class Main {
+				    public static void main(String[] args) {
+				        System.out.print("A,");
+				        System.out.print("B,");
+				        System.out.print("C.");
+				        System.out.println();
+				        System.out.println("END");
+				    }
+				}
+				output:
+				A,B,C.
+				END
+
+			输入：
+
+			小结
+				Java提供的输出包括：System.out.println() / print() / printf()，其中printf()可以格式化输出；
+				Java提供Scanner对象来方便输入，读取对应的类型可以使用：scanner.nextLine() / nextInt() / nextDouble() / ...
+		if判断:
+		switch多重选择:
+		while循环:
+		do while循环:
+		for循环:
+			Java还提供了另一种for each循环，它可以更简单地遍历数组：
+				public class Main {
+				    public static void main(String[] args) {
+				        int[] ns = { 1, 4, 9, 16, 25 };
+				        for (int n : ns) {
+				            System.out.println(n);
+				        }
+				    }
+				}
+				output:
+				1
+				4
+				9
+				16
+				25
+		break和continue:
+			小结:
+				break语句可以跳出当前循环；
+				break语句通常配合if，在满足条件时提前结束整个循环；
+				break语句总是跳出最近的一层循环；
+				contnue语句可以提前结束本次循环；
+				continue语句通常配合if，在满足条件时提前结束本次循环
+
+	数组操作:
+		遍历数组:
+		数组排序:
+			冒泡排序：
+				import java.util.Arrays;
+				public class Main {
+				    public static void main(String[] args) {
+				        int[] ns = { 28, 12, 89, 73, 65, 18, 96, 50, 8, 36 };
+				        // 排序前:
+				        System.out.println(Arrays.toString(ns));
+				        for (int i = 0; i < ns.length - 1; i++) {
+				            for (int j = 0; j < ns.length - i - 1; j++) {
+				                if (ns[j] > ns[j+1]) {
+				                    // 交换ns[j]和ns[j+1]:
+				                    int tmp = ns[j];
+				                    ns[j] = ns[j+1];
+				                    ns[j+1] = tmp;
+				                }
+				            }
+				        }
+				        // 排序后:
+				        System.out.println(Arrays.toString(ns));
+				    }
+				}
+				output:
+				[28, 12, 89, 73, 65, 18, 96, 50, 8, 36]
+				[8, 12, 18, 28, 36, 50, 65, 73, 89, 96]
+
+			Java的标准库已经内置了排序功能，我们只需要调用JDK提供的Arrays.sort()就可以排序：
+				import java.util.Arrays;
+				public class Main {
+				    public static void main(String[] args) {
+				        int[] ns = { 28, 12, 89, 73, 65, 18, 96, 50, 8, 36 };
+				        Arrays.sort(ns);
+				        System.out.println(Arrays.toString(ns));
+				    }
+				}
+				output:
+				[8, 12, 18, 28, 36, 50, 65, 73, 89, 96]
+
+		多维数组:
+			二维数组:
+				public class Main {
+				    public static void main(String[] args) {
+				        int[][] ns = {
+				            { 1, 2, 3, 4 },
+				            { 5, 6, 7, 8 },
+				            { 9, 10, 11, 12 }
+				        };
+				        System.out.println(ns.length);
+				    }
+				}
+				output:
+				3
+			使用Java标准库的Arrays.deepToString()：
+				import java.util.Arrays;
+				public class Main {
+				    public static void main(String[] args) {
+				        int[][] ns = {
+				            { 1, 2, 3, 4 },
+				            { 5, 6, 7, 8 },
+				            { 9, 10, 11, 12 }
+				        };
+				        System.out.println(Arrays.deepToString(ns));
+				    }
+				}
+				output:
+				[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
+
+	命令行参数：
+		Java程序的入口是main方法，而main方法可以接受一个命令行参数，它是一个String[]数组。
+
+面向对象编程：
+	面向对象基础:
+		前言：
+			定义class(类)：
+				在Java中，创建一个类，例如，给这个类命名为Person，就是定义一个class：
+
+				class Person {
+				    public String name;
+				    public int age;
+				}
+				一个class可以包含多个字段（field），字段用来描述一个类的特征。上面的Person类，我们定义了两个字段，一个是String类型的字段，命名为name，一个是int类型的字段，命名为age。因此，通过class，把一组数据汇集到一个对象上，实现了数据封装。
+				public是用来修饰字段的，它表示这个字段可以被外部访问。
+			创建instance(实例):
+				定义了class，只是定义了对象模版，而要根据对象模版创建出真正的对象实例，必须用new操作符。
+				new操作符可以创建一个实例，然后，我们需要定义一个引用类型的变量来指向这个实例：
+
+					Person ming = new Person();
+					ming.name = "Xiao Ming"; 		// 对字段name赋值
+					ming.age = 12; 					// 对字段age赋值
+					System.out.println(ming.name);  // 访问字段name
+					上述代码创建了一个Person类型的实例，并通过变量ming指向它。
+		方法：
+			直接操作field，容易造成逻辑混乱。,把field从public改成private，外部代码不能访问这些field，所以我们需要使用方法（method）来让外部代码可以间接修改field：
+				错误的方法：
+					public class Main {
+					    public static void main(String[] args) {
+					        Person ming = new Person();
+					        ming.name = "Xiao Ming"; // 对字段name赋值
+					        ming.age = 12; // 对字段age赋值
+					    }
+					}
+
+					class Person {
+					    private String name;
+					    private int age;
+					}
+				正确的方法：
+					public class main {
+						public static void main(String[] args)
+						{
+							Person ming = new Person();
+							ming.setname("xiao ming");
+							ming.setage(12);
+							System.out.println(ming.getage());
+						}
+					}
+
+					class Person {
+						private String name;
+						private int age;
+
+						public String getname() {
+							return this.name;
+						}
+						public int getage() {
+							return this.age;
+						}
+						public void setname(String name) {
+							if(name == null || name.isBlank())	    // 不允许传入null和空字符串：
+							{
+								throw new IllegalArgumentException("invalid age value");
+							}
+							this.name = name.strip();				// 去掉首尾空格
+						}
+						public void setage(int age) {
+							if( (age < 1) || (age > 100) )
+							{
+								throw new IllegalArgumentException("invalid age value");
+							}
+							this.age = age;
+						}
+					}
+				定义方法:
+					定义方法的语法是：
+						修饰符 方法返回类型 方法名(方法参数列表) {
+						    若干方法语句;
+						    return 方法返回值;
+						}
+				private方法:
+					private方法不允许外部调用，定义private方法的理由是内部方法是可以调用private方法的:
+						public class Main {
+						    public static void main(String[] args) {
+						        Person ming = new Person();
+						        ming.setBirth(2008);
+						        System.out.println(ming.getAge());
+						    }
+						}
+
+						class Person {
+						    private String name;
+						    private int birth;
+
+						    public void setBirth(int birth) {
+						        this.birth = birth;
+						    }
+
+						    public int getAge() {
+						        return calcAge(2019); // 调用private方法
+						    }
+
+						    // private方法:
+						    private int calcAge(int currentYear) {
+						        return currentYear - this.birth;
+						    }
+						}
+						calcAge()是一个private方法，外部代码无法调用，但是，内部方法getAge()可以调用它。
+				this变量:
+					方法内部，可以使用一个隐含的变量this，它始终指向当前实例。
+					如果有局部变量和字段重名，那么局部变量优先级更高，就必须加上this：
+						class Person {
+						    private String name;
+
+						    public void setName(String name) {
+						        this.name = name; // 前面的this不可少，少了就变成局部变量name了
+						    }
+						}
+				方法参数:
+				可变参数:
+					可变参数相当于数组类型：
+						public class Main {
+						    public static void main(String[] args) {
+						        Group g = new Group();
+								g.setNames("Xiao Ming", "Xiao Hong", "Xiao Jun"); // 传入3个String
+								g.setNames("Xiao Ming", "Xiao Hong"); // 传入2个String
+								g.setNames("Xiao Ming"); // 传入1个String
+								g.setNames(); // 传入0个String
+						    }
+						}
+						class Group {
+						    private String[] names;
+
+						    //public void setNames(String... names) {		
+						    public void setNames(String[] names) {			// 可变参数两种写法
+						        this.names = names;
+						    }
+						}
+				参数绑定：
+					public class Main {
+					    public static void main(String[] args) {
+					        Person p = new Person();
+					        String[] fullname = new String[] { "Homer", "Simpson" };
+					        p.setName(fullname); // 传入fullname数组
+					        System.out.println(p.getName()); // "Homer Simpson"
+					        fullname[0] = "Bart"; // fullname数组的第一个元素修改为"Bart"
+					        System.out.println(p.getName()); // "Homer Simpson"还是"Bart Simpson"?
+					    }
+					}
+
+					class Person {
+					    private String[] name;
+
+					    public String getName() {
+					        return this.name[0] + " " + this.name[1];
+					    }
+
+					    public void setName(String[] name) {
+					        this.name = name;
+					    }
+					}
+					output：
+					Homer Simpson
+					Bart Simpson
+		构造方法：
+			创建构造方法：
+				创建对象实例如果忘了初始化，内部的状态就是不正确的。我们定义一个构造方法，能在创建Person实例的时候，一次性传入name和age，完成初始化：
+				public class Main {
+				    public static void main(String[] args) {
+				        Person p = new Person("Xiao Ming", 15);
+				        System.out.println(p.getName());
+				        System.out.println(p.getAge());
+				    }
+				}
+
+				class Person {
+				    private String name;
+				    private int age;
+
+				    public Person(String name, int age) {
+				        this.name = name;
+				        this.age = age;
+				    }
+				    
+				    public String getName() {
+				        return this.name;
+				    }
+
+				    public int getAge() {
+				        return this.age;
+				    }
+				}
+				构造方法的名称就是类名，构造方法没有返回值（也没有void），调用构造方法，必须用new操作符。方法内部，也可以编写任意语句。
+			默认构造方法：
+				所有的class都有构造方法,那前面我们并没有为Person类编写构造方法，为什么可以调用new Person()？
+				原因是如果一个类没有定义构造方法，编译器会自动为我们生成一个默认构造方法，它没有参数，也没有执行语句，类似这样：
+					class Person {
+					    public Person() {
+					    }
+					}
+				如果我们自定义了一个构造方法，编译器就不再自动创建默认构造方法：
+					public class Main {
+					    public static void main(String[] args) {
+					        Person p = new Person(); // 编译错误:找不到这个构造方法
+					    }
+					}
+
+					class Person {
+					    private String name;
+					    private int age;
+
+					    public Person(String name, int age) {
+					        this.name = name;
+					        this.age = age;
+					    }
+					    
+					    public String getName() {
+					        return this.name;
+					    }
+
+					    public int getAge() {
+					        return this.age;
+					    }
+					}
+				如果既要能使用带参数的构造方法，又想保留不带参数的构造方法，那么只能把两个构造方法都定义出来：
+					public class Main {
+					    public static void main(String[] args) {
+					        Person p1 = new Person("Xiao Ming", 15); // 既可以调用带参数的构造方法
+					        Person p2 = new Person(); // 也可以调用无参数构造方法
+					    }
+					}
+
+					class Person {
+					    private String name;
+					    private int age;
+
+					    public Person() {
+					    }
+
+					    public Person(String name, int age) {
+					        this.name = name;
+					        this.age = age;
+					    }
+					    
+					    public String getName() {
+					        return this.name;
+					    }
+
+					    public int getAge() {
+					        return this.age;
+					    }
+					}
+				没有在构造方法中初始化字段时，引用类型的字段默认是null，数值类型的字段用默认值，int类型默认值是0，布尔类型默认值是false：
+					class Person {
+					    private String name; // 默认初始化为null
+					    private int age; // 默认初始化为0
+
+					    public Person() {
+					    }
+					}
+			多构造方法：
+				可以定义多个构造方法，在通过new操作符调用的时候，编译器通过构造方法的参数数量、位置和类型自动区分：
+					class Person {
+					    private String name;
+					    private int age;
+
+					    public Person(String name, int age) {
+					        this.name = name;
+					        this.age = age;
+					    }
+
+					    public Person(String name) {
+					        this.name = name;
+					        this.age = 12;
+					    }
+
+					    public Person() {
+					    }
+					}
+					如果调用new Person("Xiao Ming", 20);，会自动匹配到构造方法public Person(String, int)。
+					如果调用new Person("Xiao Ming");，会自动匹配到构造方法public Person(String)。
+					如果调用new Person();，会自动匹配到构造方法public Person()。
+				一个构造方法可以调用其他构造方法，这样做的目的是便于代码复用。调用其他构造方法的语法是this(…)：
+					class Person {
+					    private String name;
+					    private int age;
+
+					    public Person(String name, int age) {
+					        this.name = name;
+					        this.age = age;
+					    }
+
+					    public Person(String name) {
+					        this(name, 18); // 调用另一个构造方法Person(String, int)
+					    }
+
+					    public Person() {
+					        this("Unnamed"); // 调用另一个构造方法Person(String)
+					    }
+					}
+		方法重载：
+			方法重载的返回值类型通常都是相同，方法名相同，但各自的参数不同，称为方法重载（Overload）。
+			举个例子，String类提供了多个重载方法indexOf()，可以查找子串：
+				int indexOf(int ch)：根据字符的Unicode码查找；
+				int indexOf(String str)：根据字符串查找；
+				int indexOf(int ch, int fromIndex)：根据字符查找，但指定起始位置；
+				int indexOf(String str, int fromIndex)根据字符串查找，但指定起始位置。
+			试一试：
+				public class Main {
+				    public static void main(String[] args) {
+				        String s = "Test string";
+				        int n1 = s.indexOf('s');
+				        int n2 = s.indexOf("st");
+				        int n3 = s.indexOf("st", 4);
+				        System.out.println(n1);
+				        System.out.println(n2);
+				        System.out.println(n3);
+				    }
+				}
+				output：
+				2
+				2
+				5
+		继承:
+			前言：
+				继承是面向对象编程中非常强大的一种机制，它首先可以复用代码。Java使用extends关键字来实现继承：
+					class Person {
+					    private String name;
+					    private int age;
+
+					    public String getName() {...}
+					    public void setName(String name) {...}
+					    public int getAge() {...}
+					    public void setAge(int age) {...}
+					}
+
+					class Student extends Person {
+					    // 不要重复name和age字段/方法,
+					    // 只需要定义新增score字段/方法:
+					    private int score;
+
+					    public int getScore() { … }
+					    public void setScore(int score) { … }
+					}
+					在OOP的术语中，我们把Person称为超类（super class），父类（parent class），基类（base class），把Student称为子类（subclass），扩展类（extended class）。
+			继承树：
+				我们在定义Person的时候，没有写extends。但编译器会自动加上extends Object。任何类，除了Object，都会继承自某个类。下图是Person、Student的继承树：
+					┌───────────┐
+					│  Object   │
+					└───────────┘
+					      ▲
+					      │
+					┌───────────┐
+					│  Person   │
+					└───────────┘
+					      ▲
+					      │
+					┌───────────┐
+					│  Student  │
+					└───────────┘
+				protected：
+					继承有个特点，就是子类无法访问父类的private字段或者private方法。例如，Student类就无法访问Person类的name和age字段：
+						class Person {
+						    private String name;
+						    private int age;
+						}
+
+						class Student extends Person {
+						    public String hello() {
+						        return "Hello, " + name; // 编译错误：无法访问name字段
+						    }
+						}
+					为了让子类可以访问父类的字段，我们需要把private改为protected。用protected修饰的字段可以被子类访问：
+						class Person {
+						    protected String name;
+						    protected int age;
+						}
+
+						class Student extends Person {
+						    public String hello() {
+						        return "Hello, " + name; // OK!
+						    }
+						}
+					因此，protected关键字可以把字段和方法的访问权限控制在继承树内部，一个protected字段和方法可以被其子类，以及子类的子类所访问，后面我们还会详细讲解。
+				super：
+					super关键字表示父类（超类）。子类引用父类的字段时，可以用super.fieldName。例如：
+						class Student extends Person {
+						    public String hello() {
+						        return "Hello, " + super.name;
+						    }
+						}
+						实际上，这里使用super.name，或者this.name，或者name，效果都是一样的。编译器会自动定位到父类的name字段。
+					但是，在某些时候，就必须使用super。我们来看一个例子：
+						public class Main {
+						    public static void main(String[] args) {
+						        Student s = new Student("Xiao Ming", 12, 89);
+						    }
+						}
+
+						class Person {
+						    protected String name;
+						    protected int age;
+
+						    public Person(String name, int age) {
+						        this.name = name;
+						        this.age = age;
+						    }
+						}
+
+						class Student extends Person {
+						    protected int score;
+
+						    public Student(String name, int age, int score) {
+						        this.score = score;
+						    }
+						}
+						运行上面的代码，会得到一个编译错误，大意是在Student的构造方法中，无法调用Person的构造方法。
+						这是因为在Java中，任何class的构造方法，第一行语句必须是调用父类的构造方法。如果没有明确地调用父类的构造方法，编译器会帮我们自动加一句super();，所以，Student类的构造方法实际上是这样：
+							class Student extends Person {
+							    protected int score;
+
+							    public Student(String name, int age, int score) {
+							        super(); // 自动调用父类的构造方法
+							        this.score = score;
+							    }
+							}
+						但是，Person类并没有无参数的构造方法，因此，还是编译失败。解决方法是调用Person类存在的某个构造方法。例如：
+							class Student extends Person {
+							    protected int score;
+
+							    public Student(String name, int age, int score) {
+							        super(name, age); // 调用父类的构造方法Person(String, int)
+							        this.score = score;
+							    }
+							}
+					结论：
+						在Java中，任何class的构造方法，第一行语句必须是调用父类的构造方法。如果没有明确地调用父类的构造方法，编译器会帮我们自动加一句super()。
+						如果父类没有默认的构造方法，子类就必须显式调用super()并给出参数以便让编译器定位到父类的一个合适的构造方法。
+						即子类不会继承任何父类的构造方法。子类默认的构造方法是编译器自动生成的，不是继承的。
+				向上转型：
+					如果一个引用变量的类型是Student，那么它可以指向一个Student类型的实例：
+						Student s = new Student();
+					如果一个引用类型的变量是Person，那么它可以指向一个Person类型的实例：
+						Person p = new Person();
+					现在问题来了：如果Student是从Person继承下来的，那么，一个引用类型为Person的变量，能否指向Student类型的实例？
+						Person p = new Student(); // ???测试一下就可以发现，这种指向是允许的！
+					这种把一个子类类型安全地变为父类类型的赋值，被称为向上转型（upcasting）。向上转型实际上是把一个子类型安全地变为更加抽象的父类型：
+						Student s = new Student();
+						Person p = s; // upcasting, ok
+						Object o1 = p; // upcasting, ok
+						Object o2 = s; // upcasting, ok
+					注意到继承树是Student > Person > Object，所以，可以把Student类型转型为Person，或者更高层次的Object。
+				向下转型：
+					和向上转型相反，如果把一个父类类型强制转型为子类类型，就是向下转型（downcasting）。例如：
+						Person p1 = new Student(); // upcasting, ok
+						Person p2 = new Person();
+						Student s1 = (Student) p1; // ok
+						Student s2 = (Student) p2; // runtime error! ClassCastException!
+						如果测试上面的代码，可以发现：
+							Person类型p1实际指向Student实例，Person类型变量p2实际指向Person实例。在向下转型的时候，把p1转型为Student会成功，因为p1确实指向Student实例，把p2转型为Student会失败，因为p2的实际类型是Person，不能把父类变为子类，因为子类功能比父类多，多的功能无法凭空变出来。
+						因此，向下转型很可能会失败。失败的时候，Java虚拟机会报ClassCastException。
+				区分继承和组合：
+					在使用继承时，我们要注意逻辑一致性。考察下面的Book类：
+						class Book {
+						    protected String name;
+						    public String getName() {...}
+						    public void setName(String name) {...}
+						}
+						这个Book类也有name字段，那么，我们能不能让Student继承自Book呢？
+						class Student extends Book {
+						    protected int score;
+						}
+						显然，从逻辑上讲，这是不合理的，Student不应该从Book继承，而应该从Person继承。
+					实际上Student和Book的关系是has关系。具有has关系不应该使用继承，而是使用组合，即Student可以持有一个Book实例：
+						class Student extends Person {
+						    protected Book book;
+						    protected int score;
+						}
+				小结：
+					继承是面向对象编程的一种强大的代码复用方式；
+					Java只允许单继承，所有类最终的根类是Object；
+					protected允许子类访问父类的字段和方法；
+					子类的构造方法可以通过super()调用父类的构造方法；
+					可以安全地向上转型为更抽象的类型；
+					可以强制向下转型，最好借助instanceof判断；
+					子类和父类的关系是is，has关系不能用继承。
+		多态：
+			覆写：
+				前言：在继承关系中，子类如果定义了一个与父类方法签名完全相同的方法，被称为覆写（Override）。
+				例如，在Person类中，我们定义了run()方法：
+					class Person {
+					    public void run() {
+					        System.out.println("Person.run");
+					    }
+					}
+				在子类Student中，覆写这个run()方法：
+					class Student extends Person {
+					    @Override
+					    public void run() {
+					        System.out.println("Student.run");
+					    }
+					}
+				Override和Overload不同的是，如果方法签名如果不同，就是Overload，Overload方法是一个新方法；如果方法签名相同，并且返回值也相同，就是Override。
+				注意：方法名相同，方法参数相同，但方法返回值不同，也是不同的方法。在Java程序中，出现这种情况，编译器会报错。
+					class Person {
+					    public void run() { … }
+					}
+
+					class Student extends Person {
+					    // 不是Override，因为参数不同:
+					    public void run(String s) { … }
+					    // 不是Override，因为返回值不同:
+					    public int run() { … }
+					}
+				加上@Override可以让编译器帮助检查是否进行了正确的覆写。希望进行覆写，但是不小心写错了方法签名，编译器会报错：
+					public class Main {
+					    public static void main(String[] args) {
+					    }
+					}
+
+					class Person {
+					    public void run() {}
+					}
+
+					public class Student extends Person {
+					    @Override 							// Compile error!@Override不是必需的，但是可提示程序是否正确复写；否则，不会报错提示！
+					    public void run(String s) {}
+					}
+				在上一节中，我们已经知道，引用变量的声明类型可能与其实际类型不符，我们考虑一种情况，如果子类覆写了父类的方法：
+					public class Main {
+					    public static void main(String[] args) {
+					        Person p = new Student();
+					        p.run(); // 应该打印Person.run还是Student.run?
+					    }
+					}
+
+					class Person {
+					    public void run() {
+					        System.out.println("Person.run");
+					    }
+					}
+
+					class Student extends Person {
+					    @Override
+					    public void run() {
+					        System.out.println("Student.run");
+					    }
+					}
+					output:
+					Student.run
+				结论：Java的实例方法调用是基于运行时的实际类型的动态调用，而非变量的声明类型。
+			多态：
+				多态是指，针对某个类型的方法调用，其真正执行的方法取决于运行时期实际类型的方法。例如：
+					Person p = new Student();
+					p.run(); // 无法确定运行时究竟调用哪个run()方法
+
+				举例，多态的实际用处事例：
+					假设我们定义一种收入，需要给它报税，那么先定义一个Income类：
+						class Income {
+						    protected double income;
+						    public double getTax() {
+						        return income * 0.1; // 税率10%
+						    }
+						}
+					对于工资收入，可以减去一个基数，那么我们可以从Income派生出SalaryIncome，并覆写getTax()：
+						class Salary extends Income {
+						    @Override
+						    public double getTax() {
+						        if (income <= 5000) {
+						            return 0;
+						        }
+						        return (income - 5000) * 0.2;
+						    }
+						}
+					如果你享受国务院特殊津贴，那么按照规定，可以全部免税：
+						class StateCouncilSpecialAllowance extends Income {
+						    @Override
+						    public double getTax() {
+						        return 0;
+						    }
+						}
+					现在，我们要编写一个报税的财务软件，对于一个人的所有收入进行报税，可以这么写：
+						public double totalTax(Income... incomes) {
+						    double total = 0;
+						    for (Income income: incomes) {
+						        total = total + income.getTax();
+						    }
+						    return total;
+						}
+
+					来试一下：
+						public class Main {
+						    public static void main(String[] args) {
+						        // 给一个有普通收入、工资收入和享受国务院特殊津贴的小伙伴算税:
+						        Income[] incomes = new Income[] {
+						            new Income(3000),
+						            new Salary(7500),
+						            new StateCouncilSpecialAllowance(15000)
+						        };
+						        System.out.println(totalTax(incomes));
+						    }
+
+						    public static double totalTax(Income... incomes) {
+						        double total = 0;
+						        for (Income income: incomes) {
+						            total = total + income.getTax();
+						        }
+						        return total;
+						    }
+						}
+
+						class Income {
+						    protected double income;
+
+						    public Income(double income) {
+						        this.income = income;
+						    }
+
+						    public double getTax() {
+						        return income * 0.1; // 税率10%
+						    }
+						}
+
+						class Salary extends Income {
+						    public Salary(double income) {
+						        super(income);
+						    }
+
+						    @Override
+						    public double getTax() {
+						        if (income <= 5000) {
+						            return 0;
+						        }
+						        return (income - 5000) * 0.2;
+						    }
+						}
+
+						class StateCouncilSpecialAllowance extends Income {
+						    public StateCouncilSpecialAllowance(double income) {
+						        super(income);
+						    }
+
+						    @Override
+						    public double getTax() {
+						        return 0;
+						    }
+						}
+						观察totalTax()方法：利用多态，totalTax()方法只需要和Income打交道，它完全不需要知道Salary和StateCouncilSpecialAllowance的存在，就可以正确计算出总的税。如果我们要新增一种稿费收入，只需要从Income派生，然后正确覆写getTax()方法就可以。把新的类型传入totalTax()，不需要修改任何代码。可见，多态具有一个非常强大的功能，就是允许添加更多类型的子类实现功能扩展，却不需要修改基于父类的代码。
+			覆写Object方法:
+				因为所有的class最终都继承自Object，而Object定义了几个重要的方法：
+					toString()：把instance输出为String；
+					equals()：判断两个instance是否逻辑相等；
+					hashCode()：计算一个instance的哈希值。
+				在必要的情况下，我们可以覆写Object的这几个方法。例如：
+					class Person {
+					    ...
+					    // 显示更有意义的字符串:
+					    @Override
+					    public String toString() {
+					        return "Person:name=" + name;
+					    }
+
+					    // 比较是否相等:
+					    @Override
+					    public boolean equals(Object o) {
+					        // 当且仅当o为Person类型:
+					        if (o instanceof Person) {			// instanceof 严格来说是Java中的一个双目运算符，
+					            Person p = (Person) o;
+					            // 并且name字段相同时，返回true:
+					            return this.name.equals(p.name);
+					        }
+					        return false;
+					    }
+
+					    // 计算hash:
+					    @Override
+					    public int hashCode() {
+					        return this.name.hashCode();
+					    }
+					}
+			调用super：
+				在子类的覆写方法中，如果要调用父类的被覆写的方法，可以通过super来调用。例如：
+
+				class Person {
+				    protected String name;
+				    public String hello() {
+				        return "Hello, " + name;
+				    }
+				}
+
+				Student extends Person {
+				    @Override
+				    public String hello() {
+				        // 调用父类的hello()方法:
+				        return super.hello() + "!";
+				    }
+				}
+			final：(父类不允许子类重写方法)
+				继承可以允许子类覆写父类的方法。如果一个父类不允许子类对它的某个方法进行覆写，可以把该方法标记为final。用final修饰的方法不能被Override：
+					class Person {
+					    protected String name;
+					    public final String hello() {
+					        return "Hello, " + name;
+					    }
+					}
+
+					Student extends Person {
+					    @Override
+					    public String hello() {	// compile error: 不允许覆写
+					    }
+					}
+				如果一个类不希望任何其他类继承自它，那么可以把这个类本身标记为final。用final修饰的类不能被继承：
+					final class Person {
+					    protected String name;
+					}
+
+					// compile error，编译错误！: 不允许继承自Person
+					Student extends Person {
+					}
+				对于一个类的实例字段，同样可以用final修饰。用final修饰的字段在初始化后不能被修改。例如：
+					class Person {
+					    public final String name = "Unamed";
+					}
+
+					对final字段重新赋值会报错：
+					Person p = new Person();
+					p.name = "New Name"; // compile error!编译错误！
+
+					可以在构造方法中初始化final字段：
+					class Person {
+					    public final String name;
+					    public Person(String name) {
+					        this.name = name;
+					    }
+					}
+				这种方法更为常用，因为可以保证实例一旦创建，其final字段就不可修改。
+			小结：
+				子类可以覆写父类的方法（Override），覆写在子类中改变了父类方法的行为；
+				Java的方法调用总是作用于运行期对象的实际类型，这种行为称为多态；
+				final修饰符有多种作用：
+				final修饰的方法可以阻止被覆写；
+				final修饰的class可以阻止被继承；
+				final修饰的field必须在创建对象时初始化，随后不可修改。
+		抽象类：
+			前言：
+				由于多态的存在，每个子类都可以覆写父类的方法，例如：
+					class Person {
+					    public void run() { … }
+					}
+
+					class Student extends Person {
+					    @Override
+					    public void run() { … }
+					}
+
+					class Teacher extends Person {
+					    @Override
+					    public void run() { … }
+					}
+				如果父类Person的run()方法没有实际意义，能否去掉方法的执行语句？答案是不行，会导致编译错误，因为定义方法的时候，必须实现方法的语句。
+					class Person {
+					    public void run(); // Compile Error!
+					}
+
+					class Student extends Person {
+					    @Override
+					    public void run() { … }
+					}
+
+					class Teacher extends Person {
+					    @Override
+					    public void run() { … }
+					}
+				如果父类的方法本身不需要实现任何功能，仅仅是为了定义方法签名，目的是让子类去覆写它，那么，可以把父类的方法声明为抽象方法：
+					abstract class Person {
+					    public abstract void run();
+					}
+
+					class Student extends Person {
+					    @Override
+					    public void run() { … }
+					}
+
+					class Teacher extends Person {
+					    @Override
+					    public void run() { … }
+					}
+			抽象类：
+				如果一个class定义了方法，但没有具体执行代码，这个方法就是抽象方法，抽象方法用abstract修饰。
+				因为无法执行抽象方法，因此这个类也必须申明为抽象类（abstract class）。
+				使用abstract修饰的类就是抽象类。我们无法实例化一个抽象类：
+					Person p = new Person(); // 编译错误
+				无法实例化的抽象类有什么用？
+				因为抽象类本身被设计成只能用于被继承，因此，抽象类可以强迫子类实现其定义的抽象方法，否则编译会报错。因此，抽象方法实际上相当于定义了“规范”。
+				例如，Person类定义了抽象方法run()，那么，在实现子类Student的时候，就必须覆写run()方法：
+					public class Main {
+					    public static void main(String[] args) {
+					        Person p = new Student ();
+					        p.run();
+					    }
+					}
+
+					abstract class Person {
+					    public abstract void run();
+					}
+
+					class Student extends Person {
+					    @Override
+					    public void run() {
+					        System.out.println("Student.run");
+					    }
+					}
+					output:
+					Student.run
+			面向抽象编程：
+				当我们定义了抽象类Person，以及具体的Student、Teacher子类的时候，我们可以通过抽象类Person类型去引用具体的子类的实例：
+					Person s = new Student();
+					Person t = new Teacher();
+				这种引用抽象类的好处在于，我们对其进行方法调用，并不关心Person类型变量的具体子类型：
+					// 不关心Person变量的具体子类型:
+					s.run();
+					t.run();
+				同样的代码，如果引用的是一个新的子类，我们仍然不关心具体类型：
+					// 同样不关心新的子类是如何实现run()方法的：
+					Person e = new Employee();
+					e.run();
+				这种尽量引用高层类型，避免引用实际子类型的方式，称之为面向抽象编程。
+				面向抽象编程的本质就是：
+					上层代码只定义规范（例如：abstract class Person）；
+					不需要子类就可以实现业务逻辑（正常编译）；
+					具体的业务逻辑由不同的子类实现，调用者并不关心。
+			小结：
+				通过abstract定义的方法是抽象方法，它只有定义，没有实现。抽象方法定义了子类必须实现的接口规范；
+				定义了抽象方法的class必须被定义为抽象类，从抽象类继承的子类必须实现抽象方法；
+				如果不实现抽象方法，则该子类仍是一个抽象类；
+				面向抽象编程使得调用者只关心抽象方法的定义，不关心子类的具体实现。
+		接口：
+			前言：
+				在抽象类中，抽象方法本质上是定义接口规范：即规定高层类的接口，从而保证所有子类都有相同的接口实现，这样，多态就能发挥出威力。
+				如果一个抽象类没有字段，所有方法全部都是抽象方法：
+					abstract class Person {
+					    public abstract void run();
+					    public abstract String getName();
+					}
+				就可以把该抽象类改写为接口：interface。
+				在Java中，使用interface可以声明一个接口：
+					interface Person {
+					    void run();
+					    String getName();
+					}
+				所谓interface，就是比抽象类还要抽象的纯抽象接口，因为它连字段都不能有。因为接口定义的所有方法默认都是public abstract的，所以这两个修饰符不需要写出来（写不写效果都一样）。
+
+				当一个具体的class去实现一个interface时，需要使用implements关键字。举个例子：
+					interface Person {
+					    void run();
+					    String getName();
+					}
+					class Student implements Person {
+					    private String name;
+
+					    public Student(String name) {
+					        this.name = name;
+					    }
+
+					    @Override
+					    public void run() {
+					        System.out.println(this.name + " run");
+					    }
+
+					    @Override
+					    public String getName() {
+					        return this.name;
+					    }
+					}
+
+				我们知道，在Java中，一个类只能继承自另一个类，不能从多个类继承。但是，一个类可以实现多个interface，例如：
+					class Student implements Person, Hello { // 实现了两个interface
+					    ...
+					}
+			术语：（注意区分术语）	
+				Java的接口特指interface的定义，表示一个接口类型和一组方法签名，而编程接口泛指接口规范，如方法签名，数据格式，网络协议等。
+				抽象类和接口的对比如下：
+								abstract class				interface
+					继承			只能extends一个class			可以implements多个interface
+					字段			可以定义实例字段				不能定义实例字段
+					抽象方法		可以定义抽象方法				可以定义抽象方法
+					非抽象方法	可以定义非抽象方法			可以定义default方法
+			接口继承：
+				一个interface可以继承自另一个interface。interface继承自interface使用extends，它相当于扩展了接口的方法。例如：
+					interface Hello {
+					    void hello();
+					}
+
+					interface Person extends Hello {
+					    void run();
+					    String getName();
+					}
+					此时，Person接口继承自Hello接口，因此，Person接口现在实际上有3个抽象方法签名，其中一个来自继承的Hello接口。
+			继承关系：
+				合理设计interface和abstract class的继承关系，可以充分复用代码。一般来说，公共逻辑适合放在abstract class中，具体逻辑放到各个子类，而接口层次代表抽象程度。可以参考Java的集合类定义的一组接口、抽象类以及具体子类的继承关系：
+					┌───────────────┐
+					│   Iterable    │
+					└───────────────┘
+					        ▲                ┌───────────────────┐
+					        │                │      Object       │
+					┌───────────────┐        └───────────────────┘
+					│  Collection   │                  ▲
+					└───────────────┘                  │
+					        ▲     ▲          ┌───────────────────┐
+					        │     └──────────│AbstractCollection │
+					┌───────────────┐        └───────────────────┘
+					│     List      │                  ▲
+					└───────────────┘                  │
+					              ▲          ┌───────────────────┐
+					              └──────────│   AbstractList    │
+					                         └───────────────────┘
+					                                ▲     ▲
+					                                │     │
+					                                │     │
+					                     ┌────────────┐ ┌────────────┐
+					                     │ ArrayList  │ │ LinkedList │
+					                     └────────────┘ └────────────┘
+				在使用的时候，实例化的对象永远只能是某个具体的子类，但总是通过接口去引用它，因为接口比抽象类更抽象：
+					List list = new ArrayList(); // 用List接口引用具体子类的实例
+					Collection coll = list; // 向上转型为Collection接口
+					Iterable it = coll; // 向上转型为Iterable接口	   
+			default方法：
+				在接口中，可以定义default方法。例如，把Person接口的run()方法改为default方法：
+					public class Main {
+					    public static void main(String[] args) {
+					        Person p = new Student("Xiao Ming");
+					        p.run();
+					    }
+					}
+
+					interface Person {
+					    String getName();
+					    default void run() {
+					        System.out.println(getName() + " run");
+					    }
+					}
+
+					class Student implements Person {
+					    private String name;
+
+					    public Student(String name) {
+					        this.name = name;
+					    }
+
+					    public String getName() {
+					        return this.name;
+					    }
+					}
+					output：
+					Xiao Ming run
+				注意：
+					实现类可以不必覆写default方法。default方法的目的是，当我们需要给接口新增一个方法时，会涉及到修改全部子类。如果新增的是default方法，那么子类就不必全部修改，只需要在需要覆写的地方去覆写新增方法。default方法和抽象类的普通方法是有所不同的。因为interface没有字段，default方法无法访问字段，而抽象类的普通方法可以访问实例字段。
+			小结：
+				Java的接口（interface）定义了纯抽象规范，一个类可以实现多个接口；
+				接口也是数据类型，适用于向上转型和向下转型；
+				接口的所有方法都是抽象方法，接口不能定义实例字段；
+				接口可以定义default方法（JDK>=1.8）。
+		静态字段和静态方法：
+			静态字段：
+				在一个class中定义的字段，我们称之为实例字段。实例字段的特点是，每个实例都有独立的字段，各个实例的同名字段互不影响。
+				还有一种字段，是用static修饰的字段，称为静态字段：static field。
+				实例字段在每个实例中都有自己的一个独立“空间”，但是静态字段只有一个共享“空间”，所有实例都会共享该字段。举个例子：
+					public class Main {
+					    public static void main(String[] args) {
+					        Person ming = new Person("Xiao Ming", 12);
+					        Person hong = new Person("Xiao Hong", 15);
+					        ming.number = 88;
+					        System.out.println(hong.number);
+					        hong.number = 99;
+					        System.out.println(ming.number);
+					    }
+					}
+
+					class Person {
+					    public String name;
+					    public int age;
+
+					    public static int number;
+
+					    public Person(String name, int age) {
+					        this.name = name;
+					        this.age = age;
+					    }
+					}
+					output：
+					88
+					99
+				对于静态字段，无论修改哪个实例的静态字段，效果都是一样的：所有实例的静态字段都被修改了，原因是静态字段并不属于实例：
+					        ┌──────────────────┐
+					ming ──>│Person instance   │
+					        ├──────────────────┤
+					        │name = "Xiao Ming"│
+					        │age = 12          │
+					        │number ───────────┼──┐    ┌─────────────┐
+					        └──────────────────┘  │    │Person class │
+					                              │    ├─────────────┤
+					                              ├───>│number = 99  │
+					        ┌──────────────────┐  │    └─────────────┘
+					hong ──>│Person instance   │  │
+					        ├──────────────────┤  │
+					        │name = "Xiao Hong"│  │
+					        │age = 15          │  │
+					        │number ───────────┼──┘
+							└──────────────────┘
+				因此，不推荐用实例变量.静态字段去访问静态字段，推荐用类名来访问静态字段。可以把静态字段理解为描述class本身的字段（非实例字段）。对于上面的代码，更好的写法是：
+					Person.number = 99;
+					System.out.println(Person.number);
+			静态方法：
+				有静态字段，就有静态方法。用static修饰的方法称为静态方法。
+				调用实例方法必须通过一个实例变量，而调用静态方法则不需要实例变量，通过类名就可以调用。静态方法类似其它编程语言的函数。例如：
+					public class Main {
+					    public static void main(String[] args) {
+					        Person.setNumber(99);
+					        System.out.println(Person.number);
+					    }
+					}
+
+					class Person {
+					    public static int number;
+
+					    public static void setNumber(int value) {
+					        number = value;
+					    }
+					}
+					ouput：
+					99
+				通过实例变量也可以调用静态方法，但这只是编译器自动帮我们把实例改写成类名而已。
+				通常情况下，通过实例变量访问静态字段和静态方法，会得到一个编译警告。
+				静态方法经常用于工具类。例如：
+					Arrays.sort()
+					Math.random()
+				静态方法也经常用于辅助方法。注意到Java程序的入口main()也是静态方法。
+			接口的静态字段：
+				因为interface是一个纯抽象类，所以它不能定义实例字段。但是，interface是可以有静态字段的，并且静态字段必须为final类型：
+					public interface Person {
+					    public static final int MALE = 1;
+					    public static final int FEMALE = 2;
+					}
+				实际上，因为interface的字段只能是public static final类型，所以我们可以把这些修饰符都去掉，上述代码可以简写为：
+					public interface Person {
+					    // 编译器会自动加上public statc final:
+					    int MALE = 1;
+					    int FEMALE = 2;
+					}
+				编译器会自动把该字段变为public static final类型。
+			小结：
+				静态字段属于所有实例“共享”的字段，实际上是属于class的字段；
+				调用静态方法不需要实例，无法访问this，但可以访问静态字段和其他静态方法；
+				
+				包静态方法常用于工具类和辅助方法。
+		包：
+			前言：
+				Java定义了一种名字空间，称之为包：package。一个类总是属于某个包，类名（比如Person）只是一个简写，真正的完整类名是包名.类名。
+				在不同包内，定义同样名字的类名，也不会出现冲突问题。
+				小明的Person.java文件：
+					package ming; // 申明包名ming
+
+					public class Person {
+					}
+				小军的Arrays.java文件：
+					package mr.jun; // 申明包名mr.jun
+
+					public class Arrays {
+					}
+				在Java虚拟机执行的时候，JVM只看完整类名，因此，只要包名不同，类就不同。
+
+				要特别注意：包没有父子关系。java.util和java.util.zip是不同的包，两者没有任何继承关系。
+				           没有定义包名的class，它使用的是默认包，非常容易引起名字冲突，因此，不推荐不写包名的做法。
+			包作用域：
+				位于同一个包的类，可以访问包作用域的字段和方法。不用public、protected、private修饰的字段和方法就是包作用域。
+					例如，Person类定义在hello包下面：
+						package hello;
+
+						public class Person {
+						    // 包作用域:
+						    void hello() {
+						        System.out.println("Hello!");
+						    }
+						}
+					Main类也定义在hello包下面：
+						package hello;
+
+						public class Main {
+						    public static void main(String[] args) {
+						        Person p = new Person();
+						        p.hello(); // 可以调用，因为Main和Person在同一个包
+						    }
+						}
+			import：
+				在一个class中，我们总会引用其他的class。例如，小明的ming.Person类，如果要引用小军的mr.jun.Arrays类，他有三种写法：
+					第一种，直接写出完整类名，例如：
+						// Person.java
+						package ming;
+
+						public class Person {
+						    public void run() {
+						        mr.jun.Arrays arrays = new mr.jun.Arrays();
+						    }
+						}
+						很显然，每次写完整类名比较痛苦。
+					第二种写法：
+						是用import语句，导入小军的Arrays，然后写简单类名：
+							// Person.java
+							package ming;
+
+							// 导入完整类名:
+							import mr.jun.Arrays;
+
+							public class Person {
+							    public void run() {
+							        Arrays arrays = new Arrays();
+							    }
+							}
+						在写import的时候，可以使用*，表示把这个包下面的所有class都导入进来（但不包括子包的class）：
+							// Person.java
+							package ming;
+
+							// 导入mr.jun包的所有class:
+							import mr.jun.*;
+
+							public class Person {
+							    public void run() {
+							        Arrays arrays = new Arrays();
+							    }
+							}
+						我们一般不推荐这种写法，因为在导入了多个包后，很难看出Arrays类属于哪个包。
+					还有一种import static的语法，它可以导入可以导入一个类的静态字段和静态方法：
+						package main;
+
+						// 导入System类的所有静态字段和静态方法:
+						import static java.lang.System.*;
+
+						public class Main {
+						    public static void main(String[] args) {
+						        // 相当于调用System.out.println(…)
+						        out.println("Hello, world!");
+						    }
+						}
+						import static很少使用。
+					Java编译器最终编译出的.class文件只使用完整类名，因此，在代码中，当编译器遇到一个class名称时：
+						如果是完整类名，就直接根据完整类名查找这个class；
+						如果是简单类名，按下面的顺序依次查找：
+							查找当前package是否存在这个class；
+							查找import的包是否包含这个class；
+							查找java.lang包是否包含这个class。
+							如果按照上面的规则还无法确定类名，则编译报错。
+					如果按照上面的规则还无法确定类名，则编译报错。
+				我们来看一个例子：
+					// Main.java
+					package test;
+
+					import java.text.Format;
+
+					public class Main {
+					    public static void main(String[] args) {
+					        java.util.List list; // ok，使用完整类名 -> java.util.List
+					        Format format = null; // ok，使用import的类 -> java.text.Format
+					        String s = "hi"; // ok，使用java.lang包的String -> java.lang.String
+					        System.out.println(s); // ok，使用java.lang包的System -> java.lang.System
+					        MessageFormat mf = null; // 编译错误：无法找到MessageFormat: MessageFormat cannot be resolved to a type
+					    }
+					}
+					因此，编写class的时候，编译器会自动帮我们做两个import动作：
+						默认自动import当前package的其他class；
+						默认自动import java.lang.*。
+					注意：自动导入的是java.lang包，但类似java.lang.reflect这些包仍需要手动导入。
+					     如果有两个class名称相同，例如，mr.jun.Arrays和java.util.Arrays，那么只能import其中一个，另一个必须写完整类名。
+			最佳实践：
+				为了避免名字冲突，我们需要确定唯一的包名。推荐的做法是使用倒置的域名来确保唯一性。例如：
+					org.apache
+					org.apache.commons.log
+					com.liaoxuefeng.sample
+					子包就可以根据功能自行命名。
+				要注意不要和java.lang包的类重名，即自己的类不要使用这些名字：
+					String
+					System
+					Runtime
+					...
+				要注意也不要和JDK常用类重名：
+					java.util.List
+					java.text.Format
+					java.math.BigInteger
+					...
+			小结：
+				Java内建的package机制是为了避免class命名冲突；
+				JDK的核心类使用java.lang包，编译器会自动导入；
+				JDK的其它常用类定义在java.util.*，java.math.*，java.text.*，……；
+				包名推荐使用倒置的域名，例如org.apache。
+		作用域：
+			前言：
+				在Java中，我们经常看到public、protected、private这些修饰符。在Java中，这些修饰符可以用来限定访问作用域。
+			public：
+				定义为public的class、interface可以被其他任何类访问：
+					package abc;
+
+					public class Hello {
+					    public void hi() {
+					    }
+					}
+				上面的Hello是public，因此，可以被其他包的类访问：
+					package xyz;
+
+					class Main {
+					    void foo() {
+					        // Main可以访问Hello
+					        Hello h = new Hello();
+					    }
+					}
+				定义为public的field、method可以被其他类访问，前提是首先有访问class的权限：
+					package abc;
+
+					public class Hello {
+					    public void hi() {
+					    }
+					}
+				上面的hi()方法是public，可以被其他类调用，前提是首先要能访问Hello类：
+					package xyz;
+
+					class Main {
+					    void foo() {
+					        Hello h = new Hello();
+					        h.hi();
+					    }
+					}
+			private：
+				定义为private的field、method无法被其他类访问：
+					package abc;
+
+					public class Hello {
+					    // 不能被其他类调用:
+					    private void hi() {
+					    }
+
+					    public void hello() {
+					        this.hi();
+					    }
+					}
+				实际上，确切地说，private访问权限被限定在class的内部，而且与方法声明顺序无关。推荐把private方法放到后面，因为public方法定义了类对外提供的功能，阅读代码的时候，应该先关注public方法：
+					package abc;
+
+					public class Hello {
+					    public void hello() {
+					        this.hi();
+					    }
+
+					    private void hi() {
+					    }
+					}
+				由于Java支持嵌套类，如果一个类内部还定义了嵌套类，那么，嵌套类拥有访问private的权限：
+					public class Main {
+					    public static void main(String[] args) {
+					        Inner i = new Inner();
+					        i.hi();
+					    }
+
+					    // private方法:
+					    private static void hello() {
+					        System.out.println("private hello!");
+					    }
+
+					    // 静态内部类:
+					    static class Inner {
+					        public void hi() {
+					            Main.hello();
+					        }
+					    }
+					}
+					output:
+					private hello!
+				定义在一个class内部的class称为嵌套类（nested class），Java支持好几种嵌套类。
+			protected：
+				protected作用于继承关系。定义为protected的字段和方法可以被子类访问，以及子类的子类：
+					package abc;
+
+					public class Hello {
+					    // protected方法:
+					    protected void hi() {
+					    }
+					}
+				上面的protected方法可以被继承的类访问：
+					package xyz;
+
+					class Main extends Hello {
+					    void foo() {
+					        Hello h = new Hello();
+					        // 可以访问protected方法:
+					        h.hi();
+					    }
+					}
+			package：
+				最后，包作用域是指一个类允许访问同一个package的没有public、private修饰的class，以及没有public、protected、private修饰的字段和方法。
+					package abc;
+					// package权限的类:
+					class Hello {
+					    // package权限的方法:
+					    void hi() {
+					    }
+					}
+				只要在同一个包，就可以访问package权限的class、field和method：
+					package abc;
+
+					class Main {
+					    void foo() {
+					        // 可以访问package权限的类:
+					        Hello h = new Hello();
+					        // 可以调用package权限的方法:
+					        h.hi();
+					    }
+					}
+				注意，包名必须完全一致，包没有父子关系，com.apache和com.apache.abc是不同的包。
+			局部变量：
+				在方法内部定义的变量称为局部变量，局部变量作用域从变量声明处开始到对应的块结束。方法参数也是局部变量。
+					package abc;
+
+					public class Hello {
+					    void hi(String name) { // ①
+					        String s = name.toLowerCase(); // ②
+					        int len = s.length(); // ③
+					        if (len < 10) { // ④
+					            int p = 10 - len; // ⑤
+					            for (int i=0; i<10; i++) { // ⑥
+					                System.out.println(); // ⑦
+					            } // ⑧
+					        } // ⑨
+					    } // ⑩
+					}
+					我们观察上面的hi()方法代码：
+						方法参数name是局部变量，它的作用域是整个方法，即①～⑩；
+						变量s的作用域是定义处到方法结束，即②～⑩；
+						变量len的作用域是定义处到方法结束，即③～⑩；
+						变量p的作用域是定义处到if块结束，即⑤～⑨；
+						变量i的作用域是for循环，即⑥～⑧。
+					使用局部变量时，应该尽可能把局部变量的作用域缩小，尽可能延后声明局部变量。
+			final：
+				Java还提供了一个final修饰符。final与访问权限不冲突，它有很多作用。
+				用final修饰class可以阻止被继承：
+					package abc;
+
+					// 无法被继承:
+					public final class Hello {
+					    private int n = 0;
+					    protected void hi(int t) {
+					        long i = t;
+					    }
+					}
+				用final修饰method可以阻止被子类覆写：
+					package abc;
+
+					public class Hello {
+					    // 无法被覆写:
+					    protected final void hi() {
+					    }
+					}
+				用final修饰field可以阻止被重新赋值：
+					package abc;
+
+					public class Hello {
+					    private final int n = 0;
+					    protected void hi() {
+					        this.n = 1; // error!
+					    }
+					}
+				用final修饰局部变量可以阻止被重新赋值：
+					package abc;
+
+					public class Hello {
+					    protected void hi(final int t) {
+					        t = 1; // error!
+					    }
+					}
+			最佳实践：
+				如果不确定是否需要public，就不声明为public，即尽可能少地暴露对外的字段和方法。
+				把方法定义为package权限有助于测试，因为测试类和被测试类只要位于同一个package，测试代码就可以访问被测试类的package权限方法。
+				一个.java文件只能包含一个public类，但可以包含多个非public类。如果有public类，文件名必须和public类的名字相同。
+			小结：
+				Java内建的访问权限包括public、protected、private和package权限；
+				Java在方法内部定义的变量是局部变量，局部变量的作用域从变量声明开始，到一个块结束；
+				final修饰符不是访问权限，它可以修饰class、field和method；
+				一个.java文件只能包含一个public类，但可以包含多个非public类。
+		classpath和jar：
+			classpath：
+				到底什么是classpath？
+					lasspath是JVM用到的一个环境变量，它用来指示JVM如何搜索class。
+					因为Java是编译型语言，源码文件是.java，而编译后的.class文件才是真正可以被JVM执行的字节码。因此，JVM需要知道，如果要加载一个abc.xyz.Hello的类，应该去哪搜索对应的Hello.class文件。
+				更好的做法是，不要设置classpath！默认的当前目录.对于绝大多数情况都够用了。
+			jar包:
+				如果有很多.class文件，散落在各层目录中，肯定不便于管理。如果能把目录打一个包，变成一个文件，就方便多了。
+				jar包就是用来干这个事的，它可以把package组织的目录层级，以及各个目录下的所有文件（包括.class文件和其他文件）都打成一个jar文件，这样一来，无论是备份，还是发给客户，就简单多了。
+				jar包实际上就是一个zip格式的压缩文件，而jar包相当于目录。如果我们要执行一个jar包的class，就可以把jar包放到classpath中：
+					java -cp ./hello.jar abc.xyz.Hello
+			小结：
+				JVM通过环境变量classpath决定搜索class的路径和顺序；
+				不推荐设置系统环境变量classpath，始终建议通过-cp命令传入；
+				jar包相当于目录，可以包含很多.class文件，方便下载和使用；
+				MANIFEST.MF文件可以提供jar包的信息，如Main-Class，这样可以直接运行jar包。
+				读后有收获可以支付宝请作者喝咖啡，读后有疑问请加微信群讨论：
+		模块：
+			前言：
+				从Java 9开始，JDK又引入了模块（Module）。
+				我们知道，.class文件是JVM看到的最小可执行文件，而一个大型程序需要编写很多Class，并生成一堆.class文件，很不便于管理，所以，jar文件就是class文件的容器。
+				在Java 9之前，一个大型Java程序会生成自己的jar文件，同时引用依赖的第三方jar文件，而JVM自带的Java标准库，实际上也是以jar文件形式存放的，这个文件叫rt.jar，一共有60多M。
+				如果是自己开发的程序，除了一个自己的app.jar以外，还需要一堆第三方的jar包，运行一个Java程序，一般来说，命令行写这样：
+					java -cp app.jar:a.jar:b.jar:c.jar com.liaoxuefeng.sample.Main
+					注意：JVM自带的标准库rt.jar不要写到classpath中，写了反而会干扰JVM的正常运行。
+			小结：
+				Java 9引入的模块目的是为了管理依赖；
+				使用模块可以按需打包JRE；
+				使用模块对类的访问权限有了进一步限制。
+	JAVA核心类：
+		字符串和编码：
+			String：
+				Java中，String是一个引用类型，它本身也是一个class。但是，Java编译器对String有特殊处理，即可以直接用"..."来表示一个字符串：
+					String s1 = "Hello!";
+				实际上字符串在String内部是通过一个char[]数组表示的，因此，按下面的写法也是可以的：
+					String s2 = new String(new char[] {'H', 'e', 'l', 'l', 'o', '!'});
+				我们来看一个例子：
+					public class Main {
+					    public static void main(String[] args) {
+					        String s = "Hello";
+					        System.out.println(s);
+					        s = s.toUpperCase();			// 字符串全部转换成大写。
+					        System.out.println(s);
+					    }
+					}
+					output：
+					Hello
+					HELLO
+			字符串比较：
+				大、小写一致比较：
+					当我们想要比较两个字符串是否相同时，要特别注意，我们实际上是想比较字符串的内容是否相同。必须使用equals()方法而不能用==。
+					我们看下面的例子：
+						public class Main {
+						    public static void main(String[] args) {
+						        String s1 = "hello";
+						        String s2 = "hello";
+						        System.out.println(s1 == s2);
+						        System.out.println(s1.equals(s2));
+						    }
+						}
+						output：
+						true
+						true
+						从表面上看，两个字符串用==和equals()比较都为true，但实际上那只是Java编译器在编译期，会自动把所有相同的字符串当作一个对象放入常量池，自然s1和s2的引用就是相同的。
+					这种==比较返回true纯属巧合。换一种写法，==比较就会失败：
+						public class Main {
+						    public static void main(String[] args) {
+						        String s1 = "hello";
+						        String s2 = "HELLO".toLowerCase();		// toLowerCase是大写转换小写的方法
+						        System.out.println(s1 == s2);
+						        System.out.println(s1.equals(s2));
+						    }
+						}
+						output：
+						false
+						true
+					结论：两个字符串比较，必须总是使用equals()方法。
+				忽略大、小写一致比较：
+					要忽略大小写比较，使用equalsIgnoreCase()方法。
+				String类还提供了多种方法来搜索子串、提取子串。常用的方法有：
+					是否包含子串:
+						"Hello".contains("ll"); 	// true
+						注意到contains()方法的参数是CharSequence而不是String，因为CharSequence是String的父类。
+					搜索子串的更多的例子：
+						"Hello".indexOf("l"); 		// 2
+						"Hello".lastIndexOf("l"); 	// 3
+						"Hello".startsWith("He"); 	// true
+						"Hello".endsWith("lo"); 	// true
+					提取子串的例子：
+						"Hello".substring(2); 		// "llo"
+						"Hello".substring(2, 4); 	// "ll"
+					注意索引号是从0开始的。
+				去除首尾空白字符：
+					trim()：
+						使用trim()方法可以移除字符串首尾空白字符。空白字符包括空格，\t，\r，\n：
+							"  \tHello\r\n ".trim(); // "Hello"
+						注意：trim()并没有改变字符串的内容，而是返回了一个新字符串。
+					strip()：
+						另一个strip()方法也可以移除字符串首尾空白字符。它和trim()不同的是，类似中文的空格字符\u3000也会被移除：
+							"\u3000Hello\u3000".strip(); 	// "Hello"
+							" Hello ".stripLeading(); 		// "Hello "
+							" Hello ".stripTrailing(); 		// " Hello"
+					isEmpty()和isBlank()：
+						isEmpty()和isBlank()来判断字符串是否为空和空白字符串：
+							"".isEmpty(); 					// true，因为字符串长度为0
+							"  ".isEmpty(); 				// false，因为字符串长度不为0
+							"  \n".isBlank(); 				// true，因为只包含空白字符
+							" Hello ".isBlank(); 			// false，因为包含非空白字符
+				替换子串：
+					要在字符串中替换子串，有两种方法:
+						一种是根据字符或字符串替换：
+							String s = "hello";
+							s.replace('l', 'w'); 			// "hewwo"，所有字符'l'被替换为'w'
+							s.replace("ll", "~~"); 			// "he~~o"，所有子串"ll"被替换为"~~"
+						另一种是通过正则表达式替换：
+							String s = "A,,B;C ,D";
+							s.replaceAll("[\\,\\;\\s]+", ","); // "A,B,C,D"
+							上面的代码通过正则表达式，把匹配的子串统一替换为","。关于正则表达式的用法我们会在后面详细讲解。
+				分割字符串：
+					要分割字符串，使用split()方法，并且传入的也是正则表达式：
+						String s = "A,B,C,D";
+						String[] ss = s.split("\\,"); 		// {"A", "B", "C", "D"}
+				拼接字符串：
+					拼接字符串使用静态方法join()，它用指定的字符串连接字符串数组：
+						String[] arr = {"A", "B", "C"};
+						String s = String.join("***", arr); // "A***B***C"
+				类型转换：
+					要把任意基本类型或引用类型转换为字符串，可以使用静态方法valueOf()。这是一个重载方法，编译器会根据参数自动选择合适的方法：
+						String.valueOf(123); 				// "123"
+						String.valueOf(45.67); 				// "45.67"
+						String.valueOf(true); 				// "true"
+						String.valueOf(new Object()); 		// 类似java.lang.Object@636be97c
+					要把字符串转换为其他类型，就需要根据情况。例如，把字符串转换为int类型：
+						int n1 = Integer.parseInt("123"); 	// 123
+						int n2 = Integer.parseInt("ff", 16); // 按十六进制转换，255
+					把字符串转换为boolean类型：
+						boolean b1 = Boolean.parseBoolean("true"); 		// true
+						boolean b2 = Boolean.parseBoolean("FALSE"); 	// false
+					要特别注意，Integer有个getInteger(String)方法，它不是将字符串转换为int，而是把该字符串对应的系统变量转换为Integer：
+						Integer.getInteger("java.version"); 			// 版本号，11
+				转换为char[]：
+					String和char[]类型可以互相转换，方法是：
+						char[] cs = "Hello".toCharArray(); 				// String -> char[]
+						String s = new String(cs); 						// char[] -> String
+					如果修改了char[]数组，String并不会改变
+						public class Main {
+						    public static void main(String[] args) {
+						        char[] cs = "Hello".toCharArray();
+						        String s = new String(cs);
+						        System.out.println(s);
+						        cs[0] = 'X';
+						        System.out.println(s);
+						    }
+						}
+						output:
+						Hello
+						Hello
+					从String的不变性设计可以看出，如果传入的对象有可能改变，我们需要复制而不是直接引用。
+						例如，下面的代码设计了一个Score类保存一组学生的成绩：
+							public class Main {
+							    public static void main(String[] args) {
+							        int[] scores = new int[] { 88, 77, 51, 66 };
+							        Score s = new Score(scores);
+							        s.printScores();
+							        scores[2] = 99;
+							        s.printScores();
+							    }
+							}
+
+							class Score {
+							    static int[] scores;
+							    public Score(int[] scores) {
+							        this.scores = scores;
+							    }
+
+							    public void printScores() {
+							        System.out.println(Arrays.toString(scores));	// Arrays.toString:数组以字符串显示出来的方法
+							    }
+							}
+							output:
+							[88, 77, 51, 66]
+							[88, 77, 99, 66]
+						修复Score的构造方法，使得外部代码对数组的修改不影响Score实例的int[]字段,两种方式：
+							方式一：
+								public class Main {
+								    public static void main(String[] args) {
+								        int[] scores = new int[]{ 88, 77, 51, 66 };
+								        Score s = new Score(scores);
+								        s.printScores();
+								        scores[2] = 99;
+								        s.printScores();
+								    }
+								}
+
+								class Score {
+								    private int[] scores;
+								    public Score(int[] scores) {
+								        this.scores = new int[scores.length];
+								        for(int i=0;i<scores.length;i++) {
+								            this.scores[i] = scores[i]; 
+								        }
+								    }
+
+								    public void printScores() {
+								        System.out.println(Arrays.toString(scores));
+								    }
+								}
+							方式二（运用clone()方法）：
+								public class Main {
+								    public static void main(String[] args) {
+								        int[] scores = new int[] { 88, 77, 51, 66 };
+								        Score s = new Score(scores);
+								        s.printScores();
+								        scores[2] = 99;
+								        s.printScores();
+								    }
+								}
+
+								class Score {
+								    private int[] scores;
+								    public Score(int[] scores) {
+								        this.scores = scores.clone();
+								    }
+
+								    public void printScores() {
+								        System.out.println(Arrays.toString(scores));
+								    }
+								}
+				字符编码：
+					ASCII、GB2312和Unicode的编码
+					UTF-8编码，它是一种变长编码，用来把固定长度的Unicode编码变成1～4字节的变长编码。通过UTF-8编码，英文字符'A'的UTF-8编码变为0x41，正好和ASCII码一致，而中文'中'的UTF-8编码为3字节0xe4b8ad。
+					在Java中，char类型实际上就是两个字节的Unicode编码。如果我们要手动把字符串转换成其他编码，可以这样做：
+						byte[] b1 = "Hello".getBytes(); 						// 按ISO8859-1编码转换，不推荐
+						byte[] b2 = "Hello".getBytes("UTF-8"); 					// 按UTF-8编码转换
+						byte[] b2 = "Hello".getBytes("GBK");					// 按GBK编码转换
+						byte[] b3 = "Hello".getBytes(StandardCharsets.UTF_8); 	// 按UTF-8编码转换
+						注意：转换编码后，就不再是char类型，而是byte类型表示的数组。
+					如果要把已知编码的byte[]转换为String，可以这样做：
+						byte[] b = ...
+						String s1 = new String(b, "GBK"); 						// 按GBK转换
+						String s2 = new String(b, StandardCharsets.UTF_8); 		// 按UTF-8转换
+						始终牢记：Java的String和char在内存中总是以Unicode编码表示。
+				延伸阅读：
+					对于不同版本的JDK，String类在内存中有不同的优化方式。具体来说，早期JDK版本的String总是以char[]存储，它的定义如下：
+						public final class String {
+						    private final char[] value;
+						    private final int offset;
+						    private final int count;
+						}
+					较新的JDK版本的String则以byte[]存储：如果String仅包含ASCII字符，则每个byte存储一个字符，否则，每两个byte存储一个字符，这样做的目的是为了节省内存，因为大量的长度较短的String通常仅包含ASCII字符：
+						public final class String {
+						    private final byte[] value;
+						    private final byte coder; // 0 = LATIN1, 1 = UTF16
+						}
+					对于使用者来说，String内部的优化不影响任何已有代码，因为它的public方法签名是不变的。
+				小结：
+					Java字符串String是不可变对象；
+					字符串操作不改变原字符串内容，而是返回新字符串；
+					常用的字符串操作：提取子串、查找、替换、大小写转换等；
+					Java使用Unicode编码表示String和char；
+					转换编码就是将String和byte[]转换，需要指定编码；
+					转换为byte[]时，始终优先考虑UTF-8编码。
+		StringBuilder：
+			Java编译器对String做了特殊处理，使得我们可以直接用+拼接字符串。
+				考察下面的循环代码：
+					String s = "";		//	String变量，必须初始化值
+					for (int i = 0; i < 10; i++) {
+					    s = s + "," + i;
+					}
+					System.out.println(s);
+					output:
+					,0,1,2,3,4,5,6,7,8,9
+				为了能高效拼接字符串，Java标准库提供了StringBuilder，它是一个可变对象，可以预分配缓冲区，这样，往StringBuilder中新增字符时，不会创建新的临时对象：
+					StringBuilder sb = new StringBuilder(1024);
+					for (int i = 0; i < 10; i++) {
+					    sb.append(',');
+					    sb.append(i);
+					}
+					String s = sb.toString();
+					System.out.println(sb.toString());
+					System.out.println(s);
+					output:
+					,0,1,2,3,4,5,6,7,8,9
+					,0,1,2,3,4,5,6,7,8,9
+				StringBuilder还可以进行链式操作：
+					public class Main {
+					    public static void main(String[] args) {
+					        var sb = new StringBuilder(1024);
+					        sb.append("Mr ")
+					          .append("Bob")
+					          .append("!")
+					          .insert(0, "Hello, ");
+					        System.out.println(sb.toString());
+
+					    }
+					}
+					output:
+					Hello, Mr Bob!
+				仿照StringBuilder，我们也可以设计支持链式操作的类。例如，一个可以不断增加的计数器：
+					public class Main {
+					    public static void main(String[] args) {
+					        Adder adder = new Adder();
+					        adder.add(3)
+					             .add(5)
+					             .inc()
+					             .add(10);
+					        System.out.println(adder.value());
+					    }
+					}
+
+					class Adder {
+					    private int sum = 0;
+
+					    public Adder add(int n) {
+					        sum += n;
+					        return this;
+					    }
+
+					    public Adder inc() {
+					        sum ++;
+					        return this;
+					    }
+
+					    public int value() {
+					        return sum;
+					    }
+					}
+					output:
+					19
+			练习（请使用StringBuilder构造一个INSERT语句：）：
+				public class Main {
+			    public static void main(String[] args) {
+			        String[] fields = { "name", "position", "salary" };
+			        String table = "employee";
+			        String insert = buildInsertSql(table, fields);
+			        System.out.println(insert);
+			        String s = "INSERT INTO employee (name, position, salary) VALUES (?, ?, ?)";
+			        System.out.println(s.equals(insert) ? "测试成功" : "测试失败");
+			    }
+			    static String buildInsertSql(String table, String[] fields) {
+					// TODO:
+					StringBuilder sb = new StringBuilder(1024);
+					sb.append("INSERT INTO ")
+					  .append(table)
+					  .append(" (")
+					  .append(fields[0])
+					  .append(", ")
+					  .append(fields[1])
+					  .append(", ")
+					  .append(fields[2])
+					  .append(") ")
+					  .append("VALUES (?, ?, ?)");
+					return sb.toString();
+				}
+				output:
+				INSERT INTO employee (name, position, salary) VALUES (?, ?, ?)
+				测试成功
+		StringJoiner：
+			要高效拼接字符串，应该使用StringBuilder。
+			StringJoiner：
+				很多时候，我们拼接的字符串像这样：
+					public class Main {
+					    public static void main(String[] args) {
+					        String[] names = {"Bob", "Alice", "Grace"};
+					        var sb = new StringBuilder();
+					        sb.append("Hello ");
+					        for (String name : names) {
+					            sb.append(name).append(", ");
+					        }
+					        // 注意去掉最后的", ":
+					        sb.delete(sb.length() - 2, sb.length());
+					        sb.append("!");
+					        System.out.println(sb.toString());
+					    }
+					}
+					output:
+					Hello Bob, Alice, Grace!
+				类似用分隔符拼接数组的需求很常见，所以Java标准库还提供了一个StringJoiner来干这个事：
+					public class Main {
+					    public static void main(String[] args) {
+					        String[] names = {"Bob", "Alice", "Grace"};
+					        var sj = new StringJoiner(", ");
+					        for (String name : names) {
+					            sj.add(name);
+					        }
+					        System.out.println(sj.toString());
+					    }
+					}
+					output:
+					Bob, Alice, Grace
+				慢着！用StringJoiner的结果少了前面的"Hello "和结尾的"!"！遇到这种情况，需要给StringJoiner指定“开头”和“结尾”：
+					public class Main {
+					    public static void main(String[] args) {
+					        String[] names = {"Bob", "Alice", "Grace"};
+					        var sj = new StringJoiner(", ", "Hello ", "!");
+					        for (String name : names) {
+					            sj.add(name);
+					        }
+					        System.out.println(sj.toString());
+					    }
+					}
+					output:
+					Hello Bob, Alice, Grace!
+				那么StringJoiner内部是如何拼接字符串的呢？如果查看源码，可以发现，StringJoiner内部实际上就是使用了StringBuilder，所以拼接效率和StringBuilder几乎是一模一样的。
+			String.join()：
+				String还提供了一个静态方法join()，这个方法在内部使用了StringJoiner来拼接字符串，在不需要指定“开头”和“结尾”的时候，用String.join()更方便：
+					String[] names = {"Bob", "Alice", "Grace"};
+					var s = String.join(", ", names);
+			练习：
+				请使用StringJoiner构造一个SELECT语句：
+					import java.util.StringJoiner;
+					public class Main {
+					    public static void main(String[] args) {
+					        String[] fields = { "name", "position", "salary" };
+					        String table = "employee";
+					        String select = buildSelectSql(table, fields);
+					        System.out.println(select);
+					        System.out.println("SELECT name, position, salary FROM employee".equals(select) ? "测试成功" : "测试失败");
+					    }
+					    static String buildSelectSql(String table, String[] fields) {
+					        // TODO:
+					        var sj = new StringJoiner(", ", "SELECT ", " FROM "+table);
+					        for (String field : fields) {
+					            sj.add(field);
+					        }
+					        return sj.toString();
+					    }
+					}
+					output：
+					SELECT name, position, salary FROM employee
+					测试成功
+		包装类型：
+			前言：
+				我们已经知道，Java的数据类型分两种：
+					基本类型：byte，short，int，long，boolean，float，double，char
+					引用类型：所有class和interface类型
+			引用类型：
+				引用类型可以赋值为null，表示空，但基本类型不能赋值为null：
+					String s = null;
+					int n = null; // compile error!
+			那么，如何把一个基本类型视为对象（引用类型）？
+				比如，想要把int基本类型变成一个引用类型，我们可以定义一个Integer类，它只包含一个实例字段int，这样，Integer类就可以视为int的包装类（Wrapper Class）：
+					public class Integer {
+					    private int value;
+
+					    public Integer(int value) {
+					        this.value = value;
+					    }
+
+					    public int intValue() {
+					        return this.value;
+					    }
+					}
+				定义好了Integer类，我们就可以把int和Integer互相转换：
+					Integer n = null;
+					Integer n2 = new Integer(99);
+					int n3 = n2.intValue();
+				实际上，因为包装类型非常有用，Java核心库为每种基本类型都提供了对应的包装类型：
+			Auto Boxing：
+				因为int和Integer可以互相转换：
+					int i = 100;
+					Integer n = Integer.valueOf(i);
+					int x = n.intValue();
+				所以，Java编译器可以帮助我们自动在int和Integer之间转型：
+					Integer n = 100; // 编译器自动使用Integer.valueOf(int)
+					int x = n; // 编译器自动使用Integer.intValue()
+				这种直接把int变为Integer的赋值写法，称为自动装箱（Auto Boxing），反过来，把Integer变为int的赋值写法，称为自动拆箱（Auto Unboxing）。
+			不变类：
+				所有的包装类型都是不变类。我们查看Integer的源码可知，它的核心代码如下：
+					public final class Integer {
+					    private final int value;
+					}
+				因此，一旦创建了Integer对象，该对象就是不变的。、
+				对两个Integer实例进行比较要特别注意：绝对不能用==比较，因为Integer是引用类型，必须使用equals()比较：
+					public class Main {
+					    public static void main(String[] args) {
+					        Integer x = 127;
+					        Integer y = 127;
+					        Integer m = 99999;
+					        Integer n = 99999;
+					        System.out.println("x == y: " + (x==y)); // true
+					        System.out.println("m == n: " + (m==n)); // false
+					        System.out.println("x.equals(y): " + x.equals(y)); // true
+					        System.out.println("m.equals(n): " + m.equals(n)); // true
+					    }
+					}
+					output:
+					x == y: true
+					m == n: false
+					x.equals(y): true
+					m.equals(n): true
+				创建新对象时，优先选用静态工厂方法而不是new操作符：
+				 	因为Integer.valueOf()可能始终返回同一个Integer实例，因此，在我们自己创建Integer的时候，以下两种方法：
+						方法1：Integer n = new Integer(100);
+						方法2：Integer n = Integer.valueOf(100);
+					方法2更好，因为方法1总是创建新的Integer实例，方法2把内部优化留给Integer的实现者去做，即使在当前版本没有优化，也有可能在下一个版本进行优化。
+			进制转换：
+				Integer类本身还提供了大量方法，例如，最常用的静态方法parseInt()可以把字符串解析成一个整数：
+					int x1 = Integer.parseInt("100"); // 100
+					int x2 = Integer.parseInt("100", 16); // 256,因为按16进制解析
+				Integer还可以把整数格式化为指定进制的字符串：
+					public class Main {
+					    public static void main(String[] args) {
+					        System.out.println(Integer.toString(100)); // "100",表示为10进制
+					        System.out.println(Integer.toString(100, 36)); // "2s",表示为36进制
+					        System.out.println(Integer.toHexString(100)); // "64",表示为16进制
+					        System.out.println(Integer.toOctalString(100)); // "144",表示为8进制
+					        System.out.println(Integer.toBinaryString(100)); // "1100100",表示为2进制
+					    }
+					}
+					output：
+					100
+					2s
+					64
+					144
+					1100100
+					注意：上述方法的输出都是String，在计算机内存中，只用二进制表示，不存在十进制或十六进制的表示方法。
+				Java的包装类型还定义了一些有用的静态变量：
+					// boolean只有两个值true/false，其包装类型只需要引用Boolean提供的静态字段:
+					Boolean t = Boolean.TRUE;
+					Boolean f = Boolean.FALSE;
+					// int可表示的最大/最小值:
+					int max = Integer.MAX_VALUE; // 2147483647
+					int min = Integer.MIN_VALUE; // -2147483648
+					// long类型占用的bit和byte数量:
+					int sizeOfLong = Long.SIZE; // 64 (bits)
+					int bytesOfLong = Long.BYTES; // 8 (bytes)
+				最后，所有的整数和浮点数的包装类型都继承自Number，因此，可以非常方便地直接通过包装类型获取各种基本类型：
+					// 向上转型为Number:
+					Number num = new Integer(999);
+					// 获取byte, int, long, float, double:
+					byte b = num.byteValue();
+					int n = num.intValue();
+					long ln = num.longValue();
+					float f = num.floatValue();
+					double d = num.doubleValue();
+				处理无符号整型：
+					在Java中，并没有无符号整型（Unsigned）的基本数据类型。byte、short、int和long都是带符号整型，最高位是符号位。
+					而C语言则提供了CPU支持的全部数据类型，包括无符号整型。无符号整型和有符号整型的转换在Java中就需要借助包装类型的静态方法完成。
+						例如，byte是有符号整型，范围是-128~+127，但如果把byte看作无符号整型，它的范围就是0~255。我们把一个负的byte按无符号整型转换为int：
+							public class Main {
+							    public static void main(String[] args) {
+							        byte x = -1;
+							        byte y = 127;
+							        System.out.println(Byte.toUnsignedInt(x)); // 255
+							        System.out.println(Byte.toUnsignedInt(y)); // 127
+							    }
+							}
+							ouput：
+							255
+							127
+						类似的，可以把一个short按unsigned转换为int，把一个int按unsigned转换为long。
+				小结：
+					Java核心库提供的包装类型可以把基本类型包装为class；
+					自动装箱和自动拆箱都是在编译期完成的（JDK>=1.5）；
+					装箱和拆箱会影响执行效率，且拆箱时可能发生NullPointerException；
+					包装类型的比较必须使用equals()；
+					整数和浮点数的包装类型都继承自Number；
+					包装类型提供了大量实用方法。
+		JavaBean：
+			JavaBean的概念：
+				在Java中，有很多class的定义都符合这样的规范：
+					若干private实例字段；
+					通过public方法来读写实例字段。
+				例如：
+					public class Person {
+					    private String name;
+					    private int age;
+
+					    public String getName() { return this.name; }
+					    public void setName(String name) { this.name = name; }
+
+					    public int getAge() { return this.age; }
+					    public void setAge(int age) { this.age = age; }
+					}
+				如果读写方法符合以下这种命名规范：
+					// 读方法:
+					public Type getXyz()
+					// 写方法:
+					public void setXyz(Type value)
+				那么这种class被称为JavaBean：
+					上面的字段是xyz，那么读写方法名分别以get和set开头，并且后接大写字母开头的字段名Xyz，因此两个读写方法名分别是getXyz()和setXyz()。
+				boolean字段比较特殊，它的读方法一般命名为isXyz()：
+					// 读方法:
+					public boolean isChild()
+					// 写方法:
+					public void setChild(boolean value)
+				我们通常把一组对应的读方法（getter）和写方法（setter）称为属性（property）。例如，name属性：
+					对应的读方法是String getName()
+					对应的写方法是setName(String)
+				只有getter的属性称为只读属性（read-only），例如，定义一个age只读属性：
+					对应的读方法是int getAge()
+					无对应的写方法setAge(int)
+				类似的，只有setter的属性称为只写属性（write-only）。
+				很明显，只读属性很常见，只写属性不常见。
+				属性只需要定义getter和setter方法，不一定需要对应的字段。例如，child只读属性定义如下：
+					public class Person {
+					    private String name;
+					    private int age;
+
+					    public String getName() { return this.name; }
+					    public void setName(String name) { this.name = name; }
+
+					    public int getAge() { return this.age; }
+					    public void setAge(int age) { this.age = age; }
+
+					    public boolean isChild() {
+					        return age <= 6;
+					    }
+					}
+				可以看出，getter和setter也是一种数据封装的方法。
+			JavaBean的作用：
+				JavaBean主要用来传递数据，即把一组数据组合成一个JavaBean便于传输。此外，JavaBean可以方便地被IDE工具分析，生成读写属性的代码，主要用在图形界面的可视化设计中。
+					通过IDE，可以快速生成getter和setter。例如，在Eclipse中，先输入以下代码：
+						public class Person {
+						    private String name;
+						    private int age;
+						}
+					然后，点击右键，在弹出的菜单中选择“Source”，“Generate Getters and Setters”，在弹出的对话框中选中需要生成getter和setter方法的字段，点击确定即可由IDE自动完成所有方法代码。
+			枚举JavaBean属性：
+				要枚举一个JavaBean的所有属性，可以直接使用Java核心库提供的Introspector：
+					public class Main {
+					    public static void main(String[] args) throws Exception {
+					        BeanInfo info = Introspector.getBeanInfo(Person.class);
+					        for (PropertyDescriptor pd : info.getPropertyDescriptors()) {
+					            System.out.println(pd.getName());
+					            System.out.println("  " + pd.getReadMethod());
+					            System.out.println("  " + pd.getWriteMethod());
+					        }
+					    }
+					}
+
+					class Person {
+					    private String name;
+					    private int age;
+
+					    public String getName() {
+					        return name;
+					    }
+
+					    public void setName(String name) {
+					        this.name = name;
+					    }
+
+					    public int getAge() {
+					        return age;
+					    }
+
+					    public void setAge(int age) {
+					        this.age = age;
+					    }
+					}
+					output：
+					age
+					  public int Person.getAge()
+					  public void Person.setAge(int)
+					class
+					  public final native java.lang.Class java.lang.Object.getClass()
+					  null
+					name
+					  public java.lang.String Person.getName()
+					  public void Person.setName(java.lang.String)
+				运行上述代码，可以列出所有的属性，以及对应的读写方法。注意class属性是从Object继承的getClass()方法带来的。
+			小结：
+				JavaBean是一种符合命名规范的class，它通过getter和setter来定义属性；
+				属性是一种通用的叫法，并非Java语法规定；
+				可以利用IDE快速生成getter和setter；
+				使用Introspector.getBeanInfo()可以获取属性列表。
+		枚举类：
+			前言：
+				在Java中，我们可以通过static final来定义常量。例如，我们希望定义周一到周日这7个常量，可以用7个不同的int表示：
+					public class Weekday {
+					    public static final int SUN = 0;
+					    public static final int MON = 1;
+					    public static final int TUE = 2;
+					    public static final int WED = 3;
+					    public static final int THU = 4;
+					    public static final int FRI = 5;
+					    public static final int SAT = 6;
+					}
+				使用常量的时候，可以这么引用：
+					if (day == Weekday.SAT || day == Weekday.SUN) {
+					    // TODO: work at home
+					}
+				也可以把常量定义为字符串类型，例如，定义3种颜色的常量：
+					public class Color {
+					    public static final String RED = "r";
+					    public static final String GREEN = "g";
+					    public static final String BLUE = "b";
+					}
+				使用常量的时候，可以这么引用：
+					String color = ...
+					if (Color.RED.equals(color)) {
+					    // TODO:
+					}
+				无论是int常量还是String常量，使用这些常量来表示一组枚举值的时候，有一个严重的问题就是，编译器无法检查每个值的合理性。例如：
+					if (weekday == 6 || weekday == 7) {
+					    if (tasks == Weekday.MON) {
+					        // TODO:
+					    }
+					}
+				上述代码编译和运行均不会报错，但存在两个问题：
+					注意到Weekday定义的常量范围是0~6，并不包含7，编译器无法检查不在枚举中的int值；
+					定义的常量仍可与其他变量比较，但其用途并非是枚举星期值。
+			enum：
+				为了让编译器能自动检查某个值在枚举的集合内，并且，不同用途的枚举需要不同的类型来标记，不能混用，我们可以使用enum来定义枚举类：
+					public class Main {
+					    public static void main(String[] args) {
+					        Weekday day = Weekday.SUN;
+					        if (day == Weekday.SAT || day == Weekday.SUN) {
+					            System.out.println("Work at home!");
+					        } else {
+					            System.out.println("Work at office!");
+					        }
+					    }
+					}
+
+					enum Weekday {
+					    SUN, MON, TUE, WED, THU, FRI, SAT;
+					}
+					output：
+					Work at home!
+				不同类型的枚举不能互相比较或者赋值，因为类型不符。例如，不能给一个Weekday枚举类型的变量赋值为Color枚举类型的值：
+					Weekday x = Weekday.SUN; // ok!
+					Weekday y = Color.RED; // Compile error: incompatible types
+			enum的比较：
+				使用enum定义的枚举类是一种引用类型。前面我们讲到，引用类型比较，要使用equals()方法，如果使用==比较，它比较的是两个引用类型的变量是否是同一个对象。因此，引用类型比较，要始终使用equals()方法，但enum类型可以例外。
+				这是因为enum类型的每个常量在JVM中只有一个唯一实例，所以可以直接用==比较：
+					if (day == Weekday.FRI) { // ok!
+					}
+					if (day.equals(Weekday.SUN)) { // ok, but more code!
+					}
+			enum类型：
+				通过enum定义的枚举类，和其他的class有什么区别？
+				答案是没有任何区别。enum定义的类型就是class，只不过它有以下几个特点：
+					定义的enum类型总是继承自java.lang.Enum，且无法被继承；
+					只能定义出enum的实例，而无法通过new操作符创建enum的实例；
+					定义的每个实例都是引用类型的唯一实例；
+					可以将enum类型用于switch语句。
+				例如，我们定义的Color枚举类：
+					public enum Color {
+					    RED, GREEN, BLUE;
+					}
+				编译器编译出的class大概就像这样：
+					public final class Color extends Enum { // 继承自Enum，标记为final class
+					    // 每个实例均为全局唯一:
+					    public static final Color RED = new Color();
+					    public static final Color GREEN = new Color();
+					    public static final Color BLUE = new Color();
+					    // private构造方法，确保外部无法调用new操作符:
+					    private Color() {}
+					}
+				所以，编译后的enum类和普通class并没有任何区别。但是我们自己无法按定义普通class那样来定义enum，必须使用enum关键字，这是Java语法规定的。
+				因为enum是一个class，每个枚举的值都是class实例，因此，这些实例有一些方法：
+					name()：
+						返回常量名，例如：
+							String s = Weekday.SUN.name(); // "SUN"
+					ordinal()：
+						返回定义的常量的顺序，从0开始计数，例如：
+							int n = Weekday.MON.ordinal(); // 1
+						改变枚举常量定义的顺序就会导致ordinal()返回值发生变化。例如：
+							public enum Weekday {
+							    SUN, MON, TUE, WED, THU, FRI, SAT;
+							}	
+						和
+							public enum Weekday {
+							    MON, TUE, WED, THU, FRI, SAT, SUN;
+							}
+						的ordinal就是不同的。如果在代码中编写了类似if(x.ordinal()==1)这样的语句，就要保证enum的枚举顺序不能变。新增的常量必须放在最后。
+						有些童鞋会想，Weekday的枚举常量如果要和int转换，使用ordinal()不是非常方便？比如这样写：
+							String task = Weekday.MON.ordinal() + "/ppt";
+							saveToFile(task);
+						但是，如果不小心修改了枚举的顺序，编译器是无法检查出这种逻辑错误的。要编写健壮的代码，就不要依靠ordinal()的返回值。因为enum本身是class，所以我们可以定义private的构造方法，并且，给每个枚举常量添加字段：
+							public class Main {
+							    public static void main(String[] args) {
+							        Weekday day = Weekday.SUN;
+							        if (day.dayValue == 6 || day.dayValue == 0) {
+							            System.out.println("Work at home!");
+							        } else {
+							            System.out.println("Work at office!");
+							        }
+							    }
+							}
+
+							enum Weekday {
+							    MON(1), TUE(2), WED(3), THU(4), FRI(5), SAT(6), SUN(0);
+
+							    public final int dayValue;
+
+							    private Weekday(int dayValue) {
+							        this.dayValue = dayValue;
+							    }
+							}
+							output：
+							Work at home!
+							这样就无需担心顺序的变化，新增枚举常量时，也需要指定一个int值。
+						注意：枚举类的字段也可以是非final类型，即可以在运行期修改，但是不推荐这样做！
+						默认情况下，对枚举常量调用toString()会返回和name()一样的字符串。但是，toString()可以被覆写，而name()则不行。我们可以给Weekday添加toString()方法：
+							public class Main {
+							    public static void main(String[] args) {
+							        Weekday day = Weekday.SUN;
+							        if (day.dayValue == 6 || day.dayValue == 0) {
+							            System.out.println("Today is " + day + ". Work at home!");
+							        } else {
+							            System.out.println("Today is " + day + ". Work at office!");
+							        }
+							    }
+							}
+
+							enum Weekday {
+							    MON(1, "星期一"), TUE(2, "星期二"), WED(3, "星期三"), THU(4, "星期四"), FRI(5, "星期五"), SAT(6, "星期六"), SUN(0, "星期日");
+
+							    public final int dayValue;
+							    private final String chinese;
+
+							    private Weekday(int dayValue, String chinese) {
+							        this.dayValue = dayValue;
+							        this.chinese = chinese;
+							    }
+
+							    @Override
+							    public String toString() {
+							        return this.chinese;
+							    }
+							}
+							output：
+							Today is 星期日. Work at home!
+							覆写toString()的目的是在输出时更有可读性。
+					switch：
+						最后，枚举类可以应用在switch语句中。因为枚举类天生具有类型信息和有限个枚举常量，所以比int、String类型更适合用在switch语句中：
+							public class Main {
+							    public static void main(String[] args) {
+							        Weekday day = Weekday.SUN;
+							        switch(day) {
+							        case MON:
+							        case TUE:
+							        case WED:
+							        case THU:
+							        case FRI:
+							            System.out.println("Today is " + day + ". Work at office!");
+							            break;
+							        case SAT:
+							        case SUN:
+							            System.out.println("Today is " + day + ". Work at home!");
+							            break;
+							        default:
+							            throw new RuntimeException("cannot process " + day);
+							        }
+							    }
+							}
+
+							enum Weekday {
+							    MON, TUE, WED, THU, FRI, SAT, SUN;
+							}
+							output：
+							Today is SUN. Work at home!
+							加上default语句，可以在漏写某个枚举常量时自动报错，从而及时发现错误。
+			小结：
+				Java使用enum定义枚举类型，它被编译器编译为final class Xxx extends Enum { … }；
+				通过name()获取常量定义的字符串，注意不要使用toString()；
+				通过ordinal()返回常量定义的顺序（无实质意义）；
+				可以为enum编写构造方法、字段和方法
+				enum的构造方法要声明为private，字段强烈建议声明为final；
+				enum适合用在switch语句中。
+		BigInteger：
+			在Java中，由CPU原生提供的整型最大范围是64位long型整数。使用long型整数可以直接通过CPU指令进行计算，速度非常快。
+			如果我们使用的整数范围超过了long型怎么办？这个时候，就只能用软件来模拟一个大整数。java.math.BigInteger就是用来表示任意大小的整数。BigInteger内部用一个int[]数组来模拟一个非常大的整数：
+				BigInteger bi = new BigInteger("1234567890");
+				System.out.println(bi.pow(5)); // 2867971860299718107233761438093672048294900000
+			对BigInteger做运算的时候，只能使用实例方法，例如，加法运算：
+				BigInteger i1 = new BigInteger("1234567890");
+				BigInteger i2 = new BigInteger("12345678901234567890");
+				BigInteger sum = i1.add(i2); // 12345678902469135780
+			和long型整数运算比，BigInteger不会有范围限制，但缺点是速度比较慢。
+				也可以把BigInteger转换成long型：
+					BigInteger i = new BigInteger("123456789000");
+						System.out.println(i.longValue()); // 123456789000
+						System.out.println(i.multiply(i).longValueExact()); // java.lang.ArithmeticException: BigInteger out of long range
+			使用longValueExact()方法时，如果超出了long型的范围，会抛出ArithmeticException。
+				BigInteger和Integer、Long一样，也是不可变类，并且也继承自Number类。因为Number定义了转换为基本类型的几个方法：
+					转换为byte：byteValue()
+					转换为short：shortValue()
+					转换为int：intValue()
+					转换为long：longValue()
+					转换为float：floatValue()
+					转换为double：doubleValue()
+				因此，通过上述方法，可以把BigInteger转换成基本类型。如果BigInteger表示的范围超过了基本类型的范围，转换时将丢失高位信息，即结果不一定是准确的。如果需要准确地转换成基本类型，可以使用intValueExact()、longValueExact()等方法，在转换时如果超出范围，将直接抛出ArithmeticException异常。
+			如果BigInteger的值甚至超过了float的最大范围（3.4x1038），那么返回的float是什么呢？
+				// BigInteger to float
+				import java.math.BigInteger;
+				public class Main {
+				    public static void main(String[] args) {
+				        BigInteger n = new BigInteger("999999").pow(99);
+				        float f = n.floatValue();
+				        System.out.println(f);
+				    }
+				}
+				output：
+				Infinity
+			小结：
+				BigInteger用于表示任意大小的整数；
+				BigInteger是不变类，并且继承自Number；
+				将BigInteger转换成基本类型时可使用longValueExact()等方法保证结果准确。
+		BigDecimal：
+			和BigInteger类似，BigDecimal可以表示一个任意大小且精度完全准确的浮点数。
+				BigDecimal bd = new BigDecimal("123.4567");
+				System.out.println(bd.multiply(bd)); // 15241.55677489
+			BigDecimal用scale()表示小数位数，例如：
+				BigDecimal d1 = new BigDecimal("123.45");
+				BigDecimal d2 = new BigDecimal("123.4500");
+				BigDecimal d3 = new BigDecimal("1234500");
+				System.out.println(d1.scale()); // 2,两位小数
+				System.out.println(d2.scale()); // 4
+				System.out.println(d3.scale()); // 0
+			通过BigDecimal的stripTrailingZeros()方法，可以将一个BigDecimal格式化为一个相等的，但去掉了末尾0的BigDecimal：
+				BigDecimal d1 = new BigDecimal("123.4500");
+				BigDecimal d2 = d1.stripTrailingZeros();
+				System.out.println(d1.scale()); // 4
+				System.out.println(d2.scale()); // 2,因为去掉了00
+
+				BigDecimal d3 = new BigDecimal("1234500");
+				BigDecimal d4 = d3.stripTrailingZeros();
+				System.out.println(d3.scale()); // 0
+				System.out.println(d4.scale()); // -2
+			如果一个BigDecimal的scale()返回负数，例如，-2，表示这个数是个整数，并且末尾有2个0。
+			可以对一个BigDecimal设置它的scale，如果精度比原始值低，那么按照指定的方法进行四舍五入或者直接截断：
+				import java.math.BigDecimal;
+				import java.math.RoundingMode;
+				public class Main {
+				    public static void main(String[] args) {
+				        BigDecimal d1 = new BigDecimal("123.456789");
+				        BigDecimal d2 = d1.setScale(4, RoundingMode.HALF_UP); 	// 四舍五入，123.4568
+				        BigDecimal d3 = d1.setScale(4, RoundingMode.DOWN); 		// 直接截断，123.4567
+				        System.out.println(d2);
+				        System.out.println(d3);
+				    }
+				}
+				output：
+				123.4568
+				123.4567
+			对BigDecimal做加、减、乘时，精度不会丢失，但是做除法时，存在无法除尽的情况，这时，就必须指定精度以及如何进行截断：
+				BigDecimal d1 = new BigDecimal("123.456");
+				BigDecimal d2 = new BigDecimal("23.456789");
+				BigDecimal d3 = d1.divide(d2, 10, RoundingMode.HALF_UP); // 保留10位小数并四舍五入
+			在比较两个BigDecimal的值是否相等时，要特别注意，使用equals()方法不但要求两个BigDecimal的值相等，还要求它们的scale()相等：
+				BigDecimal d1 = new BigDecimal("123.456");
+				BigDecimal d2 = new BigDecimal("123.45600");
+				System.out.println(d1.equals(d2)); 						// false,因为scale不同
+				System.out.println(d1.equals(d2.stripTrailingZeros())); // true,因为d2去除尾部0后scale变为2
+				System.out.println(d1.compareTo(d2)); 					// 0
+			必须使用compareTo()方法来比较，它根据两个值的大小分别返回负数、正数和0，分别表示小于、大于和等于。
+			总是使用compareTo()比较两个BigDecimal的值，不要使用equals()！
+			如果查看BigDecimal的源码，可以发现，实际上一个BigDecimal是通过一个BigInteger和一个scale来表示的，即BigInteger表示一个完整的整数，而scale表示小数位数：
+				public class BigDecimal extends Number implements Comparable<BigDecimal> {
+				    private final BigInteger intVal;
+				    private final int scale;
+				}
+			BigDecimal也是从Number继承的，也是不可变对象。
+			小结：
+				BigDecimal用于表示精确的小数，常用于财务计算；
+				比较BigDecimal的值是否相等，必须使用compareTo()而不能使用equals()。
+		常用工具类：
+			Java的核心库提供了大量的现成的类供我们使用。本节我们介绍几个常用的工具类。
+				Math：
+					顾名思义，Math类就是用来进行数学计算的，它提供了大量的静态方法来便于我们实现数学计算：
+						求绝对值：
+							Math.abs(-100); 	// 100
+							Math.abs(-7.8); 	// 7.8
+						取最大或最小值：
+							Math.max(100, 99); 	// 100
+							Math.min(1.2, 2.3); // 1.2
+						计算xy次方：
+							Math.pow(2, 10); 	// 2的10次方=1024
+						计算√x：
+							Math.sqrt(2); 		// 1.414...
+						计算ex次方：
+							Math.exp(2); 		// 7.389...
+						计算以e为底的对数：
+							Math.log(4); 		// 1.386...
+						计算以10为底的对数：
+							Math.log10(100); 	// 2
+						三角函数：
+							Math.sin(3.14); 	// 0.00159...
+							Math.cos(3.14); 	// -0.9999...
+							Math.tan(3.14); 	// -0.0015...
+							Math.asin(1.0); 	// 1.57079...
+							Math.acos(1.0); 	// 0.0
+						Math还提供了几个数学常量：
+							double pi = Math.PI; 	// 3.14159...
+							double e = Math.E; 		// 2.7182818...
+							Math.sin(Math.PI / 6); 	// sin(π/6) = 0.5
+						生成一个随机数x，x的范围是0 <= x < 1：
+							Math.random(); // 0.53907... 每次都不一样
+						如果我们要生成一个区间在[MIN, MAX)的随机数，可以借助Math.random()实现，计算如下：
+							// 区间在[MIN, MAX)的随机数
+							public class Main {
+							    public static void main(String[] args) {
+							        double x = Math.random(); // x的范围是[0,1)
+							        double min = 10;
+							        double max = 50;
+							        double y = x * (max - min) + min; // y的范围是[10,50)
+							        long n = (long) y; // n的范围是[10,50)的整数
+							        System.out.println(y);
+							        System.out.println(n);
+							    }
+							}
+							output：
+							21.42859720029286
+							21
+						有些童鞋可能注意到Java标准库还提供了一个StrictMath，它提供了和Math几乎一模一样的方法。这两个类的区别在于，由于浮点数计算存在误差，不同的平台（例如x86和ARM）计算的结果可能不一致（指误差不同），因此，StrictMath保证所有平台计算结果都是完全相同的，而Math会尽量针对平台优化计算速度，所以，绝大多数情况下，使用Math就足够了。
+				Random：
+					Random用来创建伪随机数。所谓伪随机数，是指只要给定一个初始的种子，产生的随机数序列是完全一样的。
+					要生成一个随机数，可以使用nextInt()、nextLong()、nextFloat()、nextDouble()：
+						Random r = new Random();
+						r.nextInt(); 				// 2071575453,每次都不一样
+						r.nextInt(10); 				// 5,生成一个[0,10)之间的int
+						r.nextLong(); 				// 8811649292570369305,每次都不一样
+						r.nextFloat(); 				// 0.54335...生成一个[0,1)之间的float
+						r.nextDouble(); 			// 0.3716...生成一个[0,1)之间的double
+					有童鞋问，每次运行程序，生成的随机数都是不同的，没看出伪随机数的特性来。
+					这是因为我们创建Random实例时，如果不给定种子，就使用系统当前时间戳作为种子，因此每次运行时，种子不同，得到的伪随机数序列就不同。
+					如果我们在创建Random实例时指定一个种子，就会得到完全确定的随机数序列：
+						import java.util.Random;
+						public class Main {
+						    public static void main(String[] args) {
+						        Random r = new Random(12345);
+						        for (int i = 0; i < 10; i++) {
+						            System.out.println(r.nextInt(100));
+						        }
+						        // 会固定输出：51, 80, 41, 28, 55...，如果没有指定种子12345，每次运行，都会打印出不同的数值序列！
+						    }
+						}
+						output：
+						51
+						80
+						41
+						28
+						55
+						84
+						75
+						2
+						1
+						89
+						前面我们使用的Math.random()实际上内部调用了Random类，所以它也是伪随机数，只是我们无法指定种子。
+				SecureRandom：
+					有伪随机数，就有真随机数。实际上真正的真随机数只能通过量子力学原理来获取，而我们想要的是一个不可预测的安全的随机数，SecureRandom就是用来创建安全的随机数的：
+						SecureRandom sr = new SecureRandom();
+						System.out.println(sr.nextInt(100));
+					SecureRandom无法指定种子，它使用RNG（random number generator）算法。JDK的SecureRandom实际上有多种不同的底层实现，有的使用安全随机种子加上伪随机数算法来产生安全的随机数，有的使用真正的随机数生成器。实际使用的时候，可以优先获取高强度的安全随机数生成器，如果没有提供，再使用普通等级的安全随机数生成器：
+						import java.util.Arrays;
+						import java.security.SecureRandom;
+						import java.security.NoSuchAlgorithmException;
+						public class Main {
+						    public static void main(String[] args) {
+						        SecureRandom sr = null;
+						        try {
+						            sr = SecureRandom.getInstanceStrong(); // 获取高强度安全随机数生成器
+						        } catch (NoSuchAlgorithmException e) {
+						            sr = new SecureRandom(); // 获取普通的安全随机数生成器
+						        }
+						        byte[] buffer = new byte[16];
+						        sr.nextBytes(buffer); // 用安全随机数填充buffer
+						        System.out.println(Arrays.toString(buffer));
+						    }
+						}
+						output：
+						每次运行，打印结果会不一样。。。
+					SecureRandom的安全性是通过操作系统提供的安全的随机种子来生成随机数。这个种子是通过CPU的热噪声、读写磁盘的字节、网络流量等各种随机事件产生的“熵”。
+					在密码学中，安全的随机数非常重要。如果使用不安全的伪随机数，所有加密体系都将被攻破。因此，时刻牢记必须使用SecureRandom来产生安全的随机数。
+				注意：
+					 需要使用安全随机数的时候，必须使用SecureRandom，绝不能使用Random！
+				小结：
+					Java提供的常用工具类有：
+						Math：数学计算
+						Random：生成伪随机数
+						SecureRandom：生成安全的随机数
+	异常处理：
+		前言：
+			程序运行的时候，经常会发生各种错误。
+			比如，使用Excel的时候，它有时候会报错：
+				找不到对象！
+		Java的异常：
+			在计算机程序运行的过程中，总是会出现各种各样的错误。
+			有一些错误是用户造成的，比如，希望用户输入一个int类型的年龄，但是用户的输入是abc：
+				// 假设用户输入了abc：
+				String s = "abc";
+				int n = Integer.parseInt(s); // NumberFormatException!
+			程序想要读写某个文件的内容，但是用户已经把它删除了：
+				// 用户删除了该文件：
+				String t = readFile("C:\\abc.txt"); // FileNotFoundException!
+			还有一些错误是随机出现，并且永远不可能避免的。比如：
+				网络突然断了，连接不到远程服务器；
+				内存耗尽，程序崩溃了；
+				用户点“打印”，但根本没有打印机；
+				……
+			所以，一个健壮的程序必须处理各种各样的错误。
+			所谓错误，就是程序调用某个函数的时候，如果失败了，就表示出错。
+			调用方如何获知调用失败的信息？有两种方法：
+				方法一：约定返回错误码。
+					例如，处理一个文件，如果返回0，表示成功，返回其他整数，表示约定的错误码：
+						int code = processFile("C:\\test.txt");
+						if (code == 0) {
+						    // ok:
+						} else {
+						    // error:
+						    switch (code) {
+						    case 1:
+						        // file not found:
+						    case 2:
+						        // no read permission:
+						    default:
+						        // unknown error:
+						    }
+						}
+						因为使用int类型的错误码，想要处理就非常麻烦。这种方式常见于底层C函数。
+				方法二：在语言层面上提供一个异常处理机制。
+					Java内置了一套异常处理机制，总是使用异常来表示错误。
+					异常是一种class，因此它本身带有类型信息。异常可以在任何地方抛出，但只需要在上层捕获，这样就和方法调用分离了：
+						try {
+						    String s = processFile(“C:\\test.txt”);
+						    // ok:
+						} catch (FileNotFoundException e) {
+						    // file not found:
+						} catch (SecurityException e) {
+						    // no read permission:
+						} catch (IOException e) {
+						    // io error:
+						} catch (Exception e) {
+						    // other error:
+						}
+		因为Java的异常是class，它的继承关系如下：
+								 ┌───────────┐
+			                     │  Object   │
+			                     └───────────┘
+			                           ▲
+			                           │
+			                     ┌───────────┐
+			                     │ Throwable │
+			                     └───────────┘
+			                           ▲
+			                 ┌─────────┴─────────┐
+			                 │                   │
+			           ┌───────────┐       ┌───────────┐
+			           │   Error   │       │ Exception │
+			           └───────────┘       └───────────┘
+			                 ▲                   ▲
+			         ┌───────┘              ┌────┴──────────┐
+			         │                      │               │
+			┌─────────────────┐    ┌─────────────────┐┌───────────┐
+			│OutOfMemoryError │... │RuntimeException ││IOException│...
+			└─────────────────┘    └─────────────────┘└───────────┘
+			                                ▲
+			                    ┌───────────┴─────────────┐
+			                    │                         │
+			         ┌─────────────────────┐ ┌─────────────────────────┐
+			         │NullPointerException │ │IllegalArgumentException │...
+			         └─────────────────────┘ └─────────────────────────┘
+		从继承关系可知：Throwable是异常体系的根，它继承自Object。Throwable有两个体系：
+			Error和Exception:
+				Error:表示严重的错误，程序对此一般无能为力，例如：
+					OutOfMemoryError：内存耗尽
+					NoClassDefFoundError：无法加载某个Class
+					StackOverflowError：栈溢出
+				Exception:是运行时的错误，它可以被捕获并处理。
+					某些异常是应用程序逻辑处理的一部分，应该捕获并处理。例如：
+						NumberFormatException：数值类型的格式错误
+						FileNotFoundException：未找到文件
+						SocketException：读取网络失败
+					Exception又分为两大类：
+						RuntimeException以及它的子类；
+						非RuntimeException（包括IOException、ReflectiveOperationException等等）
+				还有一些异常是程序逻辑编写不对造成的，应该修复程序本身。例如：
+					NullPointerException：对某个null的对象调用方法或字段
+					IndexOutOfBoundsException：数组索引越界
+			Java规定：
+				必须捕获的异常，包括Exception及其子类，但不包括RuntimeException及其子类，这种类型的异常称为Checked Exception。
+				不需要捕获的异常，包括Error及其子类，RuntimeException及其子类。
+		捕获异常：
+			捕获异常使用try...catch语句，把可能发生异常的代码放到try {...}中，然后使用catch捕获对应的Exception及其子类：
+				// try...catch
+				import java.io.UnsupportedEncodingException;
+				import java.util.Arrays;
+				public class Main {
+    				public static void main(String[] args) {
+				        byte[] bs = toGBK("中文");
+				        System.out.println(Arrays.toString(bs));
+				    }
+
+				    static byte[] toGBK(String s) {
+				        try {
+				            // 用指定编码转换String为byte[]:
+				            return s.getBytes("GBK");
+				        } catch (UnsupportedEncodingException e) {
+				            // 如果系统不支持GBK编码，会捕获到UnsupportedEncodingException:
+				            System.out.println(e); // 打印异常信息
+				            return s.getBytes(); // 尝试使用用默认编码
+				        }
+				    }
+				}
+				output：
+				[-42, -48, -50, -60]
+			如果我们不捕获UnsupportedEncodingException，会出现编译失败的问题：
+				// try...catch
+				import java.io.UnsupportedEncodingException;
+				import java.util.Arrays;
+				public class Main {
+				    public static void main(String[] args) {
+				        byte[] bs = toGBK("中文");
+				        System.out.println(Arrays.toString(bs));
+				    }
+
+				    static byte[] toGBK(String s) {
+				        return s.getBytes("GBK");
+				    }
+				}
+				output：
+				错误: 编译失败
+				注意：
+					编译器会报错，错误信息类似：unreported exception UnsupportedEncodingException; must be caught or declared to be thrown，并且准确地指出需要捕获的语句是return s.getBytes("GBK");。意思是说，像UnsupportedEncodingException这样的Checked Exception，必须被捕获。
+				这是因为String.getBytes(String)方法定义是：
+					public byte[] getBytes(String charsetName) throws UnsupportedEncodingException {
+					    ...
+					}
+			在方法定义的时候，使用throws Xxx表示该方法可能抛出的异常类型。调用方在调用的时候，必须强制捕获这些异常，否则编译器会报错。
+			在toGBK()方法中，因为调用了String.getBytes(String)方法，就必须捕获UnsupportedEncodingException。我们也可以不捕获它，而是在方法定义处用throws表示toGBK()方法可能会抛出UnsupportedEncodingException，就可以让toGBK()方法通过编译器检查：
+				// try...catch
+				import java.io.UnsupportedEncodingException;
+				import java.util.Arrays;
+				public class Main {
+				    public static void main(String[] args) {
+				        byte[] bs = toGBK("中文");
+				        System.out.println(Arrays.toString(bs));
+				    }
+
+				    static byte[] toGBK(String s) throws UnsupportedEncodingException {
+				        return s.getBytes("GBK");
+				    }
+				}
+				output：
+				错误: 编译失败
+				注意：
+					上述代码仍然会得到编译错误，但这一次，编译器提示的不是调用return s.getBytes("GBK");的问题，而是byte[] bs = toGBK("中文");。因为在main()方法中，调用toGBK()，没有捕获它声明的可能抛出的UnsupportedEncodingException。
+			修复方法是在main()方法中捕获异常并处理：
+				// try...catch
+				import java.io.UnsupportedEncodingException;
+				import java.util.Arrays;	
+				public class Main {
+				    public static void main(String[] args) {
+				        try {
+				            byte[] bs = toGBK("中文");
+				            System.out.println(Arrays.toString(bs));
+				        } catch (UnsupportedEncodingException e) {
+				            System.out.println(e);
+				        }
+				    }
+
+				    static byte[] toGBK(String s) throws UnsupportedEncodingException {
+				        // 用指定编码转换String为byte[]:
+				        return s.getBytes("GBK");
+				    }
+				}
+				output：
+				[-42, -48, -50, -60]
+				注意：
+					可见，只要是方法声明的Checked Exception，不在调用层捕获，也必须在更高的调用层捕获。所有未捕获的异常，最终也必须在main()方法中捕获，不会出现漏写try的情况。这是由编译器保证的。main()方法也是最后捕获Exception的机会。
+			如果是测试代码，上面的写法就略显麻烦。如果不想写任何try代码，可以直接把main()方法定义为throws Exception：
+				// try...catch
+				import java.io.UnsupportedEncodingException;
+				import java.util.Arrays;
+				public class Main {
+				    public static void main(String[] args) throws Exception {
+				        byte[] bs = toGBK("中文");
+				        System.out.println(Arrays.toString(bs));
+				    }
+
+				    static byte[] toGBK(String s) throws UnsupportedEncodingException {
+				        // 用指定编码转换String为byte[]:
+				        return s.getBytes("GBK");
+				    }
+				}
+				output：
+				[-42, -48, -50, -60]
+				注意：
+					因为main()方法声明了可能抛出Exception，也就声明了可能抛出所有的Exception，因此在内部就无需捕获了。代价就是一旦发生异常，程序会立刻退出。
+			还有一些童鞋喜欢在toGBK()内部“消化”异常：
+				static byte[] toGBK(String s) {
+				    try {
+				        return s.getBytes("GBK");
+				    } catch (UnsupportedEncodingException e) {
+				        // 什么也不干
+				    }
+				    return null;
+				}
+			这种捕获后不处理的方式是非常不好的，即使真的什么也做不了，也要先把异常记录下来：
+				static byte[] toGBK(String s) {
+				    try {
+				        return s.getBytes("GBK");
+				    } catch (UnsupportedEncodingException e) {
+				        // 先记下来再说: 
+				        e.printStackTrace();
+				    }
+				    return null;
+				}
+			所有异常都可以调用printStackTrace()方法打印异常栈，这是一个简单有用的快速打印异常的方法。
+			小结：
+				Java使用异常来表示错误，并通过try ... catch捕获异常；
+				Java的异常是class，并且从Throwable继承；
+				Error是无需捕获的严重错误，Exception是应该捕获的可处理的错误；
+				RuntimeException无需强制捕获，非RuntimeException（Checked Exception）需强制捕获，或者用throws声明；
+				不推荐捕获了异常但不进行任何处理。
+
+
+
+
+
+
+												
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
