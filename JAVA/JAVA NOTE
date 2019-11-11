@@ -3124,6 +3124,13 @@ JAVA快速入门：
 				        throw new NullPointerException();
 				    }
 				}
+集合：
+	JAVA集合简介：
+		小结：
+			Java的集合类定义在java.util包中，支持泛型，主要提供了3种集合类，包括List，Set和Map。Java集合使用统一的Iterator遍历，尽量不要使用遗留接口。
+	使用List：
+	使用Map：
+	
 正则表达式：
 	前言：
 		正则表达式是一种用来匹配字符串的强有力的武器。Java内置了强大的正则表达式的支持。
@@ -3133,7 +3140,16 @@ JAVA快速入门：
 			如何判断字符串是否是有效的电子邮件地址？例如：test@example.com，test#example等；
 			如何判断字符串是否是有效的时间？例如：12:34，09:60，99:99等。
 		
-				
+		
+android设计经验：
+1、系统布局文件和我们自定义的布局在写法用前缀android以示区别：
+	系统布局文件：android.R.layout.xxx;
+	用户自定义布局文件：R.layout.xxx;
+2、ListView利用BaseAdapter相关操作：
+	① BaseAdapter是一个抽象类，继承它必须实现它的方法
+	② 当系统开始绘制ListView的时候，首先调用getCount()方法。得到它的返回值，即ListView的长度。然后系统调用getView()方法，根据这个长度逐一绘制ListView的每一行。也就是说，如果让getCount()返回1，那么只显示一行。而getItem()和getItemId()则在需要处理和取得Adapter中的数据时调用。那么getView如何使用呢？如果有10000行数据，就绘制10000次？这肯定会极大的消耗资源，导致ListView滑动非常的慢，那应该怎么做呢？通过一个例子来讲解如何在使用BaseAdapter的时候优化ListView的显示。例子中将上一节中的ImageView换成Button，并且处理Button的点击事件，其中对ListView的显示做了优化。
+3、new OnClickListener需添加import android.view.View.OnClickListener;包
+4、		
 
 
 
